@@ -1,13 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css"
 import ProfilePage from './pages/ProfilePage';
+import Home from './pages/Home';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/profile/:username " element={<ProfilePage />} />
+        <Route path="/profile/" element={<ProfilePage />} />
+        <Route path="/" element={<Home />} />
+        {/* Додай інші маршрути тут */}
       </Routes>
     </Router>
   );
