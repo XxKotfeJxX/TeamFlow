@@ -1,10 +1,14 @@
 import { Button } from "../components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-start w-full overflow-x-hidden">
+      <div className="flex flex-col items-center justify-start w-full overflow-x-hidden">
+          <Header />
       {/* Hero Section */}
       <section className="w-full bg-white pt-32 pb-20 px-6 md:px-12 lg:px-24 flex flex-col lg:flex-row items-center gap-10">
         <div className="flex-1">
@@ -34,7 +38,7 @@ export default function Home() {
           className="flex-1"
         >
           <img
-            src="/screenshots/hero.png"
+            src="/public/images/fight.jpg"
             alt="TeamFlow preview"
             className="w-full rounded-2xl shadow-xl"
           />
@@ -47,17 +51,17 @@ export default function Home() {
           {
             title: "Потужний таск-менеджер",
             desc: "Гнучкий Kanban, дедлайни, призначення та трекінг виконання — усе в одному вікні.",
-            image: "/screenshots/tasks.png",
+            image: "/public/images/fight.jpg",
           },
           {
             title: "Інтерактивні календарі",
             desc: "Персональні та командні події з синхронізацією. Працюйте та плануйте легко.",
-            image: "/screenshots/calendar.png",
+            image: "/public/images/fight.jpg",
           },
           {
             title: "Вбудований чат і дзвінки",
             desc: "Спілкуйтесь у реальному часі з підтримкою групових дзвінків та повідомлень.",
-            image: "/screenshots/chat.png",
+            image: "/public/images/fight.jpg",
           },
         ].map((feature, index) => (
           <div
@@ -88,7 +92,8 @@ export default function Home() {
         <Button size="lg" className="text-lg bg-white text-blue-600 hover:bg-gray-100">
           Створити акаунт
         </Button>
-      </section>
+          </section>
+        <Footer />
     </div>
   );
 }
