@@ -3,6 +3,8 @@ import ProfileHeader from '../components/profile/ProfileHeader'
 import ProfileAbout from '../components/profile/ProfileAbout'
 import ProfileActivity from '../components/profile/ProfileActivity'
 import ProfileSettings from '../components/profile/ProfileSettings'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 export default function ProfilePage() {
   // Це мок-дані — заміниш після підключення до бекенду
@@ -25,9 +27,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Профіль користувача</h1>
-
+    <>
+      <Header />
+    <main className="max-w-7xl mx-auto px-4 py-8 pt-20 border-t border-gray-200 rounded-lg bg-[#f9fafb] shadow-md">
+      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Профіль користувача</h1>
+      <div className="max-w-4xl mx-auto space-y-8">
       <section>
         <ProfileHeader
           avatarUrl={user.avatarUrl}
@@ -57,7 +61,10 @@ export default function ProfilePage() {
 
       <section>
         <ProfileSettings />
-      </section>
-    </main>
+          </section>
+          </div>
+      </main>
+      <Footer />
+    </>
   )
 }

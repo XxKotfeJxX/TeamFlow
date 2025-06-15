@@ -2,7 +2,8 @@ import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa'
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 text-sm">
+    <footer className="w-full bg-gray-900 text-gray-300 text-sm">
+      {/* Контейнер з max-width для вирівнювання контенту всередині */}
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         {/* Категорії */}
         <div>
@@ -56,8 +57,9 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-700 text-center py-4 px-4 text-xs text-gray-500">
-        © {new Date().getFullYear()} TeamFlow. Усі права захищено. 
+      {/* Низ футера */}
+      <div className="w-full border-t border-gray-700 text-center py-4 px-4 text-xs text-gray-500">
+        © {new Date().getFullYear()} TeamFlow. Усі права захищено.
         <span className="mx-2">·</span>
         <a href="#" className="hover:text-white">Політика конфіденційності</a>
         <span className="mx-2">·</span>
@@ -66,5 +68,4 @@ const Footer = () => {
     </footer>
   )
 }
-
-export default Footer
+export default Footer;

@@ -1,13 +1,29 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState<number | null>(null)
+  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+
 
   const navItems = [
     { label: 'Продукт', options: ['Огляд', 'Функції', 'Ціни'] },
     { label: 'Компанія', options: ['Про нас', 'Команда', 'Кар’єра'] },
     { label: 'Ресурси', options: ['Блог', 'Підтримка', 'Документація'] }
   ]
+
+  const handleMouseEnter = (idx: number) => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current)
+      closeTimeout.current = null
+    }
+    setOpenMenu(idx)
+  }
+
+  const handleMouseLeave = () => {
+    closeTimeout.current = setTimeout(() => {
+      setOpenMenu(null)
+    }, 200) // затримка 200 мс
+  }
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
@@ -23,12 +39,12 @@ const Header = () => {
             <div
               key={idx}
               className="relative"
-              onMouseEnter={() => setOpenMenu(idx)}
-              onMouseLeave={() => setOpenMenu(null)}
+              onMouseEnter={() => handleMouseEnter(idx)}
+              onMouseLeave={handleMouseLeave}
             >
-              <button className="hover:text-blue-600 transition">{item.label}</button>
+              <button className="hover:text-blue-600 transition p-2 rounded-xl">{item.label}</button>
               {openMenu === idx && (
-                <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-40 text-sm">
+                <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-40 text-sm z-50">
                   {item.options.map((option, i) => (
                     <a
                       key={i}
@@ -46,7 +62,7 @@ const Header = () => {
 
         {/* Кнопки справа */}
         <div className="flex items-center gap-3 text-sm">
-          <button className="text-gray-700 hover:text-blue-600 transition">Увійти</button>
+          <button className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl">Увійти</button>
           <button className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition">
             Завантажити
           </button>
@@ -55,5 +71,6 @@ const Header = () => {
     </header>
   )
 }
+
 
 export default Header
