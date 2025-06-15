@@ -1,0 +1,11 @@
+.idea/
+cmake-build-debug/
+build/
+.env
+.vscode/
+users/
+Libraries_DONT_PUSH/
+startups/
+node_modules/
+.vs/
+
