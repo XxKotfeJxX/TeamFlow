@@ -6,7 +6,7 @@ export default function ProfileSettings() {
   return (
     <Card className="mt-6">
       <CardContent className="p-6 space-y-6">
-        <h2 className="text-xl font-semibold">Налаштування</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Налаштування</h2>
 
         <div className="grid gap-4 md:grid-cols-2">
           {/* Мова інтерфейсу */}

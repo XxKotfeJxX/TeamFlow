@@ -48,11 +48,9 @@ export default function ProfileHeader({
           </div>
         </div>
       </div>
-      {onEdit && (
         <Button variant="ghost" size="icon" onClick={onEdit}>
-          <Pencil className="w-5 h-5" />
+          <Pencil className="w-5 h-5 text-blue-500" />
         </Button>
-      )}
     </div>
   )
 }

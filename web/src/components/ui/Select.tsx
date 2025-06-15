@@ -5,7 +5,7 @@ export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectE
   return (
     <select
       className={cn(
-        'w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500',
+        'w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-800',
         className
       )}
       {...props}
@@ -14,7 +14,7 @@ export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectE
 }
 
 export function SelectItem({ value, children }: { value: string; children: ReactNode }) {
-  return <option value={value}>{children}</option>
+  return <option value={value} className="text-gray-800">{children}</option>
 }
 
 export function SelectTrigger({
@@ -36,9 +36,9 @@ export function SelectTrigger({
   }
 
 export function SelectValue({ placeholder }: { placeholder?: string }) {
-  return <>{placeholder}</>
+  return <div className="text-gray-500">{placeholder}</div>
 }
 
 export function SelectContent({ children }: { children: ReactNode }) {
-  return <>{children}</>
+  return <>{children}</>;
 }

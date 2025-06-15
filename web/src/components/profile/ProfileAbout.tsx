@@ -10,7 +10,8 @@ type ProfileAboutProps = {
   onEdit?: () => void
 }
 
-export default function ProfileAbout({
+export default function ProfileAbout(
+  {
   bio,
   skills,
   links,
@@ -22,11 +23,9 @@ export default function ProfileAbout({
     <div className="bg-white p-6 rounded-2xl shadow-md mb-6">
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-lg font-semibold text-gray-800">Про себе</h3>
-        {onEdit && (
           <Button variant="ghost" size="icon" onClick={onEdit}>
-            <Pencil className="w-5 h-5" />
+            <Pencil className="w-5 h-5 text-blue-600" />
           </Button>
-        )}
       </div>
 
       {bio && <p className="text-gray-700 mb-4 whitespace-pre-line">{bio}</p>}

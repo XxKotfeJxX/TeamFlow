@@ -23,8 +23,9 @@ export default function ProfilePage() {
     timezone: 'Europe/Kyiv',
     createdAt: '2024-12-01T10:15:00Z',
     lastActiveAt: '2025-06-14T20:45:00Z',
-    roles: [{ name: 'Адмін' }, { name: 'Розробник' }],
+    roles: [{ name: 'Адмін', teamName: 'Команда 1' }, { name: 'Розробник', teamName: 'Команда 2' }],
   }
+
 
   return (
     <>
