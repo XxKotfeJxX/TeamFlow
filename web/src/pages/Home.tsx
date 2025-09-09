@@ -96,7 +96,6 @@ export default function Home() {
         </section>
       </div>
 
-      {/* 🔥 Footer Поза обмеженим контейнером */}
       <Footer />
     </>
   );

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css"
 import ProfilePage from './pages/ProfilePage';
 import Home from './pages/Home';
+import Login from './pages/Login';
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/profile/" element={<ProfilePage />} />
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         {/* Додай інші маршрути тут */}
       </Routes>
     </Router>

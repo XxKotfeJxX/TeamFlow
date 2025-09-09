@@ -30,7 +30,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-14">
         {/* Лого */}
         <div className="font-bold text-xl text-gray-800">
-          TeamFlow
+          <img src="/images/TeamFlow_logo.png" alt="TeamFlow Logo" style={{ height: '70px', width: 'auto'}} />
         </div>
 
         {/* Навігація */}
