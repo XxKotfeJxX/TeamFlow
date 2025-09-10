@@ -52,17 +52,17 @@ export default function Home() {
             {
               title: "Потужний таск-менеджер",
               desc: "Гнучкий Kanban, дедлайни, призначення та трекінг виконання — усе в одному вікні.",
-              image: "/public/images/fight.jpg",
+              image: "/images/fight.jpg",
             },
             {
               title: "Інтерактивні календарі",
               desc: "Персональні та командні події з синхронізацією. Працюйте та плануйте легко.",
-              image: "/public/images/fight.jpg",
+              image: "images/fight.jpg",
             },
             {
               title: "Вбудований чат і дзвінки",
               desc: "Спілкуйтесь у реальному часі з підтримкою групових дзвінків та повідомлень.",
-              image: "/public/images/fight.jpg",
+              image: "/images/fight.jpg",
             },
           ].map((feature, index) => (
             <div
