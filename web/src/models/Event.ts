@@ -3,33 +3,35 @@
 
 export type Priority = 'low' | 'medium' | 'high';
 
-export interface EventDTO {
-  id: string;
-  title: string;
-  start: string; // ISO string
-  end: string; // ISO string
-  color?: string;
-  description?: string;
-  tags?: string[];
-  priority?: Priority;
-  microTasks?: MicroTaskDTO[];
-  // optional: associated task id, organizer id, attendees etc.
-  eventMeta?: Record<string, unknown>;
-}
-
 export interface MicroTaskDTO {
   id: string;
   title: string;
   done?: boolean;
 }
 
+export interface EventDTO {
+  id: string;
+  title: string;
+  start: string; // ISO string
+  end: string;   // ISO string
+  color?: string;
+  description?: string;
+  tags?: string[];
+  priority?: Priority;
+  microTasks?: MicroTaskDTO[];
+  eventMeta?: Record<string, unknown>;
+}
+
+/**
+ * Клас для роботи з подією у фронті (зручний для UI)
+ */
 export class CalendarEvent {
   id: string;
   title: string;
-  start: Date;
-  end: Date;
+  startTime: Date;
+  endTime: Date;
   color?: string;
-  description?: string;
+  description: string;
   tags: string[];
   priority: Priority;
   microTasks: MicroTaskDTO[];
@@ -38,12 +40,13 @@ export class CalendarEvent {
   constructor(dto: EventDTO) {
     this.id = dto.id;
     this.title = dto.title;
-    this.start = new Date(dto.start);
-    this.end = new Date(dto.end);
-    if (this.end < this.start) {
-      // defensive: normalize end >= start (set end = start + 30min)
-      this.end = new Date(this.start.getTime() + 30 * 60 * 1000);
+    this.startTime = new Date(dto.start);
+    this.endTime = new Date(dto.end);
+
+    if (this.endTime < this.startTime) {
+      this.endTime = new Date(this.startTime.getTime() + 30 * 60 * 1000);
     }
+
     this.color = dto.color;
     this.description = dto.description || '';
     this.tags = dto.tags || [];
@@ -53,7 +56,7 @@ export class CalendarEvent {
   }
 
   durationMs(): number {
-    return this.end.getTime() - this.start.getTime();
+    return this.endTime.getTime() - this.startTime.getTime();
   }
 
   durationMinutes(): number {
@@ -61,16 +64,14 @@ export class CalendarEvent {
   }
 
   overlapsWith(other: CalendarEvent): boolean {
-    // Two events overlap if one's start < other's end and one's end > other's start
-    return this.start < other.end && this.end > other.start;
+    return this.startTime < other.endTime && this.endTime > other.startTime;
   }
 
   containsMoment(moment: Date): boolean {
-    return this.start <= moment && moment < this.end;
+    return this.startTime <= moment && moment < this.endTime;
   }
 
   isAllDay(): boolean {
-    // heuristic: if event spans >= 20 hours, treat as all-day
     return this.durationMs() >= 20 * 60 * 60 * 1000;
   }
 
@@ -78,8 +79,8 @@ export class CalendarEvent {
     return {
       id: this.id,
       title: this.title,
-      start: this.start.toISOString(),
-      end: this.end.toISOString(),
+      start: this.startTime.toISOString(),
+      end: this.endTime.toISOString(),
       color: this.color,
       description: this.description,
       tags: this.tags,
