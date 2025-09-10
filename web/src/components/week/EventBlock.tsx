@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { CalendarEvent } from "../../models/Event";
-
 
 interface EventBlockProps {
   event: CalendarEvent;
@@ -8,32 +7,51 @@ interface EventBlockProps {
 }
 
 const EventBlock: React.FC<EventBlockProps> = ({ event, onClick }) => {
-  const start = new Date(event.startTime);
-  const end = new Date(event.endTime);
+  const start = event.startTime;
+  const end = event.endTime;
 
   const startMinutes = start.getHours() * 60 + start.getMinutes();
   const endMinutes = end.getHours() * 60 + end.getMinutes();
   const duration = endMinutes - startMinutes;
 
-  // Розрахунок позиції (по висоті, від 0 до 1440 хв = 24 години)
-  const top = (startMinutes / 60) * 4; // 1 година = 4 * 16px = 64px
+  const top = (startMinutes / 60) * 64; // 1 година = 64px
   const height = (duration / 60) * 64;
+
+  const [hovered, setHovered] = useState(false);
 
   return (
     <div
-      className="absolute left-1 right-1 rounded-lg shadow-md p-2 text-xs cursor-pointer text-white"
+      className="absolute left-1 right-1 rounded-lg shadow-md p-1 text-xs cursor-pointer text-white"
       style={{
         top,
         height,
-        backgroundColor: event.color || "#3b82f6", // дефолт синій
+        backgroundColor: event.color || "#3b82f6",
+        zIndex: hovered ? 10 : 1,
       }}
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <strong>{event.title}</strong>
-      <div>
+      <div className="text-[9px]">
         {start.getHours()}:{start.getMinutes().toString().padStart(2, "0")} –{" "}
         {end.getHours()}:{end.getMinutes().toString().padStart(2, "0")}
       </div>
+      {hovered && event.description && (
+        <div className="absolute bg-white text-black text-[10px] p-1 rounded shadow-md z-20 top-0 left-full ml-1 w-32">
+          {event.description}
+        </div>
+      )}
+      {/* Мікротаски */}
+      {event.microTasks.length > 0 && (
+        <div className="mt-1">
+          {event.microTasks.map((mt) => (
+            <div key={mt.id} className={`text-[8px] ${mt.done ? "line-through" : ""}`}>
+              • {mt.title}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
