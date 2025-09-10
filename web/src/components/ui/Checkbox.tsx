@@ -1,6 +1,6 @@
 import { useState, forwardRef } from "react"
 import type { ReactNode } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../utils/utils"
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: ReactNode  // <- змінили string на ReactNode
