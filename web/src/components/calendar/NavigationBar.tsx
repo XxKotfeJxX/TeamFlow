@@ -16,11 +16,11 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ currentDate, onPrevMonth,
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex gap-2">
-        <button onClick={onPrevMonth} className="px-3 py-1 rounded-lg bg-gray-200">◀</button>
-        <button onClick={onNextMonth} className="px-3 py-1 rounded-lg bg-gray-200">▶</button>
+        <button onClick={onPrevMonth} className="px-3 py-1 rounded-lg bg-gray-200 text-black">◀</button>
+        <button onClick={onNextMonth} className="px-3 py-1 rounded-lg bg-gray-200 text-black">▶</button>
         <button onClick={onToday} className="px-3 py-1 rounded-lg bg-blue-600 text-white">Сьогодні</button>
       </div>
-      <h2 className="text-lg font-semibold">
+      <h2 className="text-lg font-semibold text-black">
         {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
       </h2>
     </div>

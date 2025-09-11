@@ -5,11 +5,11 @@ import { CalendarEvent } from "../models/Event";
 
 interface MonthPageProps {
   events: CalendarEvent[];
-  onDayClick: (day: Date) => void; // передаємо день для переходу на DayPage
-  onWeekClick?: (weekStart: Date) => void; // для переходу на WeekPage
+  onDayClick: (day: Date) => void;
+  onWeekClick: (weekStart: Date) => void;
 }
 
-const MonthPage: React.FC<MonthPageProps> = ({ events, onDayClick }) => {
+const MonthPage: React.FC<MonthPageProps> = ({ events, onDayClick, onWeekClick }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const prevMonth = () => {
@@ -27,18 +27,21 @@ const MonthPage: React.FC<MonthPageProps> = ({ events, onDayClick }) => {
   const goToday = () => setCurrentDate(new Date());
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col h-full">
       <NavigationBar
         currentDate={currentDate}
         onPrevMonth={prevMonth}
         onNextMonth={nextMonth}
         onToday={goToday}
       />
-      <CalendarGrid
-        currentDate={currentDate}
-        events={events}
-        onDayClick={onDayClick}
-      />
+      <div className="flex-1 overflow-auto">
+        <CalendarGrid
+          currentDate={currentDate}
+          events={events}
+          onDayClick={onDayClick}
+          onWeekClick={onWeekClick}
+        />
+      </div>
     </div>
   );
 };

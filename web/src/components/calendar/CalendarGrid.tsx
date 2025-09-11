@@ -7,9 +7,10 @@ interface CalendarGridProps {
   currentDate: Date;
   events: CalendarEvent[];
   onDayClick: (day: Date) => void;
+  onWeekClick?: (weekStart: Date) => void;
 }
 
-const CalendarGrid: React.FC<CalendarGridProps> = ({ currentDate, events, onDayClick }) => {
+const CalendarGrid: React.FC<CalendarGridProps> = ({ currentDate, events, onDayClick, onWeekClick }) => {
   // Початок місяця
   const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
@@ -34,35 +35,45 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ currentDate, events, onDayC
     <div className="grid grid-cols-[40px_repeat(7,_1fr)] gap-1">
       {/* Дні тижня */}
       <div></div> {/* пусто над нумерацією тижнів */}
-      {["Пн","Вт","Ср","Чт","Пт","Сб","Нд"].map((day) => (
-        <div key={day} className="text-center font-semibold">{day}</div>
+      {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"].map((day) => (
+        <div key={day} className="text-center font-semibold text-black">
+          {day}
+        </div>
       ))}
 
       {/* Тижні і дні */}
-      {weeks.map((week, wi) => (
-        <React.Fragment key={wi}>
-          <WeekNumberCell weekNumber={wi + 1} />
-          {week.map((day) => {
-            const dayEvents = events.filter(
-              (ev) =>
-                ev.startTime.getFullYear() === day.getFullYear() &&
-                ev.startTime.getMonth() === day.getMonth() &&
-                ev.startTime.getDate() === day.getDate()
-            );
-            const isToday = day.toDateString() === new Date().toDateString();
+      {weeks.map((week, wi) => {
+        const weekStart = week[0]; // перший день тижня
+        return (
+          <React.Fragment key={wi}>
+            <WeekNumberCell
+              weekNumber={wi + 1}
+              onClick={() => onWeekClick?.(weekStart)}
+            />
+            {week.map((day) => {
+              const dayEvents = events.filter(
+                (ev) =>
+                  ev.startTime.getFullYear() === day.getFullYear() &&
+                  ev.startTime.getMonth() === day.getMonth() &&
+                  ev.startTime.getDate() === day.getDate()
+              );
+              const isToday = day.toDateString() === new Date().toDateString();
+              const isCurrentMonth = day.getMonth() === currentDate.getMonth();
 
-            return (
-              <CalendarDayCell
-                key={day.toISOString()}
-                day={day}
-                events={dayEvents}
-                isToday={isToday}
-                onClick={() => onDayClick(day)}
-              />
-            );
-          })}
-        </React.Fragment>
-      ))}
+              return (
+                <CalendarDayCell
+                  key={day.toISOString()}
+                  day={day}
+                  events={dayEvents}
+                  isToday={isToday}
+                  isCurrentMonth={isCurrentMonth}
+                  onClick={() => onDayClick(day)}
+                />
+              );
+            })}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };
