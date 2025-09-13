@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate()
   const [openMenu, setOpenMenu] = useState<number | null>(null)
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-
 
   const navItems = [
     { label: 'Продукт', options: ['Огляд', 'Функції', 'Ціни'] },
@@ -62,7 +63,12 @@ const Header = () => {
 
         {/* Кнопки справа */}
         <div className="flex items-center gap-3 text-sm">
-          <button className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl">Увійти</button>
+          <button
+            className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl"
+            onClick={() => navigate("/login")} // 🔹 редірект на логін
+          >
+            Увійти
+          </button>
           <button className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition">
             Завантажити
           </button>
@@ -71,6 +77,5 @@ const Header = () => {
     </header>
   )
 }
-
 
 export default Header

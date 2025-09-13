@@ -1,69 +1,65 @@
-
+import { useParams, Navigate } from "react-router-dom"
 import ProfileHeader from '../components/profile/ProfileHeader'
 import ProfileAbout from '../components/profile/ProfileAbout'
 import ProfileActivity from '../components/profile/ProfileActivity'
 import ProfileSettings from '../components/profile/ProfileSettings'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { userDb } from "../models/mockDB/users"
 
 export default function ProfilePage() {
-  // Це мок-дані — заміниш після підключення до бекенду
-  const user = {
-    avatarUrl: 'https://avatars.githubusercontent.com/u/9919?s=280&v=4',
-    username: 'andriyko',
-    fullName: 'Андрій Шевченко',
-    email: 'andriy@example.com',
-    bio: 'Повно стековий розробник з інтересом до системного програмування, WebRTC і UI/UX.',
-    links: [
-      { label: 'GitHub', url: 'https://github.com/andriyko' },
-      { label: 'LinkedIn', url: 'https://linkedin.com/in/andriyko' },
-    ],
-    skills: ['C++', 'TypeScript', 'PostgreSQL', 'React', 'Crow', 'TailwindCSS'],
-    languages: ['Українська', 'Англійська', 'Польська'],
-    timezone: 'Europe/Kyiv',
-    createdAt: '2024-12-01T10:15:00Z',
-    lastActiveAt: '2025-06-14T20:45:00Z',
-    roles: [{ name: 'Адмін', teamName: 'Команда 1' }, { name: 'Розробник', teamName: 'Команда 2' }],
-  }
+  const { id } = useParams<{ id: string }>()
+  const user = id ? userDb.getById(id) : undefined
 
+  // якщо користувача не знайдено — редірект на логін
+  if (!user) return <Navigate to="/login" replace />
 
   return (
     <>
       <Header />
-    <main className="max-w-7xl mx-auto px-4 py-8 pt-20 border-t border-gray-200 rounded-lg bg-[#f9fafb] shadow-md">
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Профіль користувача</h1>
-      <div className="max-w-4xl mx-auto space-y-8">
-      <section>
-        <ProfileHeader
-          avatarUrl={user.avatarUrl}
-          username={user.username}
-          fullName={user.fullName}
-          email={user.email}
-          roles={user.roles}
-        />
-      </section>
+      <main className="max-w-7xl mx-auto px-4 py-8 pt-20 border-t border-gray-200 rounded-lg bg-[#f9fafb] shadow-md">
+        <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Профіль користувача</h1>
+        <div className="max-w-4xl mx-auto space-y-8">
 
-      <section>
-        <ProfileAbout
-          bio={user.bio}
-          links={user.links}
-          skills={user.skills}
-          languages={user.languages}
-          timezone={user.timezone}
-        />
-      </section>
-
-      <section>
-        <ProfileActivity
-          createdAt={user.createdAt}
-          lastActiveAt={user.lastActiveAt}
-        />
-      </section>
-
-      <section>
-        <ProfileSettings />
+          <section>
+            <ProfileHeader
+              avatarUrl={user.avatarUrl || ""}
+              username={user.username}
+              fullName={user.fullname || ""}
+              email={user.email}
+              roles={user.teams.map(teamId => ({ name: "Учасник", teamName: teamId }))} // тимчасово
+            />
           </section>
-          </div>
+
+          <section>
+            <ProfileAbout
+              bio={user.bio || ""}
+              links={user.links.map(url => ({ label: url, url }))}
+              skills={user.skills}
+              languages={user.languages}
+              timezone={user.timezone || ""}
+            />
+          </section>
+
+          <section>
+            <ProfileActivity
+              createdAt={user.createdAt.toISOString()}
+              lastActiveAt={user.lastActive.toISOString()}
+            />
+          </section>
+
+          <section>
+            <ProfileSettings
+  interfaceLang={user.interfaceLang}
+  profileVisibility={user.profileVisibility}
+  onChange={(field, value) => {
+    // тут можна викликати userDb.update(user.id, { [field]: value })
+    console.log(field, value)
+  }}
+/>
+          </section>
+
+        </div>
       </main>
       <Footer />
     </>

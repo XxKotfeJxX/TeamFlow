@@ -1,12 +1,15 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import { Button } from "../components/ui/button"
 import { Label } from "../components/ui/Label"
 import { Card, CardContent } from "../components/ui/Card"
 import { Input } from "../components/ui/Input"
+import { userDb } from "../models/mockDB/users"
 
 export default function LoginPage() {
+  const navigate = useNavigate()
   const [login, setLogin] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<{ login?: string; password?: string }>({})
@@ -14,17 +17,24 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // простенька перевірка (ти підключиш бекенд пізніше)
-    if (login !== "admin" || password !== "1234") {
-      setError({
-        login: login !== "admin" ? "Неправильний логін" : undefined,
-        password: password !== "1234" ? "Неправильний пароль" : undefined,
-      })
+    // 🔹 шукаємо юзера по логіну або email
+    const user = userDb.getAll().find(
+      (u) => u.username === login || u.email === login
+    )
+
+    if (!user) {
+      setError({ login: "Користувача не знайдено" })
       return
     }
 
+    if (user.password !== password) {
+      setError({ password: "Неправильний пароль" })
+      return
+    }
+
+    // 🔹 все ок — очищаємо помилки і редіректимо на профіль
     setError({})
-    console.log("Успішний вхід!") // тут буде редірект/запит на бекенд
+    navigate(`/profile/${user.id}`)
   }
 
   return (
@@ -62,11 +72,12 @@ export default function LoginPage() {
                 {error.password ? (
                   <p className="mt-1 text-sm text-red-600">{error.password}</p>
                 ) : (
-                    <button
-                      type="button"
-                      className="mt-1 text-sm text-blue-600 hover:underline border-0 bg-transparent focus:outline-none">
-                      Забули пароль?
-                    </button>
+                  <button
+                    type="button"
+                    className="mt-1 text-sm text-blue-600 hover:underline border-0 bg-transparent focus:outline-none"
+                  >
+                    Забули пароль?
+                  </button>
                 )}
               </div>
 

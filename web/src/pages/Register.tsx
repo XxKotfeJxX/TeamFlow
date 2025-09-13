@@ -7,6 +7,7 @@ import { Label } from "../components/ui/Label"
 import { Card, CardContent } from "../components/ui/Card"
 import { Input } from "../components/ui/Input"
 import { Checkbox } from "../components/ui/Checkbox"
+import { userDb } from "../models/mockDB/users"
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -42,8 +43,29 @@ export default function RegisterPage() {
     setErrors(newErrors)
 
     if (Object.keys(newErrors).length === 0) {
-      // якщо все ок, переходимо на сторінку профілю
-      navigate("/profile")
+      // 🔹 перевірка чи email вже існує
+      if (userDb.getByEmail(email)) {
+        setErrors({ email: "Користувач з таким email вже існує" })
+        return
+      }
+
+      // 🔹 створюємо нового користувача
+      const newUser = userDb.create({
+        username: login,
+        email,
+        password,
+        tags: [],
+        skills: [],
+        links: [],
+        languages: [],
+        interfaceLang: "uk-UA",
+        profileVisibility: "public",
+        teams: [],
+        plan: "Base",
+      })
+
+      // 🔹 переходимо на сторінку профілю, можна передати ID
+      navigate(`/profile/${newUser.id}`)
     }
   }
 

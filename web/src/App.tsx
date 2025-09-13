@@ -27,7 +27,7 @@ const AppWrapper: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/profile/:id" element={<ProfilePage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/price" element={<Price />} />
