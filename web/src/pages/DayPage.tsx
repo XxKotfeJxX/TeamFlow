@@ -4,6 +4,7 @@ import { calendars, events as allEvents, tasks as allTasks } from "../models/moc
 import type { Event, Task } from "../models/mockDB/calendar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import EventModal from "../components/calendar/EventModal";
 
 const COLUMN_RANGES = [
   { start: 0, end: 7 },
@@ -14,7 +15,9 @@ const COLUMN_RANGES = [
 const HOUR_HEIGHT = 128; // базова висота години
 const TASK_HEIGHT = 64; // фіксована висота для тасків
 
+
 const DayPage: React.FC = () => {
+   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const { calendarId, date } = useParams<{ calendarId: string; date: string }>();
   if (!calendarId) return <div>Календар не знайдено</div>;
 
@@ -30,11 +33,10 @@ const DayPage: React.FC = () => {
     .filter((t) => t.calendarId === calendarId)
     .filter((t) => new Date(t.dueDate).toDateString() === currentDate.toDateString());
 
-  const handleEventClick = (ev: Event) => alert(`Подія: ${ev.title}`);
+  const handleEventClick = (ev: Event) => setSelectedEvent(ev);
   const handleTaskClick = (task: Task) => alert(`Таск: ${task.title}`);
   const handleEmptySlotClick = (time: Date) =>
     alert(`Створити новий запис на ${time.toLocaleTimeString()}`);
-
   return (
     <div>
       <Header />
@@ -143,6 +145,14 @@ const DayPage: React.FC = () => {
       ))}
       </div>
       <Footer />
+      {selectedEvent && (
+  <EventModal
+    event={selectedEvent}
+    onClose={() => setSelectedEvent(null)}
+    isPersonalCalendar={calendar.ownerType === "user"}
+  />
+)}
+
       </div>
   );
 };
