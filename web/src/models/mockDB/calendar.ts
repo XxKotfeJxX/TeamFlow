@@ -23,13 +23,16 @@ export interface Event {
   recurring: { isRecurring: boolean; periodDays: number };
   status: "active" | "completed";
   tags: string[];
+  taskIds?: string[]; // <-- масив ID тасків, що відносяться до цієї події
 }
+
 
 export interface Task {
   id: string;
   title: string;
   description?: string;
-  dueDate: Date;
+    dueDate: Date;
+    color: string;
   priority: { team: number; personal: number };
   recurring: { isRecurring: boolean; periodDays: number };
   assignedUsers: string[];

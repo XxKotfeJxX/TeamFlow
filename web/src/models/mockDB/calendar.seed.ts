@@ -41,16 +41,17 @@ export const seedEvents: Event[] = [
 
 export const seedTasks: Task[] = [
   {
-    id: "t1",
+    id: "ta1",
     title: "Зробити прототип дизайну",
     description: "Потрібно до понеділка",
-    dueDate: new Date("2025-09-15T18:00:00"),
+        dueDate: new Date("2025-09-14T18:00:00"),
+    color: "#33C3FF",
     priority: { team: 2, personal: 1 },
     recurring: { isRecurring: false, periodDays: 0 },
     assignedUsers: ["u1"],
     type: "personal",
     status: "inProgress",
-    calendarId: "c1",
+    calendarId: "c3",
     tags: ["Design", "Frontend"],
   },
 ];

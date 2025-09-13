@@ -58,7 +58,7 @@ export default function RegisterPage() {
         skills: [],
         links: [],
         languages: [],
-        interfaceLang: "uk-UA",
+        interfaceLang: "uk",
         profileVisibility: "public",
         teams: [],
         plan: "Base",

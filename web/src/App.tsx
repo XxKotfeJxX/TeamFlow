@@ -44,7 +44,8 @@ const AppWrapper: React.FC = () => {
         }
       />
       <Route path="/week/:date" element={<WeekPage events={dummyEvents} />} />
-      <Route path="/day/:date" element={<DayPage events={dummyEvents} />} />
+      <Route path="/calendar/:calendarId/day/:date" element={<DayPage />} />
+
 
       {/* fallback */}
       <Route
