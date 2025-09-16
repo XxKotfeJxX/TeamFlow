@@ -41,6 +41,7 @@ export const seedEvents: Event[] = [
     recurring: { isRecurring: true, periodDays: 7 },
     status: "active",
     tags: ["Meeting"],
+    taskIds: ["ta1", "ta2", "ta3", "ta4", "ta5", "ta6", "ta7"] // <-- пов'язуємо з тасками
   },
   {
     id: "e2",
