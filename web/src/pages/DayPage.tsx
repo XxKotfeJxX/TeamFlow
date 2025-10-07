@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EventModal from "../components/calendar/EventModal";
 import TaskModal from "../components/calendar/TaskModal";
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
+import { FaPlusCircle } from "react-icons/fa";
 
 const COLUMN_RANGES = [
   { start: 0, end: 7 },
@@ -73,10 +73,7 @@ const DayPage: React.FC = () => {
 
       if (existingCluster) {
         existingCluster.items.push(item);
-        existingCluster.top = Math.min(
-          existingCluster.top,
-          top
-        ); // тримаємо top найвищого елемента
+        existingCluster.top = Math.min(existingCluster.top, top);
       } else {
         clusters.push({ top, items: [item] });
       }
@@ -85,7 +82,7 @@ const DayPage: React.FC = () => {
     return clusters.filter((c) => c.items.length > 1);
   };
 
-  // Вибір елемента з найвищим пріоритетом (менше число — вищий пріоритет)
+  // Вибір елемента з найвищим пріоритетом
   const getVisibleItems = (items: (Event | Task)[]) => {
     if (items.length <= 1) return items;
     const sorted = [...items].sort(
@@ -168,6 +165,9 @@ const DayPage: React.FC = () => {
                     ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60) / 60) * HOUR_HEIGHT
                     : TASK_HEIGHT;
 
+                  // чи є в цього айтема конфлікти?
+                  const hasConflicts = overlaps.some((o) => o.items.includes(item));
+
                   return (
                     <div
                       key={item.id}
@@ -177,7 +177,7 @@ const DayPage: React.FC = () => {
                         height,
                         backgroundColor: item.color ? item.color + "80" : "rgba(203, 213, 225, 0.5)",
                         borderColor: item.color || "rgb(203, 213, 225)",
-                        color: isEvent ? "white" : "black",
+                        color: "white",
                       }}
                       onClick={() =>
                         isEvent ? handleEventClick(item as Event) : handleTaskClick(item as Task)
@@ -187,23 +187,28 @@ const DayPage: React.FC = () => {
                         <strong className="ml-4">{item.title}</strong>
                         {item.description && <div className="ml-4 mt-2">{item.description}</div>}
                       </div>
+
+                      {/* Якщо цей айтем має конфлікти → показуємо плюсик */}
+                      {hasConflicts && (
+  <FaPlusCircle
+    size={20}
+    className="absolute top-2 right-2 text-white cursor-pointer"
+    onClick={(e) => {
+      e.stopPropagation();
+      const overlappingCluster = overlaps.find((o) => o.items.includes(item));
+      if (overlappingCluster) {
+        console.log("Overlapping items:", overlappingCluster.items);
+      } else {
+        console.log("No overlaps found for this item:", item);
+      }
+    }}
+    title="Є кілька елементів у цьому місці"
+  />
+)}
+
                     </div>
                   );
                 })}
-
-                {/* Іконки накладань */}
-                {overlaps.map((o, idx) => (
-                  <PlusCircleIcon
-                    key={idx}
-                    className="absolute w-6 h-6 text-blue-500 cursor-pointer"
-                    style={{
-                      top: o.top - 12,
-                      right: 4,
-                    }}
-                    onClick={() => console.log("Overlapping items:", o.items)}
-                    title="Є кілька елементів у цьому місці"
-                  />
-                ))}
               </div>
             </div>
           );
