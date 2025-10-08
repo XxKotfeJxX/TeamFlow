@@ -118,12 +118,14 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                           )}
                           
 
-              {/* Назва та опис */}
+                          {/* Назва та опис */}
+                          <Label>Дата та час:</Label>
               <Input
   placeholder="Назва"
   value={title}
   onChange={(e) => setTitle(e.target.value)}
-/>
+                          />
+                          <Label>Дата та час:</Label>
               <Textarea
                               placeholder="Опис"
                               height={150}
@@ -135,11 +137,16 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
               {/* Дата та час для події */}
               {type === "task" && (
   <>
-    <Label>Дата та час:</Label>
+    <Label>Час:</Label>
     <Input
-      type="datetime-local"
-      value={endDate.toISOString().slice(0, 16)}
-      onChange={(e) => setEndDate(new Date(e.target.value))}
+      type="time"
+      value={endDate.toTimeString().slice(0, 5)} // "HH:MM"
+      onChange={(e) => {
+        const [hours, minutes] = e.target.value.split(":").map(Number);
+        const newEndDate = new Date(endDate);
+        newEndDate.setHours(hours, minutes);
+        setEndDate(newEndDate);
+      }}
       className="border rounded p-2 w-full"
     />
   </>
@@ -165,7 +172,8 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 )}
 
 
-              {/* Колір */}
+                          {/* Колір */}
+                          <Label>Колір:</Label>
               <Input
   type="color"
   value={color}
