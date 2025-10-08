@@ -9,6 +9,7 @@ import EventModal from "../components/calendar/EventModal";
 import TaskModal from "../components/calendar/TaskModal";
 import { FaPlusCircle } from "react-icons/fa";
 import OverlapMenu from "../components/calendar/OverlapMenu";
+import CreateItemModal from "../components/calendar/CreateItemModal";
 
 const COLUMN_RANGES = [
   { start: 0, end: 7 },
@@ -34,6 +35,11 @@ const DayPage: React.FC = () => {
     groupId?: string;
   } | null>(null);
 
+  const [createModalInfo, setCreateModalInfo] = React.useState<{
+  type: "task" | "event" | null;
+  time: Date | null;
+  } | null>(null);
+  
   React.useEffect(() => {
     if (!overlapMenu) return;
 
@@ -66,8 +72,16 @@ const DayPage: React.FC = () => {
 
   const handleEventClick = (ev: Event) => setSelectedEvent(ev);
   const handleTaskClick = (task: Task) => setSelectedTask(task);
-  const handleEmptySlotClick = (time: Date) =>
-    alert(`Створити новий запис на ${time.toLocaleTimeString()}`);
+  const handleEmptySlotClick = (time: Date) => {
+  if (!calendar) return;
+  if (calendar.ownerType === "user") {
+    // для особистого календаря створюємо одразу таск
+    setCreateModalInfo({ type: "task", time });
+  } else {
+    // для командного календаря можна вибрати — спочатку показуємо вибір типу
+    setCreateModalInfo({ type: null, time });
+  }
+};
 
   // допоміжна: обчислення top для айтема (відносно колонки)
   const computeTop = (item: Event | Task, rangeStart: number) => {
@@ -322,6 +336,35 @@ const DayPage: React.FC = () => {
           onClose={() => setSelectedTask(null)}
         />
       )}
+      {/* Модалки створення таску/події */}
+{createModalInfo && (
+  <CreateItemModal
+    calendarId={calendar.id}
+    calendarType={calendar.ownerType} // "user" або "team"
+    date={createModalInfo.time!}
+    onClose={() => setCreateModalInfo(null)}
+    onCreate={(newItem: Event | Task) => {
+      if ("startDate" in newItem) {
+        allEvents.push(newItem);
+      } else {
+        allTasks.push(newItem);
+      }
+      setCreateModalInfo(null);
+    }}
+  />
+)}
+
+
+{/* Модалки перегляду */}
+{selectedEvent && (
+  <EventModal
+    event={selectedEvent}
+    onClose={() => setSelectedEvent(null)}
+    isPersonalCalendar={calendar.ownerType === "user"}
+  />
+)}
+{selectedTask && <TaskModal task={selectedTask} onClose={() => setSelectedTask(null)} />}
+
     </div>
   );
 };
