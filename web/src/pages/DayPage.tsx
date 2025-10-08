@@ -1,3 +1,4 @@
+// src/pages/DayPage.tsx  (або де в тебе файл)
 import React from "react";
 import { useParams } from "react-router-dom";
 import { calendars, events as allEvents, tasks as allTasks } from "../models/mockDB/calendar";
@@ -7,6 +8,7 @@ import Footer from "../components/Footer";
 import EventModal from "../components/calendar/EventModal";
 import TaskModal from "../components/calendar/TaskModal";
 import { FaPlusCircle } from "react-icons/fa";
+import OverlapMenu from "../components/calendar/OverlapMenu";
 
 const COLUMN_RANGES = [
   { start: 0, end: 7 },
@@ -21,6 +23,32 @@ const DayPage: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [selectedTask, setSelectedTask] = React.useState<Task | null>(null);
   const { calendarId, date } = useParams<{ calendarId: string; date: string }>();
+
+  // override: clusterId -> itemId (тимчасово, живе тільки у state)
+  const [activeEventOverrides, setActiveEventOverrides] = React.useState<Record<string, string>>({});
+
+  const [overlapMenu, setOverlapMenu] = React.useState<{
+    items: (Event | Task)[];
+    position: { x: number; y: number };
+    selectedItem?: Event | Task;
+    groupId?: string;
+  } | null>(null);
+
+  React.useEffect(() => {
+    if (!overlapMenu) return;
+
+    const startScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const scrolled = Math.abs(window.scrollY - startScrollY);
+      if (scrolled > 80) {
+        setOverlapMenu(null);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, true);
+    return () => window.removeEventListener("scroll", handleScroll, true);
+  }, [overlapMenu]);
 
   if (!calendarId) return <div>Календар не знайдено</div>;
 
@@ -41,29 +69,34 @@ const DayPage: React.FC = () => {
   const handleEmptySlotClick = (time: Date) =>
     alert(`Створити новий запис на ${time.toLocaleTimeString()}`);
 
-  // Пошук накладань у межах колонки (по пікселях)
+  // допоміжна: обчислення top для айтема (відносно колонки)
+  const computeTop = (item: Event | Task, rangeStart: number) => {
+    const isEvent = "startDate" in item;
+    if (isEvent) {
+      const minutes = item.startDate.getHours() * 60 + item.startDate.getMinutes();
+      return ((minutes / 60 - rangeStart) * HOUR_HEIGHT);
+    } else {
+      const d = new Date(item.dueDate);
+      const minutes = d.getHours() * 60 + d.getMinutes();
+      return ((minutes / 60 - rangeStart) * HOUR_HEIGHT) - TASK_HEIGHT / 2;
+    }
+  };
+
+  // Пошук накладань у межах колонки — повертаємо кластери з детерміністичним id
   const findOverlaps = (items: (Event | Task)[], rangeStart: number) => {
     const clusters: { top: number; items: (Event | Task)[] }[] = [];
 
     items.forEach((item) => {
-      const isEvent = "startDate" in item;
-      const top = isEvent
-        ? ((item.startDate.getHours() * 60 + item.startDate.getMinutes()) / 60 - rangeStart) * HOUR_HEIGHT
-        : ((new Date(item.dueDate).getHours() * 60 + new Date(item.dueDate).getMinutes()) / 60 - rangeStart) * HOUR_HEIGHT - TASK_HEIGHT / 2;
+      const top = computeTop(item, rangeStart);
 
-      const height = isEvent
+      const height = "startDate" in item
         ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60) / 60) * HOUR_HEIGHT
         : TASK_HEIGHT;
 
-      // шукаємо кластер, де вже є перетини
       const existingCluster = clusters.find((c) =>
         c.items.some((other) => {
-          const isEventOther = "startDate" in other;
-          const topOther = isEventOther
-            ? ((other.startDate.getHours() * 60 + other.startDate.getMinutes()) / 60 - rangeStart) * HOUR_HEIGHT
-            : ((new Date(other.dueDate).getHours() * 60 + new Date(other.dueDate).getMinutes()) / 60 - rangeStart) * HOUR_HEIGHT - TASK_HEIGHT / 2;
-
-          const heightOther = isEventOther
+          const topOther = computeTop(other, rangeStart);
+          const heightOther = "startDate" in other
             ? ((other.endDate.getTime() - other.startDate.getTime()) / (1000 * 60) / 60) * HOUR_HEIGHT
             : TASK_HEIGHT;
 
@@ -79,16 +112,48 @@ const DayPage: React.FC = () => {
       }
     });
 
-    return clusters.filter((c) => c.items.length > 1);
+    // Додаємо детерміністичний id, який залежить від ідентифікаторів елементів — щоб id був стабільним
+    const clustersWithId = clusters
+      .filter((c) => c.items.length > 1)
+      .map((c) => {
+        const sortedIds = c.items.map((i) => i.id).sort().join("_");
+        return { id: `cluster-${rangeStart}-${sortedIds}`, top: c.top, items: c.items };
+      });
+
+    return clustersWithId;
   };
 
-  // Вибір елемента з найвищим пріоритетом
-  const getVisibleItems = (items: (Event | Task)[]) => {
-    if (items.length <= 1) return items;
-    const sorted = [...items].sort(
-      (a, b) => (a.priority.personal ?? 0) - (b.priority.personal ?? 0)
-    );
-    return [sorted[0]];
+  // Повертає масив елементів, які мають бути відображені у колонці (включаючи overrides)
+  const computeVisibleItemsForColumn = (
+    allColumnItems: (Event | Task)[],
+    overlapsForColumn: { id: string; top: number; items: (Event | Task)[] }[],
+    rangeStart: number
+  ) => {
+    const result: (Event | Task)[] = [];
+
+    // items, які не в жодному кластері — завжди показуємо
+    const itemsInClusters = new Set(overlapsForColumn.flatMap((o) => o.items.map((i) => i.id)));
+    const nonOverlapItems = allColumnItems.filter((i) => !itemsInClusters.has(i.id));
+    result.push(...nonOverlapItems);
+
+    // для кожного кластера — або override, або найвищий за priority.personal
+    overlapsForColumn.forEach((cluster) => {
+      const overrideId = activeEventOverrides[cluster.id];
+      let chosen = overrideId ? cluster.items.find((i) => i.id === overrideId) : undefined;
+
+      if (!chosen) {
+        const sorted = [...cluster.items].sort(
+          (a, b) => (a.priority.personal ?? 0) - (b.priority.personal ?? 0)
+        );
+        chosen = sorted[0];
+      }
+
+      if (chosen) result.push(chosen);
+    });
+
+    // Відсортуємо по top, щоб порядок рендеру був логічним
+    result.sort((a, b) => computeTop(a, rangeStart) - computeTop(b, rangeStart));
+    return result;
   };
 
   return (
@@ -109,8 +174,11 @@ const DayPage: React.FC = () => {
           );
 
           const allColumnItems = [...columnEvents, ...columnTasks];
-          const visibleItems = getVisibleItems(allColumnItems);
+
           const overlaps = findOverlaps(allColumnItems, range.start);
+
+          // Отримуємо список айтемів, які треба відобразити у цій колонці
+          const visibleItems = computeVisibleItemsForColumn(allColumnItems, overlaps, range.start);
 
           return (
             <div key={colIndex} className="flex-1 flex border-l border-gray-200 relative">
@@ -154,19 +222,16 @@ const DayPage: React.FC = () => {
                   );
                 })}
 
-                {/* Відображення найпріоритетніших елементів */}
+                {/* Відображення visibleItems */}
                 {visibleItems.map((item) => {
                   const isEvent = "startDate" in item;
-                  const top = isEvent
-                    ? ((item.startDate.getHours() * 60 + item.startDate.getMinutes()) / 60 - range.start) * HOUR_HEIGHT
-                    : ((new Date(item.dueDate).getHours() * 60 + new Date(item.dueDate).getMinutes()) / 60 - range.start) * HOUR_HEIGHT - TASK_HEIGHT / 2;
-
+                  const top = computeTop(item, range.start);
                   const height = isEvent
                     ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60) / 60) * HOUR_HEIGHT
                     : TASK_HEIGHT;
 
                   // чи є в цього айтема конфлікти?
-                  const hasConflicts = overlaps.some((o) => o.items.includes(item));
+                  const hasConflicts = overlaps.some((o) => o.items.some((i) => i.id === item.id));
 
                   return (
                     <div
@@ -190,22 +255,28 @@ const DayPage: React.FC = () => {
 
                       {/* Якщо цей айтем має конфлікти → показуємо плюсик */}
                       {hasConflicts && (
-  <FaPlusCircle
-    size={20}
-    className="absolute top-2 right-2 text-white cursor-pointer"
-    onClick={(e) => {
-      e.stopPropagation();
-      const overlappingCluster = overlaps.find((o) => o.items.includes(item));
-      if (overlappingCluster) {
-        console.log("Overlapping items:", overlappingCluster.items);
-      } else {
-        console.log("No overlaps found for this item:", item);
-      }
-    }}
-    title="Є кілька елементів у цьому місці"
-  />
-)}
+                        <FaPlusCircle
+                          size={20}
+                          className="absolute top-1 right-1 text-white bg-transparent cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
 
+                            const overlappingCluster = overlaps.find((o) => o.items.some((i) => i.id === item.id));
+                            if (!overlappingCluster) return;
+
+                            const target = e.currentTarget as unknown as HTMLElement;
+                            const rect = target.getBoundingClientRect();
+
+                            setOverlapMenu({
+                              items: overlappingCluster.items,
+                              position: { x: rect.right + 5, y: rect.top },
+                              selectedItem: item,
+                              groupId: overlappingCluster.id,
+                            });
+                          }}
+                          title="Є кілька елементів у цьому місці"
+                        />
+                      )}
                     </div>
                   );
                 })}
@@ -213,7 +284,28 @@ const DayPage: React.FC = () => {
             </div>
           );
         })}
+
+        {/* Меню рендеримо один раз тут (поза map) */}
+        {overlapMenu && (
+          <OverlapMenu
+            items={overlapMenu.items}
+            position={overlapMenu.position}
+            selectedItem={overlapMenu.selectedItem}
+            onSelect={(item) => {
+              // встановлюємо override для цього cluster, щоб цей айтем став видимим
+              if (overlapMenu.groupId) {
+                setActiveEventOverrides((prev) => ({
+                  ...prev,
+                  [overlapMenu.groupId!]: item.id,
+                }));
+              }
+              setOverlapMenu(null);
+            }}
+            onClose={() => setOverlapMenu(null)}
+          />
+        )}
       </div>
+
       <Footer />
 
       {/* Модалки */}
