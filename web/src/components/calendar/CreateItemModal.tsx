@@ -8,6 +8,8 @@ import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
 import { Button } from "../ui/button";
 import { Label } from "../ui/Label";
+import { CustomTimePicker, CustomDatePicker } from "../ui/DateTimePicker";
+
 
 interface CreateItemModalProps {
   calendarId: string;
@@ -28,7 +30,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   const [type, setType] = useState<"event" | "task">(calendarType === "user" ? "task" : "event");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(date);
+  const [startDate] = useState(date);
   const [endDate, setEndDate] = useState(date);
   const [color, setColor] = useState("#33C3FF");
   const [assignedUsers, setAssignedUsers] = useState<string[]>([]);
@@ -83,7 +85,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
         {/* Хрестик для закриття */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-black"
+          className="absolute top-3 right-3 text-gray-500 hover:text-black z-50"
         >
           <X size={24} strokeWidth={2.5} />
         </button>
@@ -138,36 +140,70 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
               {type === "task" && (
   <>
     <Label>Час:</Label>
-    <Input
-      type="time"
-      value={endDate.toTimeString().slice(0, 5)} // "HH:MM"
-      onChange={(e) => {
-        const [hours, minutes] = e.target.value.split(":").map(Number);
-        const newEndDate = new Date(endDate);
-        newEndDate.setHours(hours, minutes);
-        setEndDate(newEndDate);
-      }}
-      className="border rounded p-2 w-full"
-    />
+<CustomTimePicker
+  value={endDate.toTimeString().slice(0, 5)}
+  onChange={(time) => {
+    if (!time) return;
+    const [hours, minutes] = time.split(":").map(Number);
+    const newEnd = new Date(endDate);
+    newEnd.setHours(hours, minutes);
+    setEndDate(newEnd);
+  }}
+/>
+
+
   </>
 )}
 
 {type === "event" && (
   <>
     <Label>Початок:</Label>
-    <Input
-      type="datetime-local"
-      value={startDate.toISOString().slice(0, 16)}
-      onChange={(e) => setStartDate(new Date(e.target.value))}
-      className="border rounded p-2 w-full"
-    />
+    <CustomTimePicker
+  value={endDate.toTimeString().slice(0, 5)}
+  onChange={(time) => {
+    if (!time) return;
+    const [hours, minutes] = time.split(":").map(Number);
+    const newEnd = new Date(endDate);
+    newEnd.setHours(hours, minutes);
+    setEndDate(newEnd);
+  }}
+                                  />
+                                  <CustomDatePicker
+  value={endDate.toISOString().slice(0, 10).split("-").reverse().join(".")} // "дд.мм.рррр"
+  onChange={(date) => {
+    if (!date) return;
+
+    // Очікується формат "дд.мм.рррр"
+    const [day, month, year] = date.split(".").map(Number);
+    const newEnd = new Date(endDate);
+    newEnd.setFullYear(year, month - 1, day);
+    setEndDate(newEnd);
+  }}
+/>
+
     <Label>Кінець:</Label>
-    <Input
-      type="datetime-local"
-      value={endDate.toISOString().slice(0, 16)}
-      onChange={(e) => setEndDate(new Date(e.target.value))}
-      className="border rounded p-2 w-full"
-    />
+    <CustomTimePicker
+  value={endDate.toTimeString().slice(0, 5)}
+  onChange={(time) => {
+    if (!time) return;
+    const [hours, minutes] = time.split(":").map(Number);
+    const newEnd = new Date(endDate);
+    newEnd.setHours(hours, minutes);
+    setEndDate(newEnd);
+  }}
+                                  />
+                                  <CustomDatePicker
+  value={endDate.toISOString().slice(0, 10).split("-").reverse().join(".")} // "дд.мм.рррр"
+  onChange={(date) => {
+    if (!date) return;
+
+    // Очікується формат "дд.мм.рррр"
+    const [day, month, year] = date.split(".").map(Number);
+    const newEnd = new Date(endDate);
+    newEnd.setFullYear(year, month - 1, day);
+    setEndDate(newEnd);
+  }}
+/>
   </>
 )}
 
