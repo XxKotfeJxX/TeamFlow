@@ -83,6 +83,28 @@ const DayPage: React.FC = () => {
   }
 };
 
+  const computeDisplayTopAndHeight = (item: Event | Task, rangeStart: number) => {
+  const isEvent = "startDate" in item;
+
+  // реальна висота в пікселях
+  const actualHeight = isEvent
+    ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60) / 60) * HOUR_HEIGHT
+    : TASK_HEIGHT;
+
+  let displayHeight = actualHeight;
+
+  let top = computeTop(item, rangeStart);
+
+  if (isEvent && actualHeight < TASK_HEIGHT) {
+    displayHeight = TASK_HEIGHT;
+    // зсуваємо по центру
+    top = top - (TASK_HEIGHT - actualHeight) / 2;
+  }
+
+  return { top, height: displayHeight };
+};
+
+  
   // допоміжна: обчислення top для айтема (відносно колонки)
   const computeTop = (item: Event | Task, rangeStart: number) => {
     const isEvent = "startDate" in item;
@@ -239,10 +261,7 @@ const DayPage: React.FC = () => {
                 {/* Відображення visibleItems */}
                 {visibleItems.map((item) => {
                   const isEvent = "startDate" in item;
-                  const top = computeTop(item, range.start);
-                  const height = isEvent
-                    ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60) / 60) * HOUR_HEIGHT
-                    : TASK_HEIGHT;
+                  const { top, height } = computeDisplayTopAndHeight(item, range.start);
 
                   // чи є в цього айтема конфлікти?
                   const hasConflicts = overlaps.some((o) => o.items.some((i) => i.id === item.id));
@@ -252,8 +271,7 @@ const DayPage: React.FC = () => {
                       key={item.id}
                       className="absolute left-1 right-1 rounded-lg p-1 cursor-pointer border overflow-hidden"
                       style={{
-                        top,
-                        height,
+                        top: `${top}px`, height: `${height}px`,
                         backgroundColor: item.color ? item.color + "80" : "rgba(203, 213, 225, 0.5)",
                         borderColor: item.color || "rgb(203, 213, 225)",
                         color: "white",
