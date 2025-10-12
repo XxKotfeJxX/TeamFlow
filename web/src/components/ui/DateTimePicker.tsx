@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: string) => void }) {
   const [open, setOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [manual, setManual] = useState(value || (() => {
   const now = new Date();
   return `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
@@ -15,6 +16,16 @@ function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: 
 
   const modalRef = useRef<HTMLDivElement>(null);
 
+useEffect(() => {
+  if (!isTyping && value !== manual) {
+    setManual(value);
+    const [h, m] = value.split(":").map(Number);
+    setSelectedHour(h);
+    setSelectedMinute(m);
+  }
+}, [value, isTyping, manual]);
+
+  
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -28,7 +39,9 @@ function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: 
   const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const val = e.target.value.replace(/[^0-9:]/g, "");
   setManual(val);
+  setIsTyping(true);
 };
+
 
   const fixTime = (input: string) => {
   let [h, m] = input.split(":");
@@ -142,19 +155,26 @@ const isOverlappingCircle = (
 
 
 
-  const handleBlur = () => {
+const handleBlur = () => {
   const formatted = fixTime(manual);
   setManual(formatted);
+  setSelectedHour(Number(formatted.split(":")[0]));
+  setSelectedMinute(Number(formatted.split(":")[1]));
   onChange(formatted);
+  setIsTyping(false);
 };
 
 const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === "Enter") {
     const formatted = fixTime(manual);
     setManual(formatted);
+    setSelectedHour(Number(formatted.split(":")[0]));
+    setSelectedMinute(Number(formatted.split(":")[1]));
     onChange(formatted);
+    setIsTyping(false);
   }
 };
+
 
   return (
     <div className="relative flex items-center border rounded-lg bg-white min-w-[130px] px-2 py-1">
@@ -412,9 +432,17 @@ interface CustomDatePickerProps {
 
 function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
   const [manual, setManual] = useState(value || "");
+  const [externalValue, setExternalValue] = useState(value || "");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"day" | "month" | "year">("day");
   const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+  if (value !== externalValue) {
+    setExternalValue(value);
+    setManual(value); // оновлюємо manual лише тоді, коли value змінюється зовні
+  }
+}, [value, externalValue]);
 
   const today = new Date();
   const initialDate = manual
@@ -451,6 +479,91 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
     return days[month - 1];
   };
 
+const handleManualDate = () => {
+  const today = new Date();
+  const val = manual.replace(/[^\d]/g, ""); // лишаємо лише цифри
+
+  // --- День ---
+  let day = "01";
+  if (val.length >= 2) {
+    day = val.slice(0, 2);
+    if (Number(day) < 1) day = "01";
+    if (Number(day) > 31) day = "31";
+  }
+
+  // --- Місяць ---
+  let month = "01";
+  if (val.length >= 4) {
+    month = val.slice(2, 4);
+    if (Number(month) < 1) month = "01";
+    if (Number(month) > 12) month = "12";
+  }
+
+  // --- Рік ---
+  const yearInput = val.slice(4); // все після 4 цифр
+let year = String(today.getFullYear());
+
+if (yearInput.length > 0) {
+  const getClosestYear = (input: string, currentYear: number): number => {
+    // якщо ввід більше 4 символів — відразу повертаємо поточний рік
+    if (input.length > 4) return currentYear;
+
+    // якщо 4 або більше цифр (але input.length <= 4) — беремо перші 4
+    if (input.length === 4) {
+      const num = Number(input);
+      return num === 0 || num > 3999 ? currentYear : num;
+    }
+
+    const block = input;
+    const free = 4 - block.length;
+    const patterns: string[] = [];
+
+    // створюємо всі варіанти розташування блоку
+    for (let i = 0; i <= free; i++) {
+      patterns.push("x".repeat(i) + block + "x".repeat(free - i));
+    }
+
+    const candidates: number[] = [];
+
+    // підставляємо цифри 0–9 у кожен "x"
+    for (const pattern of patterns) {
+      const count = (pattern.match(/x/g) || []).length;
+      const max = 10 ** count;
+
+      for (let n = 0; n < max; n++) {
+        const digits = n.toString().padStart(count, "0").split("");
+        let str = pattern;
+        for (const d of digits) str = str.replace("x", d);
+        const yearNum = Number(str);
+        if (yearNum > 0 && yearNum <= 3999) candidates.push(yearNum); // 0000 не беремо
+      }
+    }
+
+    if (candidates.length === 0) return currentYear;
+
+    // вибираємо рік найближчий до поточного
+    return candidates.reduce((a, b) =>
+      Math.abs(a - currentYear) < Math.abs(b - currentYear) ? a : b
+    );
+  };
+
+  year = String(getClosestYear(yearInput, today.getFullYear()));
+}
+
+
+  const newVal = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${year}`;
+  setManual(newVal);
+  onChange(newVal);
+
+  // --- Форматування з крапками ---
+  const formatted = `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year}`;
+  setManual(formatted);
+  setSelectedDay(Number(day));
+  setSelectedMonth(Number(month));
+  setSelectedYear(Number(year));
+  onChange?.(formatted);
+};
+  
   const updateManual = (
     d = selectedDay,
     m = selectedMonth,
@@ -557,14 +670,48 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
   };
 
   return (
-    <div className="relative flex items-center border rounded-md px-2 py-1 bg-white">
+    <div className="relative flex items-center border rounded-md px-2 py-1 bg-white mb-2">
       <input
-        type="text"
-        value={manual}
-        readOnly
-        className="flex-1 bg-transparent text-black focus:outline-none"
-        placeholder="DD.MM.YYYY"
-      />
+  type="text"
+  value={manual}
+  onChange={(e) => {
+  let v = e.target.value.replace(/[^\d.]/g, ""); // залишаємо тільки цифри та крапки
+
+  // знайти всі крапки
+  const dots = [...v.matchAll(/\./g)].map(m => m.index!);
+
+  // обмежуємо максимум дві крапки (щоб дата була у форматі DD.MM.YYYY)
+  if (dots.length > 2) {
+    const thirdDot = dots[2];
+    v = v.slice(0, thirdDot); // усе після третьої зрізаємо
+  }
+
+  // вставляємо першу крапку після двох цифр, якщо її ще нема
+  if (!v.includes(".") && v.length > 2) {
+    v = v.slice(0, 2) + "." + v.slice(2);
+  }
+
+  // вставляємо другу крапку через ще два символи після першої
+  const firstDotIndex = v.indexOf(".");
+  if (firstDotIndex !== -1) {
+    const afterFirst = v.slice(firstDotIndex + 1);
+    if (afterFirst.length > 2 && !afterFirst.includes(".")) {
+      const insertPos = firstDotIndex + 3;
+      v = v.slice(0, insertPos) + "." + v.slice(insertPos);
+    }
+  }
+
+  setManual(v);
+}}
+onBlur={handleManualDate}
+onKeyDown={(e) => {
+  if (e.key === "Enter") handleManualDate();
+}}
+  className="flex-1 bg-transparent text-black focus:outline-none"
+  placeholder="DD.MM.YYYY"
+/>
+
+
 
       <Calendar
         size={18}
