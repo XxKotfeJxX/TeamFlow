@@ -1,8 +1,9 @@
 import { Clock, Calendar } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: string) => void }) {
   const [open, setOpen] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const [manual, setManual] = useState(value || (() => {
   const now = new Date();
   return `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
@@ -12,6 +13,18 @@ function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: 
   const [selectedMinute, setSelectedMinute] = useState<number | null>(null);
   const [mode, setMode] = useState<"hour" | "minute">("hour");
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+    
   const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const val = e.target.value.replace(/[^0-9:]/g, "");
   setManual(val);
@@ -32,7 +45,51 @@ function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: 
   if (minuteNum > 59) minuteNum = 59;
 
   return `${hourNum.toString().padStart(2, "0")}:${minuteNum.toString().padStart(2, "0")}`;
+  };
+  
+  const updateTime = (h: number | null, m: number | null) => {
+    const hour = h !== null ? h : selectedHour ?? 0;
+    const minute = m !== null ? m : selectedMinute ?? 0;
+    const formatted = `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+    setManual(formatted);
+    onChange(formatted);
+  };
+
+  
+const handlePointerDown = (e: React.MouseEvent) => {
+  setDragging(true);
+  handlePointerMove(e); // оновимо одразу при натисканні
 };
+
+const handlePointerMove = (e: React.MouseEvent) => {
+  if (!dragging) return;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  const dx = e.clientX - rect.left - centerX;
+  const dy = e.clientY - rect.top - centerY;
+  let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+  angle = (angle + 90 + 360) % 360;
+
+  if (mode === "hour") {
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    // визначаємо коло
+    const isInner = distance < 60; // внутрішнє коло радіус 45, зовнішнє 70, поріг можна підкорегувати
+    const hour = Math.round(angle / 30) % 12;
+    const hour12 = isInner ? hour + 12 : hour;
+    setSelectedHour(hour12);
+    updateTime(hour12, null);
+  } else {
+    const minute = Math.round(angle / 6) % 60;
+    setSelectedMinute(minute);
+    updateTime(null, minute);
+  }
+};
+
+const handlePointerUp = () => setDragging(false);
 
   const getHourCoords = (hour: number) => {
   // зовнішнє коло 0-11
@@ -99,18 +156,6 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   }
 };
 
-
-  const handleConfirm = () => {
-    if (selectedHour !== null && selectedMinute !== null) {
-      const formatted = `${selectedHour.toString().padStart(2, "0")}:${selectedMinute
-        .toString()
-        .padStart(2, "0")}`;
-      onChange(formatted);
-      setManual(formatted);
-    }
-    setOpen(false);
-  };
-
   return (
     <div className="relative flex items-center border rounded-lg bg-white min-w-[130px] px-2 py-1">
       {/* Поле для ручного вводу */}
@@ -121,11 +166,8 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   onBlur={handleBlur}
   onKeyDown={handleKeyDown}
   placeholder="HH:MM"
-  className="flex-1 bg-transparent text-black focus:outline-none"
-/>
-
-
-      {/* Іконка годинника */}
+        className="flex-1 bg-transparent text-black focus:outline-none"
+      />
       <Clock
         size={18}
         className="text-gray-500 cursor-pointer hover:text-gray-700 ml-2"
@@ -134,7 +176,9 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
       {/* Модалка вибору часу */}
       {open && (
-  <div className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4">
+        <div
+          ref={modalRef}
+          className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4">
     {/* Кнопки зверху */}
     <div className="flex justify-center gap-2 mb-4">
       <button
@@ -153,7 +197,13 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     </div>
 
     {/* Циферблат */}
-    <div className="relative w-[180px] h-[180px] rounded-full mx-auto">
+          <div className="relative w-[180px] h-[180px] rounded-full mx-auto"
+         style={{ userSelect: "none" }}
+  onMouseDown={(e) => { e.preventDefault(); handlePointerDown(e); }}
+  onMouseMove={handlePointerMove}
+  onMouseUp={handlePointerUp}
+  onMouseLeave={handlePointerUp}
+          >
       {mode === "hour" &&
               <>
               
@@ -172,7 +222,10 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     isOverlappingCircle(x, y, "hour") ? "text-white font-bold" : "text-gray-700"
   }`}
                 style={{ left: `${x-6}px`, top: `${y-6}px` }}
-                onClick={() => setSelectedHour(hour)}
+                onClick={() => {
+                  setSelectedHour(hour);
+                  updateTime(hour, null);
+                }}
               >
                 {hour.toString().padStart(2, "0")}
               </div>
@@ -191,7 +244,10 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     isOverlappingCircle(x, y, "hour") ? "text-white font-bold" : "text-gray-700"
   }`}
                 style={{ left: `${x-6}px`, top: `${y-6}px` }}
-                onClick={() => setSelectedHour(hour)}
+                onClick={() => {
+                  setSelectedHour(hour);
+                  updateTime(hour, null);
+                }}
               >
                 {hour.toString().padStart(2, "0")}
               </div>
@@ -278,6 +334,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       // переводимо кут у хвилини
       const minutes = Math.round(angle / 6) % 60;
       setSelectedMinute(minutes);
+      updateTime(null, minutes);
     }}
   >
     {/* 5-хвилинні мітки */}
@@ -339,25 +396,6 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 )}      
 
           </div>
-          <div className="flex justify-center gap-2 mt-4">
-  <button
-    className="px-3 py-1 bg-gray-200 rounded"
-    onClick={() => {
-      setOpen(false);
-      setSelectedHour(null);
-      setSelectedMinute(null);
-      setManual(value); // повернути попереднє значення
-    }}
-  >
-    Скасувати
-  </button>
-  <button
-    className="px-3 py-1 bg-blue-500 text-white rounded"
-    onClick={handleConfirm}
-  >
-    ОК
-  </button>
-</div>
   </div>
 )}
 
@@ -375,10 +413,27 @@ interface CustomDatePickerProps {
 function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
   const [manual, setManual] = useState(value || "");
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<"day" | "month" | "year">("day");
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  const isLeap = (year: number): boolean =>
+  const today = new Date();
+  const initialDate = manual
+    ? new Date(manual.split(".").reverse().join("-"))
+    : today;
+
+  const [selectedDay, setSelectedDay] = useState(initialDate.getDate());
+  const [selectedMonth, setSelectedMonth] = useState(initialDate.getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(initialDate.getFullYear());
+
+  const minYear = today.getFullYear();
+  const maxYear = minYear + 100;
+
+  const [yearOffset, setYearOffset] = useState(0); // для слайдера років
+
+  const isLeap = (year: number) =>
     (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-  const getDaysInMonth = (month: number, year: number): number => {
+
+  const getDaysInMonth = (month: number, year: number) => {
     const days = [
       31,
       isLeap(year) ? 29 : 28,
@@ -396,109 +451,178 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
     return days[month - 1];
   };
 
-  const normalizeYear = (input?: string): string => {
-    const current = new Date().getFullYear();
-    if (!input) return current.toString();
+  const updateManual = (
+    d = selectedDay,
+    m = selectedMonth,
+    y = selectedYear
+  ) => {
+    const day = String(d).padStart(2, "0");
+    const month = String(m).padStart(2, "0");
+    const year = String(y);
+    const newVal = `${day}.${month}.${year}`;
+    setManual(newVal);
+    onChange?.(newVal);
+  };
 
-    if (input.length === 4) return input;
+  const handleDayClick = (day: number) => {
+    setSelectedDay(day);
+    updateManual(day);
+  };
 
-    // спроба знайти найближчий рік до поточного
-    const possibilities = [];
-    for (let i = 0; i <= 4 - input.length; i++) {
-      const candidate = parseInt(
-        current.toString().slice(0, i) + input + current.toString().slice(i + input.length)
-      );
-      possibilities.push(candidate);
-    }
-    let best = possibilities[0];
-    let minDiff = Math.abs(best - current);
-    for (const p of possibilities) {
-      const diff = Math.abs(p - current);
-      if (diff < minDiff) {
-        best = p;
-        minDiff = diff;
+  const handleMonthClick = (month: number) => {
+    setSelectedMonth(month);
+    const daysInMonth = getDaysInMonth(month, selectedYear);
+    if (selectedDay > daysInMonth) setSelectedDay(daysInMonth);
+    updateManual(undefined, month);
+  };
+
+  const handleYearClick = (year: number) => {
+    setSelectedYear(year);
+    const daysInMonth = getDaysInMonth(selectedMonth, year);
+    if (selectedDay > daysInMonth) setSelectedDay(daysInMonth);
+    updateManual(undefined, undefined, year);
+  };
+
+  // закриття модалки при кліку поза нею
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        setOpen(false);
       }
-    }
-    return best.toString();
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const renderDays = () => {
+    const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+    const firstDay = new Date(selectedYear, selectedMonth - 1, 1).getDay(); // 0-неділя
+    const blanks = Array((firstDay + 6) % 7).fill(null); // понеділок = 0
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+    return [...blanks, ...days].map((d, idx) =>
+      d ? (
+        <button
+          key={idx}
+          className={`w-8 h-8 text-center rounded ${
+            d === selectedDay ? "bg-blue-500 text-white" : "border border-gray-300 text-black"
+          }`}
+          onClick={() => handleDayClick(d)}
+        >
+          {d}
+        </button>
+      ) : (
+        <div key={idx} className="w-8 h-8" />
+      )
+    );
   };
 
-  const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-  let val = e.target.value.replace(/[^\d.]/g, ""); // тільки цифри та крапки
-
-  if (val.length > 2 && val[2] !== ".") {
-    val = val.slice(0, 2) + "." + val.slice(2);
-  }
-
-  if (val.length > 5 && val[5] !== ".") {
-    val = val.slice(0, 5) + "." + val.slice(5);
-  }
-  setManual(val);
-};
-
-
-  const autoFix = (): void => {
-    if (!manual) {
-      const now = new Date();
-      const fixed = `${String(now.getDate()).padStart(2, "0")}.${String(
-        now.getMonth() + 1
-      ).padStart(2, "0")}.${now.getFullYear()}`;
-      setManual(fixed);
-      onChange?.(fixed);
-      return;
-    }
-
-    const parts = manual.split(".");
-    let [d, m, y] = parts;
-
-    // День
-    if (!d) d = "01";
-    if (d.length === 1) d = "0" + d;
-
-    // Місяць
-    if (!m) m = "01";
-    if (m.length === 1) m = "0" + m;
-    m = Math.min(12, Math.max(1, +m)).toString().padStart(2, "0");
-
-    // Рік
-    y = normalizeYear(y);
-
-    // Перевірка кількості днів у місяці
-    const days = getDaysInMonth(+m, +y);
-    d = Math.min(+d, days).toString().padStart(2, "0");
-
-    setManual(`${d}.${m}.${y}`);
+  const renderMonths = () => {
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    return months.map((m) => (
+      <button
+        key={m}
+        className={`w-16 h-10 rounded border border-gray-300 text-black ${
+          m === selectedMonth ? "bg-blue-500 text-white" : ""
+        }`}
+        onClick={() => handleMonthClick(m)}
+      >
+        {new Date(0, m - 1).toLocaleString("uk-UA", { month: "short" })}
+      </button>
+    ));
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleBlur = (_e: React.FocusEvent<HTMLInputElement>): void => autoFix();
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") autoFix();
+  const renderYears = () => {
+    const years = Array.from({ length: 12 }, (_, i) => minYear + yearOffset + i).filter(
+      (y) => y <= maxYear
+    );
+    return years.map((y) => (
+      <button
+        key={y}
+        className={`w-16 h-10 rounded border border-gray-300 text-black ${
+          y === selectedYear ? "bg-blue-500 text-white" : ""
+        }`}
+        onClick={() => handleYearClick(y)}
+      >
+        {y}
+      </button>
+    ));
+  };
+
+  const nextYears = () => {
+    if (minYear + yearOffset + 12 <= maxYear) setYearOffset(yearOffset + 12);
+  };
+  const prevYears = () => {
+    if (yearOffset - 12 >= 0) setYearOffset(yearOffset - 12);
   };
 
   return (
     <div className="relative flex items-center border rounded-md px-2 py-1 bg-white">
-      {/* Поле вводу */}
       <input
         type="text"
         value={manual}
-        onChange={handleManualChange}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        placeholder="DD.MM.YYYY"
+        readOnly
         className="flex-1 bg-transparent text-black focus:outline-none"
+        placeholder="DD.MM.YYYY"
       />
 
-      {/* Іконка календаря */}
       <Calendar
         size={18}
         className="text-gray-500 cursor-pointer hover:text-gray-700 ml-2"
         onClick={() => setOpen(true)}
       />
 
-      {/* Модалка календаря (тимчасово пуста) */}
       {open && (
-        <div className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4">
-          <p className="text-gray-500 text-sm">Тут буде календар </p>
+        <div
+          ref={modalRef}
+          className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4"
+        >
+          {/* Кнопки вкладок */}
+          <div className="flex gap-2 mb-4">
+            <button
+              className={`px-3 py-1 rounded ${
+                mode === "day" ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setMode("day")}
+            >
+              День ({selectedDay})
+            </button>
+            <button
+              className={`px-3 py-1 rounded ${
+                mode === "month" ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setMode("month")}
+            >
+              Місяць ({selectedMonth})
+            </button>
+            <button
+              className={`px-3 py-1 rounded ${
+                mode === "year" ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setMode("year")}
+            >
+              Рік ({selectedYear})
+            </button>
+          </div>
+
+          {/* Контент вкладки */}
+          {mode === "day" && <div className="grid grid-cols-7 gap-1">{renderDays()}</div>}
+
+          {mode === "month" && <div className="grid grid-cols-3 gap-1">{renderMonths()}</div>}
+
+          {mode === "year" && (
+            <div>
+              <div className="flex justify-between mb-2">
+                <button onClick={prevYears} className="px-2 py-1 border rounded text-black">
+                  ◀
+                </button>
+                <button onClick={nextYears} className="px-2 py-1 border rounded text-black">
+                  ▶
+                </button>
+              </div>
+              <div className="grid grid-cols-3 gap-1">{renderYears()}</div>
+            </div>
+          )}
         </div>
       )}
     </div>
