@@ -43,21 +43,8 @@ const AppWrapper: React.FC = () => {
           />
         }
       />
-      <Route path="/week/:date" element={<WeekPage events={dummyEvents} />} />
+      <Route path="/calendar/:calendarId/week/:weekStart" element={<WeekPage />} />
       <Route path="/calendar/:calendarId/day/:date" element={<DayPage />} />
-
-
-      {/* fallback */}
-      <Route
-        path="*"
-        element={
-          <MonthPage
-            events={dummyEvents}
-            onDayClick={handleDayClick}
-            onWeekClick={handleWeekClick}
-          />
-        }
-      />
     </Routes>
   );
 };
