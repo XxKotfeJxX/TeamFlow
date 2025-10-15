@@ -2,87 +2,82 @@ import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { eventDb, calendarDb, type Calendar, type Event } from "../models/mockDB/calendar";
 import DayModule from "../components/calendar/DayModule";
+import {
+  calendars,
+  events as allEvents,
+  tasks as allTasks,
+  type Calendar,
+  type Event,
+  type Task,
+} from "../models/mockDB/calendar";
+
+const DAYS_VISIBLE = 3; // рівно 3 дні на екран
+const TOTAL_DAYS = 7;   // показуємо 7 днів (понеділок–неділя)
 
 const WeekPage: React.FC = () => {
   const { calendarId, weekStart } = useParams<{ calendarId: string; weekStart: string }>();
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  if (!calendarId || !weekStart) return <div>Invalid URL parameters</div>;
+  if (!calendarId) return <div>❌ Invalid URL parameters</div>;
+  const calendar: Calendar | undefined = calendars.find(c => c.id === calendarId);
+  if (!calendar) return <div>❌ Calendar not found</div>;
 
-  const calendar: Calendar | undefined = calendarDb.getById(calendarId);
-  if (!calendar) return <div>Calendar not found</div>;
+  const initialDate = weekStart ? new Date(weekStart) : new Date();
 
-  const weekStartDate = new Date(weekStart);
+  // --- Генерація понеділка ---
+  const dayOfWeek = initialDate.getDay(); // 0 = неділя
+  const diffToMonday = (dayOfWeek + 6) % 7;
+  const monday = new Date(initialDate);
+  monday.setDate(initialDate.getDate() - diffToMonday);
 
-  // Генеруємо масив днів тижня
-  const days: Date[] = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date(weekStartDate);
-    d.setDate(weekStartDate.getDate() + i);
+  const days: Date[] = Array.from({ length: TOTAL_DAYS }, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
     return d;
   });
 
-  // Беремо всі події календаря
-  const allEvents: Event[] = eventDb.getAll().filter(e => e.calendarId === calendarId);
+  const eventsByDay = (day: Date): Event[] =>
+    allEvents.filter(ev => ev.calendarId === calendarId && ev.startDate.toDateString() === day.toDateString());
 
-  // Фільтр по дню
-  const eventsByDay = (day: Date) =>
-    allEvents.filter(
-      (ev) =>
-        ev.startDate.getFullYear() === day.getFullYear() &&
-        ev.startDate.getMonth() === day.getMonth() &&
-        ev.startDate.getDate() === day.getDate()
-    );
-
-  const scrollNext = () => {
-  if (!carouselRef.current) return;
-  const scrollAmount = carouselRef.current.clientWidth / 3;
-  carouselRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-
-  // Коли дійшли до кінця, переносимо перші елементи в кінець
-  if (carouselRef.current.scrollLeft + scrollAmount >= carouselRef.current.scrollWidth - carouselRef.current.clientWidth) {
-    const first = days.shift();
-    if (first) days.push(first);
-  }
-};
-
- const scrollPrev = () => {
-  if (!carouselRef.current) return;
-  const scrollAmount = carouselRef.current.clientWidth / 3;
-  carouselRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-
-  // Коли дійшли до початку, переносимо останні елементи в початок
-  if (carouselRef.current.scrollLeft - scrollAmount <= 0) {
-    const last = days.pop();
-    if (last) days.unshift(last);
-  }
-};
+  const tasksByDay = (day: Date): Task[] =>
+    allTasks.filter(t => t.calendarId === calendarId && new Date(t.dueDate).toDateString() === day.toDateString());
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-gray-50">
       <Header />
 
       <div className="flex flex-col flex-1 px-4">
-        {/* Кнопки прокрутки */}
-        <div className="flex justify-between mb-2">
-          <button onClick={scrollPrev} className="px-3 py-1 bg-gray-200 rounded">{"<"}</button>
-          <button onClick={scrollNext} className="px-3 py-1 bg-gray-200 rounded">{">"}</button>
-        </div>
+        <h2 className="text-lg font-semibold text-gray-700 mb-3">
+          {monday.toLocaleDateString(undefined, { month: "long", year: "numeric" })}
+        </h2>
 
-        {/* Карусель днів */}
         <div
           ref={carouselRef}
-          className="flex overflow-x-auto gap-4 snap-x snap-mandatory"
+          className="flex overflow-x-auto no-scrollbar gap-2"
+          style={{ width: "100%", scrollSnapType: "x mandatory" }}
         >
-          {days.map(day => (
-            <DayModule
-              key={day.toISOString()}
-              date={day}
-              events={eventsByDay(day)}
-              calendarId={calendarId}
-            />
-          ))}
+          {days.map(day => {
+            const items: (Event | Task)[] = [...eventsByDay(day), ...tasksByDay(day)];
+            return (
+              <div
+                key={day.toDateString()}
+                className="snap-center flex-shrink-0"
+                style={{ width: `${100 / DAYS_VISIBLE}%` }}
+              >
+                <DayModule
+  date={day}
+  items={items}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onItemClick={_ => {
+    const dateStr = day.toISOString().split("T")[0]; // yyyy-mm-dd
+    const url = `http://localhost:5173/calendar/${calendarId}/day/${dateStr}`;
+    window.location.href = url;
+  }}
+/>
+              </div>
+            );
+          })}
         </div>
       </div>
 
