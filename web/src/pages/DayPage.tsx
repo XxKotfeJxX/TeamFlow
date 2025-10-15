@@ -195,7 +195,7 @@ const DayPage: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex border-t border-l border-gray-200 h-full p-4">
+      <div className="flex border-t border-l border-gray-200 h-full p-4 pt-[var(--header-height,4rem)]">
         {COLUMN_RANGES.map((range, colIndex) => {
           const columnEvents = todaysEvents.filter(
             (ev) =>

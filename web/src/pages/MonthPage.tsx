@@ -1,47 +1,82 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import NavigationBar from "../components/calendar/NavigationBar";
 import CalendarGrid from "../components/calendar/CalendarGrid";
-import { CalendarEvent } from "../models/Event";
+import { eventDb } from "../models/mockDB/calendar";
 
-interface MonthPageProps {
-  events: CalendarEvent[];
-  onDayClick: (day: Date) => void;
-  onWeekClick: (weekStart: Date) => void;
-}
+const MonthPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { calendarId, month } = useParams<{ calendarId: string; month: string }>();
 
-const MonthPage: React.FC<MonthPageProps> = ({ events, onDayClick, onWeekClick }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  // якщо формат yyyy-mm — парсимо його
+  const initialDate = (() => {
+    if (month && /^\d{4}-\d{2}$/.test(month)) {
+      const [y, m] = month.split("-").map(Number);
+      return new Date(y, m - 1, 1);
+    }
+    return new Date();
+  })();
 
-  const prevMonth = () => {
+  const [currentDate, setCurrentDate] = useState(initialDate);
+
+  const events = eventDb.getAll().filter(e => e.calendarId === calendarId);
+
+  const goPrevMonth = () => {
     const d = new Date(currentDate);
-    d.setMonth(currentDate.getMonth() - 1);
-    setCurrentDate(d);
+    d.setMonth(d.getMonth() - 1);
+    navigateToMonth(d);
   };
 
-  const nextMonth = () => {
+  const goNextMonth = () => {
     const d = new Date(currentDate);
-    d.setMonth(currentDate.getMonth() + 1);
-    setCurrentDate(d);
+    d.setMonth(d.getMonth() + 1);
+    navigateToMonth(d);
   };
 
-  const goToday = () => setCurrentDate(new Date());
+  const goToday = () => navigateToMonth(new Date());
+
+  const navigateToMonth = (date: Date) => {
+    const formatted = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    navigate(`/calendar/${calendarId}/${formatted}`);
+    setCurrentDate(date);
+  };
+
+const onDayClick = (day: Date) => {
+  const formatted = day.toLocaleDateString("sv-SE");
+  navigate(`/calendar/${calendarId}/day/${formatted}`);
+};
+
+const onWeekClick = (weekStart: Date) => {
+  const formatted = weekStart.toLocaleDateString("sv-SE");
+  navigate(`/calendar/${calendarId}/week/${formatted}`);
+};
 
   return (
-    <div className="p-4 flex flex-col h-full">
-      <NavigationBar
-        currentDate={currentDate}
-        onPrevMonth={prevMonth}
-        onNextMonth={nextMonth}
-        onToday={goToday}
-      />
-      <div className="flex-1 overflow-auto">
-        <CalendarGrid
+    <div className="flex flex-col min-h-screen">
+      {/* 🔹 Твій власний Header */}
+      <Header />
+
+      <main className="flex-1 p-4 flex flex-col pt-[var(--header-height,4rem)]">
+        <NavigationBar
           currentDate={currentDate}
-          events={events}
-          onDayClick={onDayClick}
-          onWeekClick={onWeekClick}
+          onPrevMonth={goPrevMonth}
+          onNextMonth={goNextMonth}
+          onToday={goToday}
         />
-      </div>
+        <div className="flex-1 overflow-auto">
+          <CalendarGrid
+            currentDate={currentDate}
+            events={events}
+            onDayClick={onDayClick}
+            onWeekClick={onWeekClick}
+          />
+        </div>
+      </main>
+
+      {/* 🔹 Твій власний Footer */}
+      <Footer />
     </div>
   );
 };

@@ -1,15 +1,21 @@
 import React from "react";
-import { CalendarEvent } from "../../models/Event";
+import type { Event } from "../../models/mockDB/calendar";
 
 interface CalendarDayCellProps {
   day: Date;
-  events: CalendarEvent[];
+  events: Event[];
   isToday: boolean;
   isCurrentMonth: boolean;
   onClick: () => void;
 }
 
-const CalendarDayCell: React.FC<CalendarDayCellProps> = ({ day, events, isToday, isCurrentMonth, onClick }) => {
+const CalendarDayCell: React.FC<CalendarDayCellProps> = ({
+  day,
+  events,
+  isToday,
+  isCurrentMonth,
+  onClick,
+}) => {
   return (
     <div
       className={`
