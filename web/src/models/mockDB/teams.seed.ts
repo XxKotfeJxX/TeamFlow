@@ -7,7 +7,7 @@ export const seedTeams: Team[] = [
     name: "Awesome Team",
     description: "Тестова команда для демо",
     avatarUrl: "",
-    members: ["user-1", "user-2"],
+    members: ["u1", "u2"],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -16,7 +16,7 @@ export const seedTeams: Team[] = [
     name: "Frontend Masters",
     description: "Команда фронтендерів",
     avatarUrl: "",
-    members: ["user-3"],
+    members: ["u3"],
     createdAt: new Date(),
     updatedAt: new Date(),
   }

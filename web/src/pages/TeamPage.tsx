@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -13,8 +13,21 @@ const TeamPage: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
 
-  // знайти команду
-  const team = id ? teamDb.getById(id) : undefined;
+  // === Завжди викликаємо хуки useMemo ===
+  const team = useMemo(() => (id ? teamDb.getById(id) : undefined), [id]);
+
+  const teamMembers: User[] = useMemo(() => {
+    if (!team) return [];
+    const filtered = users.filter((u) => team.members.includes(u.id));
+    // усуваємо дублікати за id
+    return [...new Map(filtered.map((m) => [m.id, m])).values()];
+  }, [team]);
+
+  // === Поточний місяць для переходу в календар ===
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+  // === Якщо команда не знайдена ===
   if (!team) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -27,98 +40,84 @@ const TeamPage: React.FC = () => {
     );
   }
 
-  const teamMembers: User[] = users.filter((u) => team.members.includes(u.id));
-
+  // === Основний контент сторінки ===
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
 
       <main className="flex-1 container mx-auto px-6 py-8 pt-[var(--header-height,4rem)]">
-        {/* ====== HERO / TEAM HEADER ====== */}
+        {/* ===== HERO / TEAM HEADER ===== */}
         <section className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          {/* Аватар + Інфо */}
           <div className="flex items-center space-x-4">
-  {team.avatarUrl ? (
-    <img
-      src={team.avatarUrl}
-      alt={team.name}
-      className="w-20 h-20 rounded-full object-cover"
-    />
-  ) : (
-    <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold">
-      {team.name.charAt(0)}
-    </div>
-  )}
+            {team.avatarUrl ? (
+              <img
+                src={team.avatarUrl}
+                alt={team.name}
+                className="w-20 h-20 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold text-gray-800">
+                {team.name.charAt(0)}
+              </div>
+            )}
 
-  <div>
-    {/* Назва команди — темний текст */}
-    <h1 className="text-2xl font-bold text-gray-900">{team.name}</h1>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{team.name}</h1>
+              <p className="text-gray-600">
+                {team.description || "Без опису команди"}
+              </p>
+              <p className="text-sm text-gray-400 mt-1">
+                Учасників: {teamMembers.length}
+              </p>
+            </div>
+          </div>
 
-    <p className="text-gray-600">
-      {team.description || "Без опису команди"}
-    </p>
-    <p className="text-sm text-gray-400 mt-1">
-      Учасників: {teamMembers.length}
-    </p>
-  </div>
-</div>
+          {/* Кнопки */}
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => navigate(`/team/${team.id}/tasks`)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition border-none"
+            >
+              Перейти до Завдань
+            </button>
 
-{/* Кнопки */}
-<div className="flex flex-wrap gap-2">
-  <button
-    onClick={() => navigate(`/team/${team.id}/tasks`)}
-    className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition border-none"
-  >
-    Перейти до Завдань
-  </button>
+            <button
+              onClick={() => navigate(`/calendar/${team.id}/${currentMonth}`)}
+              className="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition border-none"
+            >
+              Відкрити Календар
+            </button>
 
-  <button
-    onClick={() => {
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, "0");
-      navigate(`/calendar/${team.id}/${yyyy}-${mm}`);
-    }}
-    className="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition border-none"
-  >
-    Відкрити Календар
-  </button>
-
-  <button className="px-4 py-2 bg-gray-200 rounded-xl text-gray-800 hover:bg-gray-300 transition border-none">
-    Запросити
-  </button>
-</div>
-
+            <button className="px-4 py-2 bg-gray-200 rounded-xl text-gray-800 hover:bg-gray-300 transition border-none">
+              Запросити
+            </button>
+          </div>
         </section>
 
-        {/* ====== ТАБИ ====== */}
+        {/* ===== НАВІГАЦІЙНІ ТАБИ ===== */}
         <nav className="flex space-x-4 mt-8 bg-white rounded-2xl shadow-sm p-2">
-  {tabs.map((tab) => (
-    <button
-      key={tab}
-      onClick={() => setActiveTab(tab)}
-      className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200
-        ${
-          activeTab === tab
-            ? "bg-blue-600 text-white"
-            : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
-        }
-        border-none outline-none focus:outline-none focus:ring-0`}
-    >
-      {tab}
-    </button>
-  ))}
-</nav>
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 ${
+                activeTab === tab
+                  ? "bg-blue-600 text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
+              } border-none outline-none focus:outline-none focus:ring-0`}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
 
-
-        {/* ====== ВМІСТ ТАБІВ ====== */}
+        {/* ===== ВМІСТ ТАБІВ ===== */}
         <section className="mt-8">
-          {/* 1️⃣ ВІЗИТКА */}
-          {activeTab === "Візитка" && (
-  <TabOverview teamId={team.id}/>
-)}
+          {/* ВІЗИТКА */}
+          {activeTab === "Візитка" && <TabOverview teamId={team.id} />}
 
-
-          {/* 2️⃣ УЧАСНИКИ */}
+          {/* УЧАСНИКИ */}
           {activeTab === "Учасники" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {teamMembers.map((member) => (
@@ -149,14 +148,11 @@ const TeamPage: React.FC = () => {
             </div>
           )}
 
-          {/* 3️⃣ ЧАТИ */}
+          {/* ЧАТИ */}
           {activeTab === "Чати" && (
             <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col h-[400px]">
-              <div className="flex-1 overflow-y-auto mb-4 space-y-2">
-                {/* Заглушка чатів */}
-                <div className="text-gray-400 text-center mt-20">
-                  💬 Тут зʼявиться чат команди.
-                </div>
+              <div className="flex-1 overflow-y-auto mb-4 space-y-2 text-center text-gray-400 mt-16">
+                💬 Тут зʼявиться чат команди.
               </div>
               <div className="flex border-t border-gray-200 pt-3">
                 <input
@@ -171,7 +167,7 @@ const TeamPage: React.FC = () => {
             </div>
           )}
 
-          {/* 4️⃣ СТАТИСТИКА */}
+          {/* СТАТИСТИКА */}
           {activeTab === "Статистика" && (
             <div className="space-y-6">
               <div className="bg-white rounded-2xl shadow-sm p-6">
