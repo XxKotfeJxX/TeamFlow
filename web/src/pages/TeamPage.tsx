@@ -2,9 +2,10 @@ import React, { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { teamDb } from "../models/mockDB/teams";
+import { teamDb, type TeamRole } from "../models/mockDB/teams";
 import { users, type User } from "../models/mockDB/users";
 import TabOverview from "../components/team/TabOverview";
+import TeamStats from "../components/team/TeamStats";
 
 const tabs = ["Візитка", "Учасники", "Чати", "Статистика"];
 
@@ -16,11 +17,18 @@ const TeamPage: React.FC = () => {
   // === Завжди викликаємо хуки useMemo ===
   const team = useMemo(() => (id ? teamDb.getById(id) : undefined), [id]);
 
-  const teamMembers: User[] = useMemo(() => {
+  // === Отримуємо учасників з урахуванням ролей ===
+  const teamMembers = useMemo(() => {
     if (!team) return [];
-    const filtered = users.filter((u) => team.members.includes(u.id));
-    // усуваємо дублікати за id
-    return [...new Map(filtered.map((m) => [m.id, m])).values()];
+
+    return team.members
+      .map((m) => {
+        const user = users.find((u) => u.id === m.userId);
+        if (!user) return null;
+        // Явно типізуємо role як TeamRole
+        return { ...user, role: m.role as TeamRole };
+      })
+      .filter((m): m is User & { role: TeamRole } => m !== null);
   }, [team]);
 
   // === Поточний місяць для переходу в календар ===
@@ -57,7 +65,7 @@ const TeamPage: React.FC = () => {
                 className="w-20 h-20 rounded-full object-cover"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold text-gray-800">
+              <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold">
                 {team.name.charAt(0)}
               </div>
             )}
@@ -75,12 +83,13 @@ const TeamPage: React.FC = () => {
 
           {/* Кнопки */}
           <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => navigate(`/team/${team.id}/tasks`)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition border-none"
-            >
-              Перейти до Завдань
-            </button>
+           <button
+  onClick={() => navigate(`/tasks/team/${team.id}`)}
+  className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition border-none"
+>
+  Перейти до Завдань
+</button>
+
 
             <button
               onClick={() => navigate(`/calendar/${team.id}/${currentMonth}`)}
@@ -132,17 +141,25 @@ const TeamPage: React.FC = () => {
                       className="w-16 h-16 rounded-full mb-3 object-cover"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-lg font-bold mb-3">
+                    <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-lg font-bold mb-3 ">
                       {member.username.charAt(0)}
                     </div>
                   )}
-                  <p className="font-semibold text-center">
+
+                  <p className="font-semibold text-center text-gray-900">
                     {member.fullname || member.username}
                   </p>
-                  <p className="text-sm text-gray-500 text-center">
-                    {member.email}
+                  <p className="text-sm text-gray-500 text-center">{member.email}</p>
+
+                  <p
+                    className={`text-xs mt-1 ${
+                      member.role === "admin"
+                        ? "text-blue-600 font-semibold"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    роль: {member.role === "admin" ? "адмін" : "учасник"}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">роль: учасник</p>
                 </div>
               ))}
             </div>
@@ -169,28 +186,7 @@ const TeamPage: React.FC = () => {
 
           {/* СТАТИСТИКА */}
           {activeTab === "Статистика" && (
-            <div className="space-y-6">
-              <div className="bg-white rounded-2xl shadow-sm p-6">
-                <h3 className="text-xl font-semibold mb-3">
-                  Загальна активність
-                </h3>
-                <p className="text-gray-600">
-                  Команда виконала 34 задачі за останні 7 днів, 12 нових подій
-                  додано в календар, 8 користувачів активно в чаті.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-sm p-6">
-                <h3 className="text-xl font-semibold mb-3">
-                  Топ активних учасників
-                </h3>
-                <ul className="text-gray-700 space-y-1">
-                  <li>🥇 <b>Марія</b> — 14 задач</li>
-                  <li>🥈 <b>Олег</b> — 10 задач</li>
-                  <li>🥉 <b>Андрій</b> — 8 задач</li>
-                </ul>
-              </div>
-            </div>
+            <TeamStats teamId={team.id} teamMembers={teamMembers} />
           )}
         </section>
       </main>

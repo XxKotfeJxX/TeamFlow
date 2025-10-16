@@ -1,4 +1,4 @@
-// web\src\models/mockDB/teams.seed.ts
+// web/src/models/mockDB/teams.seed.ts
 import type { Team } from "./teams";
 
 export const seedTeams: Team[] = [
@@ -7,7 +7,10 @@ export const seedTeams: Team[] = [
     name: "Awesome Team",
     description: "Тестова команда для демо",
     avatarUrl: "",
-    members: ["u1", "u2"],
+    members: [
+      { userId: "u1", role: "admin" },
+      { userId: "u2", role: "member" },
+    ],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -16,8 +19,10 @@ export const seedTeams: Team[] = [
     name: "Frontend Masters",
     description: "Команда фронтендерів",
     avatarUrl: "",
-    members: ["u3"],
+    members: [
+      { userId: "u3", role: "admin" },
+    ],
     createdAt: new Date(),
     updatedAt: new Date(),
-  }
+  },
 ];

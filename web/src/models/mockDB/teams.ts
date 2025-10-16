@@ -1,13 +1,21 @@
 // web/src/models/mockDB/teams.ts
 import { seedTeams } from "./teams.seed";
 
+// ===== TEAM ROLES =====
+export type TeamRole = "admin" | "member";
+
+export interface TeamMember {
+  userId: string;
+  role: TeamRole;
+}
+
 // ========== TEAM ==========
 export interface Team {
   id: string;
   name: string;
   description?: string;
   avatarUrl?: string;
-  members: string[]; // userIds
+  members: TeamMember[]; // userIds + role
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,8 +26,36 @@ export const teams: Team[] = [...seedTeams];
 // Helper для генерації ID
 const genId = () => crypto.randomUUID();
 
-// CRUD для команд
+// ===== Внутрішні утиліти роботи з учасниками =====
+const upsertMember = (team: Team, userId: string, role: TeamRole = "member") => {
+  const exists = team.members.find(m => m.userId === userId);
+  if (exists) {
+    exists.role = role;
+  } else {
+    team.members.push({ userId, role });
+  }
+  team.updatedAt = new Date();
+};
+
+const removeMemberById = (team: Team, userId: string) => {
+  const before = team.members.length;
+  team.members = team.members.filter(m => m.userId !== userId);
+  if (before !== team.members.length) team.updatedAt = new Date();
+};
+
+const ensureHasAdmin = (team: Team) => {
+  if (!team.members.some(m => m.role === "admin")) {
+    // якщо немає жодного адміна — перетворимо першого учасника на адміна (якщо він є)
+    if (team.members[0]) {
+      team.members[0].role = "admin";
+      team.updatedAt = new Date();
+    }
+  }
+};
+
+// CRUD для команд + керування учасниками
 export const teamDb = {
+  // data.members тепер очікує TeamMember[]
   create: (data: Omit<Team, "id" | "createdAt" | "updatedAt">): Team => {
     const team: Team = {
       id: genId(),
@@ -27,6 +63,7 @@ export const teamDb = {
       updatedAt: new Date(),
       ...data,
     };
+    ensureHasAdmin(team);
     teams.push(team);
     return team;
   },
@@ -37,6 +74,17 @@ export const teamDb = {
   update: (id: string, updates: Partial<Team>): Team | undefined => {
     const team = teams.find(t => t.id === id);
     if (!team) return undefined;
+
+    // Якщо приходять members — переконаємось, що це масив TeamMember
+    if (updates.members) {
+      team.members = updates.members.map(m => ({
+        userId: m.userId,
+        role: m.role ?? "member",
+      }));
+      ensureHasAdmin(team);
+      delete updates.members;
+    }
+
     Object.assign(team, updates, { updatedAt: new Date() });
     return team;
   },
@@ -46,6 +94,37 @@ export const teamDb = {
     if (index === -1) return false;
     teams.splice(index, 1);
     return true;
+  },
+
+  // ===== ОПЕРАЦІЇ З УЧАСНИКАМИ =====
+  addMember: (teamId: string, userId: string, role: TeamRole = "member"): Team | undefined => {
+    const team = teams.find(t => t.id === teamId);
+    if (!team) return undefined;
+    upsertMember(team, userId, role);
+    ensureHasAdmin(team);
+    return team;
+  },
+
+  setRole: (teamId: string, userId: string, role: TeamRole): Team | undefined => {
+    const team = teams.find(t => t.id === teamId);
+    if (!team) return undefined;
+    upsertMember(team, userId, role);
+    ensureHasAdmin(team);
+    return team;
+  },
+
+  removeMember: (teamId: string, userId: string): Team | undefined => {
+    const team = teams.find(t => t.id === teamId);
+    if (!team) return undefined;
+    removeMemberById(team, userId);
+    ensureHasAdmin(team);
+    return team;
+  },
+
+  getMemberRole: (teamId: string, userId: string): TeamRole | undefined => {
+    const team = teams.find(t => t.id === teamId);
+    const m = team?.members.find(x => x.userId === userId);
+    return m?.role;
   },
 };
 
