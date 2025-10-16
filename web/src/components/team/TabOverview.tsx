@@ -4,8 +4,8 @@ import AddCardButton from "./AddCardButton";
 import {
   teamProfileDb,
   type TeamProfileBlock,
-  type TeamProfileBlockType,
 } from "../../models/mockDB/teams";
+import { profileTemplateDb } from "../../models/mockDB/profiletemplates";
 
 interface TabOverviewProps {
   teamId: string;
@@ -14,42 +14,36 @@ interface TabOverviewProps {
 const TabOverview: React.FC<TabOverviewProps> = ({ teamId }) => {
   const [blocks, setBlocks] = useState<TeamProfileBlock[]>([]);
 
-  // === 1. Завантажуємо дані при монтуванні ===
   useEffect(() => {
-    const fetchedBlocks = teamProfileDb.getByTeamId(teamId);
-    setBlocks(fetchedBlocks);
+    setBlocks(teamProfileDb.getByTeamId(teamId));
   }, [teamId]);
 
-  // === 2. Оновлення / збереження змін ===
-  const handleSave = async (updated: TeamProfileBlock) => {
+  const handleSave = (updated: TeamProfileBlock) => {
     teamProfileDb.update(updated.id, updated);
-    const refreshed = teamProfileDb.getByTeamId(teamId);
-    setBlocks(refreshed);
+    setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   };
 
-  // === 3. Додавання нового блоку ===
-  const handleAdd = async (type: TeamProfileBlockType) => {
-    const newBlock = teamProfileDb.create(teamId, type, {}, blocks.length);
-    const refreshed = teamProfileDb.getByTeamId(teamId);
-    setBlocks(refreshed);
-  };
+  const handleAdd = async (templateId: string) => {
+  teamProfileDb.create(teamId, templateId, {}, blocks.length);
+  const refreshed = teamProfileDb.getByTeamId(teamId);
+  setBlocks(refreshed);
+};
 
-  // === 4. Видалення блоку (опціонально, можна додати потім) ===
-  // const handleDelete = async (id: string) => {
-  //   teamProfileDb.delete(id);
-  //   setBlocks(teamProfileDb.getByTeamId(teamId));
-  // };
 
   return (
     <div className="space-y-6">
-      {blocks.map(block => (
-        <EditableCard
-          key={block.id}
-          block={block}
-          onSave={handleSave}
-          // onDelete={handleDelete} // можеш додати пізніше
-        />
-      ))}
+      {blocks.map((block) => {
+        const template = profileTemplateDb.getById(block.templateId);
+        if (!template) return null;
+        return (
+          <EditableCard
+            key={block.id}
+            block={block}
+            template={template}
+            onSave={handleSave}
+          />
+        );
+      })}
 
       <AddCardButton onAdd={handleAdd} />
     </div>

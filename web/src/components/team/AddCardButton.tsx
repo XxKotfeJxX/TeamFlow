@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Plus } from "lucide-react";
+import TemplateSelectModal from "./TemplateSelectModal";
 
 interface AddCardButtonProps {
-  onAdd: (type: string) => void;
+  onAdd: (templateId: string) => void;
 }
 
-const AddCardButton: React.FC<AddCardButtonProps> = ({ onAdd }) => (
-  <div className="flex justify-center mt-6">
-    <button
-      onClick={() => onAdd("text")}
-      className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-gray-700 transition"
-    >
-      <Plus size={18} /> Додати картку
-    </button>
-  </div>
-);
+const AddCardButton: React.FC<AddCardButtonProps> = ({ onAdd }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="flex justify-center mt-6">
+      <button
+        onClick={() => setOpen(true)}
+        className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-gray-700 transition"
+      >
+        <Plus size={18} /> Додати картку
+      </button>
+
+      <TemplateSelectModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onSelect={(tplId) => onAdd(tplId)}
+      />
+    </div>
+  );
+};
 
 export default AddCardButton;
