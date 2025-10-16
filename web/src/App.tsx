@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 import MonthPage from "./pages/MonthPage";
 import WeekPage from "./pages/WeekPage";
 import DayPage from "./pages/DayPage";
+import TeamPage from "./pages/TeamPage";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/price" element={<Price />} />
         <Route path="/profile/:id" element={<ProfilePage />} />
+        <Route path="/team/:id" element={<TeamPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
