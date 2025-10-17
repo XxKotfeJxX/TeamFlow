@@ -36,7 +36,13 @@ export interface Task {
   title: string;
   description?: string;
   color?: string;
-  priority?: { team: number; personal: number };
+
+  // 🔹 Дата дедлайну (використовується в DayPage)
+  dueDate: Date;
+
+  // 🔹 Пріоритети — тепер обов’язкові
+  priority: { team: number; personal: number };
+
   recurring?: { isRecurring: boolean; periodDays: number };
   assignedUsers?: string[];
   type: "personal" | "team" | "event";
@@ -56,11 +62,12 @@ const genId = () => crypto.randomUUID();
 
 // ===== CALENDAR DB =====
 export const calendarDb = {
-  create: (data: Omit<Calendar, "id">): Calendar => {
-    const calendar: Calendar = { id: genId(), ...data };
-    calendars.push(calendar);
-    return calendar;
-  },
+  create: (data: Omit<Calendar, "id"> & { id?: string }): Calendar => {
+  const calendar: Calendar = { id: data.id ?? genId(), ...data };
+  calendars.push(calendar);
+  return calendar;
+},
+
   getById: (id: string): Calendar | undefined => calendars.find(c => c.id === id),
   getAll: (): Calendar[] => [...calendars],
   update: (id: string, updates: Partial<Calendar>): Calendar | undefined => {
@@ -114,22 +121,26 @@ export const taskDb = {
     tasks.push(task);
     return task;
   },
+
   getById: (id: string): Task | undefined => tasks.find(t => t.id === id),
   getAll: (): Task[] => [...tasks],
   getByCalendarId: (calendarId: string): Task[] =>
     tasks.filter(t => t.calendarId === calendarId),
+
   update: (id: string, updates: Partial<Task>): Task | undefined => {
     const task = tasks.find(t => t.id === id);
     if (!task) return undefined;
     Object.assign(task, updates, { updatedAt: new Date() });
     return task;
   },
+
   delete: (id: string): boolean => {
     const index = tasks.findIndex(t => t.id === id);
     if (index === -1) return false;
     tasks.splice(index, 1);
     return true;
   },
+
   toggleStatus: (id: string): Task | undefined => {
     const task = tasks.find(t => t.id === id);
     if (!task) return undefined;

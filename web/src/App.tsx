@@ -11,6 +11,7 @@ import WeekPage from "./pages/WeekPage";
 import DayPage from "./pages/DayPage";
 import TeamPage from "./pages/TeamPage";
 import TasksPage from "./pages/TaskPage";
+import UserTeamsPage from "./pages/UserTeamsPage";
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Route path="/profile/:id" element={<ProfilePage />} />
         <Route path="/team/:id" element={<TeamPage />} />
         <Route path="/tasks/:ownerType/:ownerId" element={<TasksPage />} />
+        <Route path="/teams/user/:userId" element={<UserTeamsPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
