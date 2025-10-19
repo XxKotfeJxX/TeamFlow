@@ -1,6 +1,6 @@
 import { seedUsers } from "./users.seed";
 
-export type PlanType = "Base" | "Pro" | "Enterprise";
+export type PlanType = "Base" | "Lite" | "Pro" | "Enterprise";
 
 export interface User {
   id: string;              // унікальний ID
