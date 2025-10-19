@@ -16,10 +16,11 @@ export default function ConfirmDowngradeModal({ plan, onConfirm, onCancel }: Pro
           <b>{plan}</b>?
         </p>
         <div className="flex justify-center gap-4">
-          <Button className="bg-gray-300 text-gray-800 hover:bg-gray-400" onClick={onCancel}>
+                  <Button className="bg-gray-300 text-gray-800 hover:bg-gray-400" onClick={onCancel}
+                      style={{border: "none"}}>
             Ні
           </Button>
-          <Button className="bg-red-600 text-white hover:bg-red-700" onClick={onConfirm}>
+          <Button className="bg-red-600 text-white hover:bg-red-700" onClick={onConfirm} style={{border: "none"}}>
             Так
           </Button>
         </div>

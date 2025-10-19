@@ -121,12 +121,17 @@ export default function PricePage() {
   };
 
   const confirmDowngrade = () => {
-    if (currentUser && selectedPlan) {
+  if (currentUser && selectedPlan) {
+    setShowConfirm(false);
+
+    if (selectedPlan.name === "Base") {
       userDb.update(currentUser.id, { plan: selectedPlan.name });
       setCurrentUser({ ...currentUser, plan: selectedPlan.name });
+      return;
     }
-    setShowConfirm(false);
-  };
+    setShowPayment(true);
+  }
+};
 
   const handlePaymentComplete = () => {
     if (currentUser && selectedPlan) {
