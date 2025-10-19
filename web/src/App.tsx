@@ -19,6 +19,7 @@ import MyTeamPage from "./pages/MyTeamPage";
 import CareerPage from "./pages/CareerPage";
 import BlogPage from "./pages/BlogPage";
 import SupportPage from "./pages/SupportPage";
+import DocsPage from "./pages/DocsPage";
 
 const App: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const App: React.FC = () => {
         <Route path="/career" element={<CareerPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/support" element={<SupportPage />} />
+        <Route path="/documentation" element={<DocsPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
