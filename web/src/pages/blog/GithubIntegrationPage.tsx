@@ -35,7 +35,7 @@ export default function GithubIntegrationPage() {
             день не розривався між десятками вкладок.
           </p>
           <img
-            src="/images/github-preview.png"
+            src="/images/github-preview.jpg"
             alt="Інтеграція TeamFlow + GitHub"
             className="rounded-xl mt-4 shadow-lg"
           />
@@ -52,7 +52,7 @@ export default function GithubIntegrationPage() {
             запушені у відповідну гілку.
           </p>
           <img
-            src="/images/github-commits.png"
+            src="/images/github-commits.jpg"
             alt="Коміти в задачах TeamFlow"
             className="rounded-xl mt-6 shadow-md"
           />
@@ -70,7 +70,7 @@ export default function GithubIntegrationPage() {
           <div className="aspect-video mt-6 rounded-xl overflow-hidden shadow-md">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/xC9p4M6aMxs"
+              src="https://www.youtube.com/embed/61WbzS9XMwk"
               title="TeamFlow GitHub Integration Demo"
               allowFullScreen
             />
@@ -87,7 +87,7 @@ export default function GithubIntegrationPage() {
             якщо подія не стосується тебе чи твоєї команди — ти її не побачиш.
           </p>
           <img
-            src="/images/github-notifications.png"
+            src="/images/github-notifications.jpg"
             alt="GitHub сповіщення в TeamFlow"
             className="rounded-xl mt-6 shadow-lg"
           />
