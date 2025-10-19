@@ -65,15 +65,15 @@ export default function FeaturesPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <main className="flex-1 py-16">
-        <h1 className="text-4xl font-bold text-center mb-12">Функції TeamFlow</h1>
+      <main className="flex-1 py-16 pt-24">
+        <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">Функції TeamFlow</h1>
 
         <div className="grid gap-8 max-w-6xl mx-auto px-6 md:grid-cols-2 lg:grid-cols-3">
           {sections.map((s, i) => (
             <Card key={i} className="shadow-md hover:shadow-lg transition">
               <CardContent className="pt-8 pb-6">
                 <s.icon className="w-10 h-10 text-indigo-600 mb-3" />
-                <h3 className="text-xl font-medium mb-3">{s.title}</h3>
+                <h3 className="text-xl font-medium mb-3 text-gray-800">{s.title}</h3>
                 <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
                   {s.points.map((p, j) => (
                     <li key={j}>{p}</li>
