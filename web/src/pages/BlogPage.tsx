@@ -5,7 +5,6 @@ import { Button } from "../components/ui/Button";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState} from "react";
 import "../styles/slick-custom.css";
 
 const blogPosts = [
@@ -15,7 +14,7 @@ const blogPosts = [
     date: "10 жовтня 2025",
     excerpt:
       "Як структурувати завдання, комунікацію і планування, щоб команда працювала як єдиний механізм.",
-    image: "/images/fight.jpg",
+    image: "/images/Dashboard.png",
     path: "/blog/teamwork",
   },
   {
@@ -49,7 +48,6 @@ const blogPosts = [
 
 export default function BlogPage() {
   const navigate = useNavigate();
-  const [activeSlide, setActiveSlide] = useState(0);
 
   const sliderSettings = {
     dots: true,
@@ -63,26 +61,11 @@ export default function BlogPage() {
     pauseOnHover: true,
     centerMode: true,
     centerPadding: "20px",
-    beforeChange: (_: number, next: number) => setActiveSlide(next),
     responsive: [
       { breakpoint: 1280, settings: { slidesToShow: 2, centerPadding: "16px" } },
       { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: "0px" } },
     ],
   };
-
-  // 🔹 Видалив синю рамку підсвічування
-  // Якщо хочеш залишити підсвітку активного слайду — розкоментуй нижче:
-  /*
-  useEffect(() => {
-    const el = document.querySelector(`[data-index="${activeSlide}"]`);
-    if (el) {
-      el.classList.add("ring-2", "ring-blue-500", "ring-offset-2");
-      setTimeout(() => {
-        el.classList.remove("ring-2", "ring-blue-500", "ring-offset-2");
-      }, 1500);
-    }
-  }, [activeSlide]);
-  */
 
   const renderCard = (post: typeof blogPosts[0]) => (
     <div
@@ -121,7 +104,7 @@ export default function BlogPage() {
       <Header />
 
       <main className="w-full max-w-7xl mx-auto px-6 py-24">
-        <h1 className="text-4xl font-bold mb-12 text-center">Блог</h1>
+        <h1 className="text-4xl font-bold mb-4 text-center">Блог</h1>
 
         {blogPosts.length > 3 ? (
           <div className="w-full overflow-hidden pb-12">

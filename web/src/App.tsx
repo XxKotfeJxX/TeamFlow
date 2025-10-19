@@ -20,6 +20,10 @@ import CareerPage from "./pages/CareerPage";
 import BlogPage from "./pages/BlogPage";
 import SupportPage from "./pages/SupportPage";
 import DocsPage from "./pages/DocsPage";
+import TeamworkPage from "./pages/blog/TeamworkPage";
+import CalendarAccessPage from "./pages/blog/CalendarAccessPage";
+import GithubIntegrationPage from "./pages/blog/GithubIntegrationPage";
+import FocusPage from "./pages/blog/FocusPage";
 
 const App: React.FC = () => {
   return (
@@ -42,6 +46,10 @@ const App: React.FC = () => {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/documentation" element={<DocsPage />} />
+        <Route path="/blog/teamwork" element={<TeamworkPage />} />
+        <Route path="/blog/calendar-access" element={<CalendarAccessPage />} />
+        <Route path="/blog/github-integration" element={<GithubIntegrationPage />} />
+        <Route path="/blog/focus" element={<FocusPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
