@@ -71,7 +71,7 @@ export default function CalendarAccessPage() {
           <div className="aspect-video mt-6 rounded-xl overflow-hidden shadow-md">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/gU1F3Y0Tt9c"
+              src="https://www.youtube.com/embed/MfIsunvTTQw"
               title="TeamFlow Calendar Access Demo"
               allowFullScreen
             />
