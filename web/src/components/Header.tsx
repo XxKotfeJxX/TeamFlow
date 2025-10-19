@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react"; // 📦 icons
 import { userDb } from "../models/mockDB/users";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState<number | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [currentUser, setCurrentUser] = useState<ReturnType<typeof userDb.getById> | null>(null);
 
@@ -89,7 +91,7 @@ const Header = () => {
     : navItemsBase;
 
   // ============================
-  // 🔹 Ховери
+  // 🔹 Ховери для desktop
   // ============================
   const handleMouseEnter = (idx: number) => {
     if (closeTimeout.current) {
@@ -124,7 +126,7 @@ const Header = () => {
           />
         </div>
 
-        {/* Навігація */}
+        {/* Навігація для Desktop */}
         <nav className="hidden md:flex gap-6 text-sm text-gray-700">
           {navItems.map((item, idx) => (
             <div
@@ -135,36 +137,33 @@ const Header = () => {
             >
               <button
                 className={`p-2 rounded-xl transition duration-150 
-                  hover:text-blue-600 
-                  focus:outline-none focus:ring-0 
+                  hover:text-blue-600 focus:outline-none focus:ring-0 
                   ${openMenu === idx ? "bg-gray-100 text-blue-600" : "bg-transparent"}
                 `}
-                style={{ border: "none" }} // насильно прибираємо будь-які бордери
+                style={{ border: "none" }}
               >
                 {item.label}
               </button>
 
               {openMenu === idx && (
                 <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-44 text-sm z-50">
-                  {item.options.map(
-                    (option: { name: string; path: string }, i: number) => (
-                      <button
-                        key={i}
-                        onClick={() => navigate(option.path)}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
-                      >
-                        {option.name}
-                      </button>
-                    )
-                  )}
+                  {item.options.map((option, i) => (
+                    <button
+                      key={i}
+                      onClick={() => navigate(option.path)}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
+                    >
+                      {option.name}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
           ))}
         </nav>
 
-        {/* Праворуч — користувач */}
-        <div className="flex items-center gap-3 text-sm">
+        {/* Праворуч — користувач або кнопки */}
+        <div className="hidden md:flex items-center gap-3 text-sm">
           {currentUser ? (
             <div className="flex items-center gap-3">
               {currentUser.avatarUrl ? (
@@ -191,7 +190,6 @@ const Header = () => {
                 {currentUser.fullname || currentUser.username}
               </button>
 
-              {/* 🔹 Кнопка виходу — виділена */}
               <button
                 onClick={handleLogout}
                 className="ml-2 px-3 py-1.5 rounded-md bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-700 transition font-medium"
@@ -203,23 +201,155 @@ const Header = () => {
           ) : (
             <>
               <button
-                className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl focus:outline-none focus:ring-0"
-                style={{ border: "none" }}
+                className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl"
                 onClick={() => navigate("/login")}
               >
                 Увійти
               </button>
               <button
                 onClick={() => navigate("/register")}
-                className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-0"
-                style={{ border: "none" }}
+                className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition"
               >
                 Зареєструватися
               </button>
             </>
           )}
         </div>
+
+        {/* Мобільне меню */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="p-2 text-gray-700 hover:text-blue-600 transition"
+            style={{ border: "none" }}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
       </div>
+
+      {/* Випливаюче меню (мобільна версія) */}
+      {mobileOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex"
+        onClick={() => setMobileOpen(false)}
+        >
+          <div className="bg-white w-3/4 max-w-xs h-full shadow-xl p-5 flex flex-col gap-6 animate-slide-in"
+          onClick={(e) => e.stopPropagation()}>
+            {/* Верхня панель */}
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-lg text-gray-800">Меню</span>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-2 text-gray-600 hover:text-red-600 transition"
+                style={{ border: "none" }}
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Навігація */}
+            <nav className="flex flex-col gap-3 text-gray-800 text-base">
+              {navItems.map((item, idx) => (
+                <div key={idx}>
+                  <button
+                    onClick={() =>
+                      setOpenMenu(openMenu === idx ? null : idx)
+                    }
+                    className="flex justify-between items-center w-full text-left py-2 px-3 rounded-md hover:bg-gray-100"
+                    style={{ border: "none" }}
+                  >
+                    {item.label}
+                    <span className="text-gray-500">
+                      {openMenu === idx ? "−" : "+"}
+                    </span>
+                  </button>
+                  {openMenu === idx && (
+                    <div className="ml-4 mt-1 flex flex-col">
+                      {item.options.map((option, i) => (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            navigate(option.path);
+                            setMobileOpen(false);
+                          }}
+                          className="py-1.5 text-gray-700 hover:text-blue-600 text-left px-3 rounded-md hover:bg-gray-100"
+                          style={{
+                            border: "none"
+                           }}
+                        >
+                          {option.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </nav>
+
+            {/* Авторизація / Профіль */}
+            <div className="mt-auto border-t pt-4">
+              {currentUser ? (
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={() => {
+                      navigate(`/profile/${currentUser.id}`);
+                      setMobileOpen(false);
+                    }}
+                    className="text-left font-medium text-gray-800 hover:text-blue-600"
+                    style={{ border: "none" }}
+                  >
+                    {currentUser.fullname || currentUser.username}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMobileOpen(false);
+                    }}
+                    className="text-left px-3 py-2 rounded-md bg-gray-100 hover:bg-red-100 hover:text-red-700 font-medium text-gray-600"
+                    style={{ border: "none" }}
+                  >
+                    Вийти
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                      setMobileOpen(false);
+                    }}
+                    className="text-left text-gray-700 hover:text-blue-600"
+                  >
+                    Увійти
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/register");
+                      setMobileOpen(false);
+                    }}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-left"
+                  >
+                    Зареєструватися
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Анімація зліва */}
+          <style>
+            {`
+              @keyframes slide-in {
+                from { transform: translateX(-100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+              }
+              .animate-slide-in {
+                animation: slide-in 0.3s ease-out forwards;
+              }
+            `}
+          </style>
+        </div>
+      )}
     </header>
   );
 };
