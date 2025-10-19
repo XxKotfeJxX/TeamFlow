@@ -152,6 +152,7 @@ const Header = () => {
                       key={i}
                       onClick={() => navigate(option.path)}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
+                      style={{ border: "none" }}
                     >
                       {option.name}
                     </button>
