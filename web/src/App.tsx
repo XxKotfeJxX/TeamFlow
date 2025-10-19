@@ -14,6 +14,9 @@ import TasksPage from "./pages/TaskPage";
 import UserTeamsPage from "./pages/UserTeamsPage";
 import OverviewPage from "./pages/OverviewPage";
 import FeaturesPage from "./pages/FeaturesPage";
+import AboutPage from "./pages/AboutPage";
+import MyTeamPage from "./pages/MyTeamPage";
+import CareerPage from "./pages/CareerPage";
 
 const App: React.FC = () => {
   return (
@@ -30,6 +33,9 @@ const App: React.FC = () => {
         <Route path="/teams/user/:userId" element={<UserTeamsPage />} />
         <Route path="/overview" element={<OverviewPage />} />
         <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/my-team" element={<MyTeamPage />} />
+        <Route path="/career" element={<CareerPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />

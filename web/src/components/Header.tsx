@@ -54,11 +54,19 @@ const Header = () => {
     },
     {
       label: "Компанія",
-      options: ["Про нас", "Команда", "Кар’єра"],
+      options: [
+        { name: "Про нас", path: "/about" },
+        { name: "Команда", path: "/my-team" },
+        { name: "Кар’єра", path: "/career" },
+      ],
     },
     {
       label: "Ресурси",
-      options: ["Блог", "Підтримка", "Документація"],
+      options: [
+        { name: "Блог", path: "/blog" },
+        { name: "Підтримка", path: "/support" },
+        { name: "Документація", path: "/documentation" },
+      ],
     },
   ];
 
