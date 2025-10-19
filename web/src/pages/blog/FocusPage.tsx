@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { Button } from "../../components/ui/Button";
+import { VideoEmbed } from "../../components/ui/VideoEmbed";
 
 export default function FocusPage() {
   const navigate = useNavigate();
@@ -51,14 +52,12 @@ export default function FocusPage() {
             повідомлень і нагадувань. Система автоматично повідомляє команду, що
             ти зараз у фокусі, щоб уникнути переривань.
           </p>
-          <div className="aspect-video mt-6 rounded-xl overflow-hidden shadow-md">
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/zlymJd1eY00"
-              title="TeamFlow Focus Mode Demo"
-              allowFullScreen
-            />
-          </div>
+
+          <VideoEmbed
+            videoId="xm3YgoEiEDc"
+            previewImage="/images/team-working.png"
+            title="TeamFlow Focus Mode Demo"
+          />
         </section>
 
         <section>
@@ -132,7 +131,10 @@ export default function FocusPage() {
         </section>
 
         <div className="flex justify-center mt-12">
-          <Button onClick={() => navigate("/blog")} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            onClick={() => navigate("/blog")}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
             ← Повернутись до блогу
           </Button>
         </div>
