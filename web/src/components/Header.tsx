@@ -42,7 +42,6 @@ const Header = () => {
   // ============================
   // 🔹 Меню навігації
   // ============================
-
   const navItemsBase = [
     {
       label: "Продукт",
@@ -134,33 +133,29 @@ const Header = () => {
               onMouseEnter={() => handleMouseEnter(idx)}
               onMouseLeave={handleMouseLeave}
             >
-              <button className="hover:text-blue-600 transition p-2 rounded-xl">
+              <button
+                className={`p-2 rounded-xl transition duration-150 
+                  hover:text-blue-600 
+                  focus:outline-none focus:ring-0 
+                  ${openMenu === idx ? "bg-gray-100 text-blue-600" : "bg-transparent"}
+                `}
+                style={{ border: "none" }} // насильно прибираємо будь-які бордери
+              >
                 {item.label}
               </button>
 
               {openMenu === idx && (
                 <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-44 text-sm z-50">
                   {item.options.map(
-                    (
-                      option: string | { name: string; path: string },
-                      i: number
-                    ) =>
-                      typeof option === "string" ? (
-                        <span
-                          key={i}
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-default"
-                        >
-                          {option}
-                        </span>
-                      ) : (
-                        <button
-                          key={i}
-                          onClick={() => navigate(option.path)}
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
-                        >
-                          {option.name}
-                        </button>
-                      )
+                    (option: { name: string; path: string }, i: number) => (
+                      <button
+                        key={i}
+                        onClick={() => navigate(option.path)}
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
+                      >
+                        {option.name}
+                      </button>
+                    )
                   )}
                 </div>
               )}
@@ -191,13 +186,16 @@ const Header = () => {
               <button
                 onClick={() => navigate(`/profile/${currentUser.id}`)}
                 className="text-gray-800 font-medium hover:text-blue-600 transition"
+                style={{ border: "none" }}
               >
                 {currentUser.fullname || currentUser.username}
               </button>
 
+              {/* 🔹 Кнопка виходу — виділена */}
               <button
                 onClick={handleLogout}
-                className="ml-2 text-gray-500 hover:text-red-600 transition"
+                className="ml-2 px-3 py-1.5 rounded-md bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-700 transition font-medium"
+                style={{ border: "none" }}
               >
                 Вийти
               </button>
@@ -205,14 +203,16 @@ const Header = () => {
           ) : (
             <>
               <button
-                className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl"
+                className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl focus:outline-none focus:ring-0"
+                style={{ border: "none" }}
                 onClick={() => navigate("/login")}
               >
                 Увійти
               </button>
               <button
                 onClick={() => navigate("/register")}
-                className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-0"
+                style={{ border: "none" }}
               >
                 Зареєструватися
               </button>
