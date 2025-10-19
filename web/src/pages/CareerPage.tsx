@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/Button";
 
 const roles = [
   {
@@ -25,7 +25,7 @@ export default function CareerPage() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-16">
+      <main className="flex-1 max-w-5xl mx-auto px-6 pb-16 pt-28">
         <h1 className="text-4xl font-bold mb-8 text-center">Кар’єра</h1>
 
         <p className="text-center text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
@@ -51,11 +51,13 @@ export default function CareerPage() {
                 ))}
               </div>
               <Button
-                variant="default"
-                onClick={() => (window.location.href = "mailto:hr@teamflow.com")}
-              >
-                Надіслати резюме
-              </Button>
+  onClick={() => (window.location.href = "mailto:hr@teamflow.com")}
+  className="bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-6 py-3 text-lg rounded-xl transition-transform hover:scale-105"
+  style={{ border: "none" }}
+>
+  Надіслати резюме
+</Button>
+
             </div>
           ))}
         </div>
