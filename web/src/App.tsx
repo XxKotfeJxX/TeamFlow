@@ -12,6 +12,8 @@ import DayPage from "./pages/DayPage";
 import TeamPage from "./pages/TeamPage";
 import TasksPage from "./pages/TaskPage";
 import UserTeamsPage from "./pages/UserTeamsPage";
+import OverviewPage from "./pages/OverviewPage";
+import FeaturesPage from "./pages/FeaturesPage";
 
 const App: React.FC = () => {
   return (
@@ -26,6 +28,8 @@ const App: React.FC = () => {
         <Route path="/team/:id" element={<TeamPage />} />
         <Route path="/tasks/:ownerType/:ownerId" element={<TasksPage />} />
         <Route path="/teams/user/:userId" element={<UserTeamsPage />} />
+        <Route path="/overview" element={<OverviewPage />} />
+        <Route path="/features" element={<FeaturesPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />

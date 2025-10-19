@@ -9,8 +9,8 @@ const Footer = () => {
         <div>
           <h4 className="text-white font-semibold mb-4">Продукт</h4>
           <ul className="space-y-2">
-            <li><a href="#" className="hover:text-white">Функції</a></li>
-            <li><a href="#" className="hover:text-white">Ціни</a></li>
+            <li><a href="/features" className="hover:text-white">Функції</a></li>
+            <li><a href="/price" className="hover:text-white">Ціни</a></li>
             <li><a href="#" className="hover:text-white">Завантаження</a></li>
           </ul>
         </div>

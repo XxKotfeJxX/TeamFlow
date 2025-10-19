@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { userDb } from "../models/mockDB/users";
 
 const Header = () => {
@@ -10,12 +10,11 @@ const Header = () => {
   const [currentUser, setCurrentUser] = useState<ReturnType<typeof userDb.getById> | null>(null);
 
   // ============================
-  // 🔹 Отримуємо користувача з localStorage або URL
+  // 🔹 Отримуємо користувача
   // ============================
   useEffect(() => {
     const localId = localStorage.getItem("currentUserId");
 
-    // 1️⃣ пробуємо з localStorage
     if (localId) {
       const localUser = userDb.getById(localId);
       if (localUser) {
@@ -24,13 +23,10 @@ const Header = () => {
       }
     }
 
-    // 2️⃣ якщо localStorage нема — пробуємо з URL
     const match = location.pathname.match(/\/profile\/([^/]+)/);
     if (match && match[1]) {
       const urlUser = userDb.getById(match[1]);
-      if (urlUser) {
-        setCurrentUser(urlUser);
-      }
+      if (urlUser) setCurrentUser(urlUser);
     }
   }, [location.pathname]);
 
@@ -47,21 +43,37 @@ const Header = () => {
   // 🔹 Меню навігації
   // ============================
 
-  // базові пункти
   const navItemsBase = [
-    { label: "Продукт", options: ["Огляд", "Функції", "Ціни"] },
-    { label: "Компанія", options: ["Про нас", "Команда", "Кар’єра"] },
-    { label: "Ресурси", options: ["Блог", "Підтримка", "Документація"] },
+    {
+      label: "Продукт",
+      options: [
+        { name: "Огляд", path: "/overview" },
+        { name: "Функції", path: "/features" },
+        { name: "Ціни", path: "/price" },
+      ],
+    },
+    {
+      label: "Компанія",
+      options: ["Про нас", "Команда", "Кар’єра"],
+    },
+    {
+      label: "Ресурси",
+      options: ["Блог", "Підтримка", "Документація"],
+    },
   ];
 
-  // якщо користувач авторизований — додаємо "Мій простір"
   const navItems = currentUser
     ? [
         ...navItemsBase,
         {
           label: "Мій простір",
           options: [
-            { name: "Календар", path: `/calendar/${currentUser.id}/${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}` },
+            {
+              name: "Календар",
+              path: `/calendar/${currentUser.id}/${new Date().getFullYear()}-${String(
+                new Date().getMonth() + 1
+              ).padStart(2, "0")}`,
+            },
             { name: "Завдання", path: `/tasks/user/${currentUser.id}` },
             { name: "Команди", path: `/teams/user/${currentUser.id}` },
           ],
@@ -92,7 +104,7 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-14">
-        {/* 🔹 Лого — клікабельне */}
+        {/* Лого */}
         <div
           className="font-bold text-xl text-gray-800 cursor-pointer flex items-center gap-2"
           onClick={() => navigate("/")}
@@ -105,7 +117,7 @@ const Header = () => {
           />
         </div>
 
-        {/* 🔹 Навігація */}
+        {/* Навігація */}
         <nav className="hidden md:flex gap-6 text-sm text-gray-700">
           {navItems.map((item, idx) => (
             <div
@@ -121,36 +133,37 @@ const Header = () => {
               {openMenu === idx && (
                 <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-44 text-sm z-50">
                   {item.options.map(
-  (option: string | { name: string; path: string }, i: number) =>
-    typeof option === "string" ? (
-      <span
-        key={i}
-        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-default"
-      >
-        {option}
-      </span>
-    ) : (
-      <button
-        key={i}
-        onClick={() => navigate(option.path)}
-        className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
-      >
-        {option.name}
-      </button>
-    )
-)}
-
+                    (
+                      option: string | { name: string; path: string },
+                      i: number
+                    ) =>
+                      typeof option === "string" ? (
+                        <span
+                          key={i}
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-default"
+                        >
+                          {option}
+                        </span>
+                      ) : (
+                        <button
+                          key={i}
+                          onClick={() => navigate(option.path)}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100 transition text-gray-800"
+                        >
+                          {option.name}
+                        </button>
+                      )
+                  )}
                 </div>
               )}
             </div>
           ))}
         </nav>
 
-        {/* 🔹 Кнопки справа */}
+        {/* Праворуч — користувач */}
         <div className="flex items-center gap-3 text-sm">
           {currentUser ? (
             <div className="flex items-center gap-3">
-              {/* Аватар */}
               {currentUser.avatarUrl ? (
                 <img
                   src={currentUser.avatarUrl}
@@ -167,7 +180,6 @@ const Header = () => {
                 </div>
               )}
 
-              {/* Ім’я користувача */}
               <button
                 onClick={() => navigate(`/profile/${currentUser.id}`)}
                 className="text-gray-800 font-medium hover:text-blue-600 transition"
@@ -175,7 +187,6 @@ const Header = () => {
                 {currentUser.fullname || currentUser.username}
               </button>
 
-              {/* Кнопка виходу */}
               <button
                 onClick={handleLogout}
                 className="ml-2 text-gray-500 hover:text-red-600 transition"
