@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800 leading-relaxed">
       <Header />
 
-      <main className="flex-1 max-w-4xl mx-auto px-6 py-12">
+      <main className="flex-1 max-w-4xl mx-auto px-6 pb-12 pt-28">
         <h1 className="text-4xl font-bold mb-6 text-center text-gray-900">
           Політика конфіденційності
         </h1>
