@@ -26,6 +26,7 @@ import GithubIntegrationPage from "./pages/blog/GithubIntegrationPage";
 import FocusPage from "./pages/blog/FocusPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import DownloadPage from "./pages/DownloadPage";
 
 const App: React.FC = () => {
   return (
@@ -54,6 +55,7 @@ const App: React.FC = () => {
         <Route path="/blog/focus" element={<FocusPage />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/download" element={<DownloadPage />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
