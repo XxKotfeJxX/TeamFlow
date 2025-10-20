@@ -1,7 +1,6 @@
 // src/pages/DownloadPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/Button";
 import { Download, Monitor, Smartphone, Laptop } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -10,7 +9,7 @@ export default function DownloadPage() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-16">
+      <main className="flex-1 max-w-5xl mx-auto px-6 py-24">
         {/* HERO */}
         <section className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -26,8 +25,8 @@ export default function DownloadPage() {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {/* Windows */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center"
+            whileHover={{ scale: 1.03 }}
+            className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center text-center border border-gray-200 hover:shadow-xl transition"
           >
             <Monitor className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">Windows</h2>
@@ -35,31 +34,37 @@ export default function DownloadPage() {
               Сумісна з Windows 10 і новішими.  
               Підтримка автооновлень і офлайн-режиму.
             </p>
-            <Button variant="default" size="lg">
+            <a
+              href="/downloads/TeamFlow_Setup.exe"
+              className="bg-indigo-600 text-white hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium flex items-center"
+            >
               <Download className="mr-2 h-5 w-5" /> Завантажити .exe
-            </Button>
+            </a>
           </motion.div>
 
           {/* macOS */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center"
+            whileHover={{ scale: 1.03 }}
+            className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center text-center border border-gray-200 hover:shadow-xl transition"
           >
             <Laptop className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">macOS</h2>
-            <p className="text-gray-500 mb-4">
+            <p className="text-gray-500 mb-10">
               Підтримка Apple Silicon (M1, M2, M3).  
               Оптимізовано для Sonoma та Ventura.
             </p>
-            <Button variant="default" size="lg">
+            <a
+              href="/downloads/TeamFlow_Mac.dmg"
+              className="bg-indigo-600 text-white hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium flex items-center"
+            >
               <Download className="mr-2 h-5 w-5" /> Завантажити .dmg
-            </Button>
+            </a>
           </motion.div>
 
           {/* Mobile */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center"
+            whileHover={{ scale: 1.03 }}
+            className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center text-center border border-gray-200 hover:shadow-xl transition"
           >
             <Smartphone className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">Мобільні пристрої</h2>
@@ -67,35 +72,51 @@ export default function DownloadPage() {
               Завантаж додаток на свій смартфон,  
               щоб бути з командою на зв’язку будь-де.
             </p>
-            <div className="flex gap-2">
-              <Button variant="outline" size="lg">
+            <div className="flex gap-2 pt-4">
+              <a
+                href="https://apps.apple.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-black text-white px-5 py-1 rounded-lg hover:bg-gray-900 transition"
+              >
                 App Store
-              </Button>
-              <Button variant="outline" size="lg">
+              </a>
+              <a
+                href="https://play.google.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-600 text-white px-5 py-1 rounded-lg hover:bg-green-700 transition"
+              >
                 Google Play
-              </Button>
+              </a>
             </div>
           </motion.div>
         </section>
 
-        {/* QR / INFO */}
+        {/* QR */}
         <section className="text-center mb-20">
           <h2 className="text-2xl font-semibold mb-4">Швидке встановлення</h2>
           <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Відскануй QR-код, щоб миттєво завантажити мобільну версію,  
-            або скористайся автоматичним визначенням платформи для швидкого вибору інсталятора.
+            Відскануй QR-код, щоб миттєво завантажити мобільну версію  
+            або відкрий посилання вручну.
           </p>
 
-          <div className="flex flex-col items-center gap-6">
+          <a
+            href="https://teamflow.app/download"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block"
+          >
             <img
               src="/images/qr-placeholder.png"
               alt="QR Code"
-              className="w-40 h-40 rounded-lg border border-gray-200 shadow-sm"
+              className="w-48 h-48 rounded-xl border border-gray-200 shadow-lg hover:scale-105 transition"
             />
-            <p className="text-sm text-gray-400">
-              (Так, ми ще працюємо над автоматичним розпізнаванням — але воно вже близько)
-            </p>
-          </div>
+          </a>
+
+          <p className="text-sm text-gray-400 mt-4">
+            Натисни або відскануй — результат однаковий.
+          </p>
         </section>
 
         {/* TECH INFO */}
@@ -107,7 +128,6 @@ export default function DownloadPage() {
             <li>Windows 10+ / macOS 13+ / Android 10+ / iOS 15+</li>
             <li>Не менше 200 МБ вільного місця</li>
             <li>Стабільне інтернет-з’єднання для синхронізації</li>
-            <li>Бажано — чашка кави ☕</li>
           </ul>
         </section>
       </main>
