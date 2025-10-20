@@ -3,7 +3,7 @@ import { FaXTwitter } from "react-icons/fa6"; // ✅ нова офіційна �
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gray-900 text-gray-300 text-sm">
+    <footer className="w-full bg-gray-900 text-gray-300 text-sm px-8">
       {/* Контейнер */}
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         {/* Продукт */}
