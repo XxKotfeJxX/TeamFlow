@@ -128,6 +128,65 @@ export const teamDb = {
   },
 };
 
+
+
+// ===== LocalStorage persistence =====
+const STORAGE_KEY = "teamsDB";
+
+function saveTeams() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(teams));
+}
+
+function loadTeams() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return;
+  try {
+    const parsed: Team[] = JSON.parse(stored);
+    teams.length = 0;
+    teams.push(...parsed.map(t => ({
+      ...t,
+      createdAt: new Date(t.createdAt),
+      updatedAt: new Date(t.updatedAt),
+    })));
+  } catch (e) {
+    console.error("Помилка завантаження команд із LocalStorage:", e);
+  }
+}
+
+// Автоматичне завантаження при старті
+loadTeams();
+
+// Перезапис збереження у CRUD методах
+const originalCreate = teamDb.create;
+teamDb.create = (data) => {
+  const newTeam = originalCreate(data);
+  saveTeams();
+  return newTeam;
+};
+
+const originalUpdate = teamDb.update;
+teamDb.update = (id, updates) => {
+  const updated = originalUpdate(id, updates);
+  if (updated) saveTeams();
+  return updated;
+};
+
+const originalDelete = teamDb.delete;
+teamDb.delete = (id) => {
+  const ok = originalDelete(id);
+  if (ok) saveTeams();
+  return ok;
+};
+
+teamDb.addMember = (teamId, userId, role) => {
+  const t = teams.find(x => x.id === teamId);
+  if (!t) return;
+  const result = teamDb.setRole(teamId, userId, role ?? "member");
+  saveTeams();
+  return result;
+};
+
+
 // ========== TEAM PROFILE (ВІЗИТКА) ==========
 
 // Тип шаблону блоку
