@@ -1,31 +1,30 @@
 import type { Calendar, Event, Task } from "./calendar";
 
+// ===== CALENDARS =====
 export const seedCalendars: Calendar[] = [
-  // особисті
-  { id: "c1",  name: "Особистий календар Андрія",   ownerType: "user", ownerId: "u1" },
-  { id: "c2",  name: "Особистий календар Марії",    ownerType: "user", ownerId: "u2" },
-  { id: "c3",  name: "Особистий календар Олега",    ownerType: "user", ownerId: "u3" },
-  { id: "c4",  name: "Особистий календар Сергія",   ownerType: "user", ownerId: "u4" },
-  { id: "c5",  name: "Особистий календар Катерини", ownerType: "user", ownerId: "u5" },
-  { id: "c6",  name: "Особистий календар Дмитра",   ownerType: "user", ownerId: "u6" },
-  { id: "c7",  name: "Особистий календар Ірини",    ownerType: "user", ownerId: "u7" },
-  { id: "c8",  name: "Особистий календар Юрія",     ownerType: "user", ownerId: "u8" },
-  { id: "c9",  name: "Особистий календар Софії",    ownerType: "user", ownerId: "u9" },
+  { id: "c1", name: "Особистий календар Андрія", ownerType: "user", ownerId: "u1" },
+  { id: "c2", name: "Особистий календар Марії", ownerType: "user", ownerId: "u2" },
+  { id: "c3", name: "Особистий календар Олега", ownerType: "user", ownerId: "u3" },
+  { id: "c4", name: "Особистий календар Сергія", ownerType: "user", ownerId: "u4" },
+  { id: "c5", name: "Особистий календар Катерини", ownerType: "user", ownerId: "u5" },
+  { id: "c6", name: "Особистий календар Дмитра", ownerType: "user", ownerId: "u6" },
+  { id: "c7", name: "Особистий календар Ірини", ownerType: "user", ownerId: "u7" },
+  { id: "c8", name: "Особистий календар Юрія", ownerType: "user", ownerId: "u8" },
+  { id: "c9", name: "Особистий календар Софії", ownerType: "user", ownerId: "u9" },
   { id: "c10", name: "Особистий календар Владислава", ownerType: "user", ownerId: "u10" },
-  { id: "c11", name: "Особистий календар Аліни",    ownerType: "user", ownerId: "u11" },
-  { id: "c12", name: "Особистий календар Тараса",   ownerType: "user", ownerId: "u12" },
-  { id: "c13", name: "Особистий календар Наталії",  ownerType: "user", ownerId: "u13" },
-  { id: "c14", name: "Особистий календар Антона",   ownerType: "user", ownerId: "u14" },
-  { id: "c15", name: "Особистий календар Оксани",   ownerType: "user", ownerId: "u15" },
+  { id: "c11", name: "Особистий календар Аліни", ownerType: "user", ownerId: "u11" },
+  { id: "c12", name: "Особистий календар Тараса", ownerType: "user", ownerId: "u12" },
+  { id: "c13", name: "Особистий календар Наталії", ownerType: "user", ownerId: "u13" },
+  { id: "c14", name: "Особистий календар Антона", ownerType: "user", ownerId: "u14" },
+  { id: "c15", name: "Особистий календар Оксани", ownerType: "user", ownerId: "u15" },
 
-  // командні
   { id: "c16", name: "Командний календар TeamFlow Dev", ownerType: "team", ownerId: "t1" },
   { id: "c17", name: "Командний календар Backend Core", ownerType: "team", ownerId: "t2" },
   { id: "c18", name: "Командний календар Design Squad", ownerType: "team", ownerId: "t3" },
   { id: "c19", name: "Командний календар Marketing Hub", ownerType: "team", ownerId: "t4" },
 ];
 
-
+// ===== EVENTS =====
 export const seedEvents: Event[] = [
   {
     id: "e1",
@@ -41,7 +40,7 @@ export const seedEvents: Event[] = [
     recurring: { isRecurring: true, periodDays: 7 },
     status: "active",
     tags: ["Meeting"],
-    taskIds: ["ta1", "ta2", "ta3", "ta4", "ta5", "ta6", "ta7"] // <-- пов'язуємо з тасками
+    taskIds: ["ta1", "ta2", "ta3", "ta4", "ta5", "ta6", "ta7"],
   },
   {
     id: "e2",
@@ -177,10 +176,10 @@ export const seedEvents: Event[] = [
     recurring: { isRecurring: true, periodDays: 7 },
     status: "active",
     tags: ["Learning"],
-  }
+  },
 ];
 
-
+// ===== TASKS =====
 export const seedTasks: Task[] = [
   // --- Особисті таски ---
   {
@@ -196,9 +195,9 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c3",
     tags: ["Design", "Frontend"],
+    createdAt: new Date("2025-09-10T12:00:00"),
+    updatedAt: new Date("2025-09-12T09:00:00"),
   },
-
-  // u1 особисті
   {
     id: "ta2",
     title: "Написати документацію",
@@ -212,6 +211,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c1",
     tags: ["Docs"],
+    createdAt: new Date("2025-09-11T09:30:00"),
+    updatedAt: new Date("2025-09-11T09:30:00"),
   },
   {
     id: "ta3",
@@ -226,9 +227,9 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c1",
     tags: ["CodeReview"],
+    createdAt: new Date("2025-09-12T10:00:00"),
+    updatedAt: new Date("2025-09-12T10:00:00"),
   },
-
-  // u2 особисті
   {
     id: "ta4",
     title: "Налаштувати CI/CD",
@@ -242,6 +243,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c2",
     tags: ["DevOps"],
+    createdAt: new Date("2025-09-10T14:00:00"),
+    updatedAt: new Date("2025-09-13T16:00:00"),
   },
   {
     id: "ta5",
@@ -256,6 +259,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c2",
     tags: ["Backend", "Testing"],
+    createdAt: new Date("2025-09-12T11:30:00"),
+    updatedAt: new Date("2025-09-12T11:30:00"),
   },
   {
     id: "ta6",
@@ -270,9 +275,9 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c2",
     tags: ["Maintenance"],
+    createdAt: new Date("2025-09-11T08:45:00"),
+    updatedAt: new Date("2025-09-11T08:45:00"),
   },
-
-  // u3 особисті
   {
     id: "ta7",
     title: "Оптимізувати SQL-запити",
@@ -286,6 +291,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c3",
     tags: ["Database", "Optimization"],
+    createdAt: new Date("2025-09-09T10:00:00"),
+    updatedAt: new Date("2025-09-09T10:00:00"),
   },
   {
     id: "ta8",
@@ -300,6 +307,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c3",
     tags: ["Security"],
+    createdAt: new Date("2025-09-09T12:00:00"),
+    updatedAt: new Date("2025-09-13T09:00:00"),
   },
   {
     id: "ta9",
@@ -314,9 +323,9 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c3",
     tags: ["Bugfix"],
+    createdAt: new Date("2025-09-11T13:00:00"),
+    updatedAt: new Date("2025-09-11T13:00:00"),
   },
-
-  // u4 особисті
   {
     id: "ta10",
     title: "Розробити нову сторінку профілю",
@@ -330,6 +339,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c4",
     tags: ["Frontend", "UI"],
+    createdAt: new Date("2025-09-10T10:00:00"),
+    updatedAt: new Date("2025-09-13T10:00:00"),
   },
   {
     id: "ta11",
@@ -344,6 +355,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c4",
     tags: ["Testing"],
+    createdAt: new Date("2025-09-12T14:00:00"),
+    updatedAt: new Date("2025-09-12T14:00:00"),
   },
   {
     id: "ta12",
@@ -358,9 +371,9 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c4",
     tags: ["Frontend", "Feature"],
+    createdAt: new Date("2025-09-13T09:30:00"),
+    updatedAt: new Date("2025-09-13T09:30:00"),
   },
-
-  // u5 особисті
   {
     id: "ta13",
     title: "Налаштувати push-нотифікації",
@@ -374,6 +387,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c5",
     tags: ["Backend", "Notifications"],
+    createdAt: new Date("2025-09-09T10:15:00"),
+    updatedAt: new Date("2025-09-13T21:00:00"),
   },
   {
     id: "ta14",
@@ -388,6 +403,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c5",
     tags: ["Chat", "Backend"],
+    createdAt: new Date("2025-09-10T16:00:00"),
+    updatedAt: new Date("2025-09-13T20:00:00"),
   },
   {
     id: "ta15",
@@ -402,6 +419,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c5",
     tags: ["Chat", "Optimization"],
+    createdAt: new Date("2025-09-12T15:00:00"),
+    updatedAt: new Date("2025-09-13T22:00:00"),
   },
 
   // --- Командні таски ---
@@ -418,6 +437,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c1",
     tags: ["Presentation"],
+    createdAt: new Date("2025-09-13T10:00:00"),
+    updatedAt: new Date("2025-09-13T10:00:00"),
   },
   {
     id: "ta17",
@@ -432,6 +453,8 @@ export const seedTasks: Task[] = [
     status: "inProgress",
     calendarId: "c2",
     tags: ["DevOps"],
+    createdAt: new Date("2025-09-12T11:00:00"),
+    updatedAt: new Date("2025-09-13T09:00:00"),
   },
   {
     id: "ta18",
@@ -446,6 +469,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c3",
     tags: ["Design"],
+    createdAt: new Date("2025-09-13T09:00:00"),
+    updatedAt: new Date("2025-09-13T09:00:00"),
   },
   {
     id: "ta19",
@@ -460,6 +485,8 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c4",
     tags: ["Integration"],
+    createdAt: new Date("2025-09-13T08:00:00"),
+    updatedAt: new Date("2025-09-13T08:00:00"),
   },
   {
     id: "ta20",
@@ -474,6 +501,7 @@ export const seedTasks: Task[] = [
     status: "notStarted",
     calendarId: "c5",
     tags: ["Release"],
+    createdAt: new Date("2025-09-14T09:00:00"),
+    updatedAt: new Date("2025-09-14T09:00:00"),
   },
 ];
-
