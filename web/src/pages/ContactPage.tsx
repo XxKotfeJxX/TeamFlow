@@ -5,6 +5,8 @@ import { Mail, MapPin, Clock } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Input } from "../components/ui/Input";
+import { Textarea } from "../components/ui/Textarea";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -20,7 +22,7 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-16 space-y-24">
+      <main className="flex-1 max-w-5xl mx-auto px-6 py-24 space-y-24">
         {/* HERO */}
         <section className="text-center space-y-4">
           <motion.h1
@@ -87,7 +89,7 @@ export default function ContactPage() {
               <label className="block mb-1 font-medium text-gray-700">
                 Ім’я
               </label>
-              <input
+              <Input
                 type="text"
                 name="name"
                 placeholder="Твоє ім’я"
@@ -99,7 +101,7 @@ export default function ContactPage() {
               <label className="block mb-1 font-medium text-gray-700">
                 Електронна пошта *
               </label>
-              <input
+              <Input
                 type="email"
                 name="email"
                 required
@@ -112,21 +114,20 @@ export default function ContactPage() {
               <label className="block mb-1 font-medium text-gray-700">
                 Повідомлення *
               </label>
-              <textarea
+              <Textarea
                 name="message"
                 required
                 rows={5}
                 placeholder="Напиши тут своє запитання або коментар..."
                 className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3"
-              ></textarea>
+              ></Textarea>
             </div>
 
             <div className="text-center">
               <Button
                 type="submit"
                 size="lg"
-                variant="default"
-                className="px-8"
+                className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
               >
                 Надіслати
               </Button>
