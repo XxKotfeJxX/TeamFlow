@@ -10,6 +10,7 @@ const TasksPage: React.FC = () => {
   const { ownerType, ownerId } = useParams<{ ownerType: "user" | "team"; ownerId: string }>();
   const [filter, setFilter] = useState<"all" | "active" | "done">("all");
   const [tasksState, setTasksState] = useState<Task[]>([]);
+  const [deleteTarget, setDeleteTarget] = useState<Task | null>(null); // 🔹 модалка
 
   // === Визначаємо власника ===
   const owner = useMemo(() => {
@@ -62,11 +63,19 @@ const TasksPage: React.FC = () => {
     setTasksState([...taskDb.getAll()]);
   };
 
-  const handleDelete = (taskId: string) => {
-    if (confirm("Видалити це завдання?")) {
-      taskDb.delete(taskId);
-      setTasksState([...taskDb.getAll()]);
-    }
+  const confirmDelete = (task: Task) => {
+    setDeleteTarget(task);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteTarget) return;
+    taskDb.delete(deleteTarget.id);
+    setTasksState([...taskDb.getAll()]);
+    setDeleteTarget(null);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteTarget(null);
   };
 
   // === Основний контент ===
@@ -90,8 +99,8 @@ const TasksPage: React.FC = () => {
               onClick={() => setFilter(f)}
               className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                 filter === f
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
+                  ? "bg-blue-600 text-white hover:bg-blue-700 hover:border-blue-800"
+                  : "bg-gray-200 text-gray-600 hover:bg-gray-300 hover:border-gray-400"
               }`}
             >
               {f === "all" ? "Усі" : f === "done" ? "Виконані" : "Активні"}
@@ -133,16 +142,16 @@ const TasksPage: React.FC = () => {
                   onClick={() => handleToggleStatus(task.id)}
                   className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                     task.status === "completed"
-                      ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-                      : "bg-green-100 text-green-700 hover:bg-green-200"
+                      ? "bg-yellow-100 text-yellow-700 hover:border-yellow-300 hover:bg-yellow-200"
+                      : "bg-green-100 text-green-700 hover:border-green-300 hover:bg-green-200"
                   }`}
                 >
                   {task.status === "completed" ? "Відмінити" : "Готово"}
                 </button>
 
                 <button
-                  onClick={() => handleDelete(task.id)}
-                  className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors"
+                  onClick={() => confirmDelete(task)}
+                  className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors hover:border-red-300"
                 >
                   Видалити
                 </button>
@@ -159,6 +168,34 @@ const TasksPage: React.FC = () => {
       </main>
 
       <Footer />
+
+      {/* ===== MODAL ===== */}
+      {deleteTarget && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-lg p-6 w-[90%] max-w-sm text-center animate-fadeIn">
+            <h2 className="text-lg font-semibold mb-2 text-gray-800">
+              Видалити завдання?
+            </h2>
+            <p className="text-sm text-gray-500 mb-6">
+              "{deleteTarget.title}" буде видалено без можливості відновлення.
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={handleCancelDelete}
+                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium transition hover:border-gray-400"
+              >
+                Скасувати
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition hover:border-red-800"
+              >
+                Видалити
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

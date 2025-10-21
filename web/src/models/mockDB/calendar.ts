@@ -109,21 +109,51 @@ export const eventDb = {
   },
 };
 
-// ===== TASK DB =====
+// ===== TASK DB (збереження в LocalStorage) =====
+const STORAGE_KEY = "tasksDB";
+
+function saveToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+function loadFromStorage() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed: Task[] = JSON.parse(stored);
+      tasks.length = 0;
+      tasks.push(...parsed.map(t => ({
+        ...t,
+        createdAt: new Date(t.createdAt),
+        updatedAt: new Date(t.updatedAt),
+        dueDate: new Date(t.dueDate),
+      })));
+    } catch (e) {
+      console.error("Помилка читання tasksDB:", e);
+    }
+  }
+}
+
+// 🔹 Завантажуємо одразу при старті
+loadFromStorage();
+
 export const taskDb = {
   create: (data: Omit<Task, "id" | "createdAt" | "updatedAt">): Task => {
     const task: Task = {
-      id: genId(),
+      id: crypto.randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
       ...data,
     };
     tasks.push(task);
+    saveToStorage();
     return task;
   },
 
   getById: (id: string): Task | undefined => tasks.find(t => t.id === id),
+
   getAll: (): Task[] => [...tasks],
+
   getByCalendarId: (calendarId: string): Task[] =>
     tasks.filter(t => t.calendarId === calendarId),
 
@@ -131,6 +161,7 @@ export const taskDb = {
     const task = tasks.find(t => t.id === id);
     if (!task) return undefined;
     Object.assign(task, updates, { updatedAt: new Date() });
+    saveToStorage();
     return task;
   },
 
@@ -138,6 +169,7 @@ export const taskDb = {
     const index = tasks.findIndex(t => t.id === id);
     if (index === -1) return false;
     tasks.splice(index, 1);
+    saveToStorage();
     return true;
   },
 
@@ -147,6 +179,7 @@ export const taskDb = {
     task.status =
       task.status === "completed" ? "inProgress" : "completed";
     task.updatedAt = new Date();
+    saveToStorage();
     return task;
   },
 };
