@@ -1,10 +1,47 @@
+import { useEffect, useState } from "react";
 import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; // ✅ нова офіційна іконка X
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
+  const [language, setLanguage] = useState("uk");
+
+  useEffect(() => {
+  const storedLang = localStorage.getItem("interfaceLang");
+  if (storedLang) setLanguage(storedLang);
+
+  const handleStorageChange = (e: StorageEvent) => {
+    if (e.key === "interfaceLang" && e.newValue) {
+      setLanguage(e.newValue);
+    }
+  };
+
+  const handleInterfaceLangChange = (e: Event) => {
+    const customEvent = e as CustomEvent<string>;
+    setLanguage(customEvent.detail);
+  };
+
+  window.addEventListener("storage", handleStorageChange);
+  window.addEventListener("interfaceLangChange", handleInterfaceLangChange as EventListener);
+
+  return () => {
+    window.removeEventListener("storage", handleStorageChange);
+    window.removeEventListener("interfaceLangChange", handleInterfaceLangChange as EventListener);
+  };
+}, []);
+
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value;
+    setLanguage(newLang);
+    localStorage.setItem("interfaceLang", newLang);
+    document.documentElement.lang = newLang;
+
+    // 🔥 щоб і профіль, і футер, і решта частин сайту оновилися в реальному часі
+    window.dispatchEvent(new CustomEvent("interfaceLangChange", { detail: newLang }));
+  };
+
   return (
     <footer className="w-full bg-gray-900 text-gray-300 text-sm px-8">
-      {/* Контейнер */}
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         {/* Продукт */}
         <div>
@@ -41,26 +78,22 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-2">Слідкуйте за нами</h4>
             <div className="flex gap-4 text-lg">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <FaFacebook />
-              </a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <FaXTwitter />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <FaInstagram />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <FaLinkedin />
-              </a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaFacebook /></a>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaXTwitter /></a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaInstagram /></a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaLinkedin /></a>
             </div>
           </div>
 
           {/* Вибір мови */}
           <div>
-            <label htmlFor="language" className="block mb-1 text-gray-400">Мова сайту</label>
+            <label htmlFor="language" className="block mb-1 text-gray-400">
+              Мова сайту
+            </label>
             <select
               id="language"
+              value={language} // ✅ синхронізація з localStorage
+              onChange={handleLanguageChange}
               className="bg-gray-800 text-white border border-gray-700 rounded-md p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-600"
             >
               <option value="uk">Українська</option>

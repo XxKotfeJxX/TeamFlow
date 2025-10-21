@@ -270,21 +270,27 @@ export default function ProfilePage() {
             />
           </section>
 
-          <section>
-  <ProfileSettings
-    interfaceLang={currentUser.interfaceLang}
-    profileVisibility={currentUser.profileVisibility}
-    disabled={!isOwner}
-    onChange={(field, value) => {
-      if (isOwner) {
-        // Оновити базу
-        userDb.update(currentUser.id, { [field]: value });
-        // Оновити локально для ререндера
-        setCurrentUser({ ...currentUser, [field]: value } as typeof currentUser);
-      }
-    }}
-  />
-</section>
+          <ProfileSettings
+  interfaceLang={currentUser.interfaceLang}
+  profileVisibility={currentUser.profileVisibility}
+  disabled={!isOwner}
+  onChange={(field, value) => {
+    if (isOwner) {
+      userDb.update(currentUser.id, { [field]: value });
+      setCurrentUser({ ...currentUser, [field]: value } as typeof currentUser);
+
+      // 🧠 якщо користувач змінює мову — зберігаємо в localStorage
+      if (field === "interfaceLang") {
+  localStorage.setItem("interfaceLang", value);
+  document.documentElement.lang = value;
+
+  // 🔥 кидаємо глобальну подію, щоб Footer міг оновитись
+  window.dispatchEvent(new CustomEvent("interfaceLangChange", { detail: value }));
+}
+    }
+  }}
+/>
+
         </div>
       </main>
       <Footer />
