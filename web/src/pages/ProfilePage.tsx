@@ -22,6 +22,8 @@ export default function ProfilePage() {
 
   const currentUserId = localStorage.getItem("currentUserId");
   const isOwner = currentUserId === user.id;
+  const isPrivate = user.profileVisibility === "private";
+
   
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -107,29 +109,35 @@ export default function ProfilePage() {
             {editableUser.username}
           </h1>
           <p className="text-gray-500">{editableUser.email}</p>
-
-          <div className="flex gap-3 mt-5">
-            <Button
-              onClick={goToCalendar}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white hover:border-emerald-800"
-            >
-              Календар
-            </Button>
-            <Button
-              onClick={goToTasks}
-              className="bg-blue-600 hover:bg-blue-700 text-white hover:border-blue-800"
-            >
-              Завдання
-            </Button>
-            <Button
-              onClick={goToTeams}
-              className="bg-purple-600 hover:bg-purple-700 text-white hover:border-purple-800"
-            >
-              Команди
-            </Button>
-          </div>
+          {!isPrivate || isOwner ? (
+            <div className="flex gap-3 mt-5">
+              <Button
+                onClick={goToCalendar}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white hover:border-emerald-800"
+              >
+                Календар
+              </Button>
+              <Button
+                onClick={goToTasks}
+                className="bg-blue-600 hover:bg-blue-700 text-white hover:border-blue-800"
+              >
+                Завдання
+              </Button>
+              <Button
+                onClick={goToTeams}
+                className="bg-purple-600 hover:bg-purple-700 text-white hover:border-purple-800"
+              >
+                Команди
+              </Button>
+            </div>
+          ) : null}
         </div>
 
+        {isPrivate && !isOwner ? (
+          <div className="text-center text-gray-500 italic py-16">
+          🔒 Цей профіль приватний. Ви можете бачити лише базову інформацію.
+        </div>
+      ) : (
         <div className="max-w-4xl mx-auto space-y-8">
           {/* ===== ABOUT ===== */}
           <section className="bg-white p-6 rounded-2xl shadow-sm border relative">
@@ -291,7 +299,8 @@ export default function ProfilePage() {
   }}
 />
 
-        </div>
+          </div>
+        )}
       </main>
       <Footer />
     </>
