@@ -1,14 +1,23 @@
-import { Card, CardContent } from '../ui/Card'
-import { Label } from '../ui/Label'
-import { Select, SelectItem, SelectValue, SelectContent} from '../ui/Select'
+import { Card, CardContent } from "../ui/Card";
+import { Label } from "../ui/Label";
+import { Select, SelectItem, SelectContent } from "../ui/Select";
 
 interface ProfileSettingsProps {
-  interfaceLang: string
-  profileVisibility: "public" | "private"
-  onChange?: (field: "interfaceLang" | "profileVisibility", value: string) => void
+  interfaceLang: string;
+  profileVisibility: "public" | "private";
+  onChange?: (
+    field: "interfaceLang" | "profileVisibility",
+    value: string
+  ) => void;
+  disabled?: boolean; // додатково, щоб заблокувати для не-власника
 }
 
-export default function ProfileSettings({ interfaceLang, profileVisibility, onChange }: ProfileSettingsProps) {
+export default function ProfileSettings({
+  interfaceLang,
+  profileVisibility,
+  onChange,
+  disabled = false,
+}: ProfileSettingsProps) {
   return (
     <Card className="mt-6">
       <CardContent className="p-6 space-y-6">
@@ -21,9 +30,11 @@ export default function ProfileSettings({ interfaceLang, profileVisibility, onCh
             <Select
               id="language"
               value={interfaceLang}
-              onChange={(e) => onChange?.("interfaceLang", e.target.value)}
+              disabled={disabled}
+              onChange={(e) =>
+                onChange?.("interfaceLang", e.target.value)
+              }
             >
-              <SelectValue placeholder="Оберіть мову" value={interfaceLang} />
               <SelectContent>
                 <SelectItem value="uk">Українська</SelectItem>
                 <SelectItem value="en">English</SelectItem>
@@ -38,9 +49,11 @@ export default function ProfileSettings({ interfaceLang, profileVisibility, onCh
             <Select
               id="visibility"
               value={profileVisibility}
-              onChange={(e) => onChange?.("profileVisibility", e.target.value)}
+              disabled={disabled}
+              onChange={(e) =>
+                onChange?.("profileVisibility", e.target.value)
+              }
             >
-              <SelectValue placeholder="Оберіть рівень приватності" value={profileVisibility} />
               <SelectContent>
                 <SelectItem value="public">Публічний</SelectItem>
                 <SelectItem value="private">Приватний</SelectItem>
@@ -54,5 +67,5 @@ export default function ProfileSettings({ interfaceLang, profileVisibility, onCh
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

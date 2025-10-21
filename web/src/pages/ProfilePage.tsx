@@ -5,8 +5,8 @@ import ProfileSettings from "../components/profile/ProfileSettings";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { userDb } from "../models/mockDB/users";
-import { Button } from "../components/ui/button";
-import { Pencil } from "lucide-react";
+import { Button } from "../components/ui/Button";
+import { Pencil, Upload } from "lucide-react";
 import { Textarea } from "../components/ui/Textarea";
 import { Input } from "../components/ui/Input";
 
@@ -17,20 +17,42 @@ export default function ProfilePage() {
 
   const user = id ? userDb.getById(id) : undefined;
   if (!user) return <Navigate to="/login" replace />;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [currentUser, setCurrentUser] = useState(user);
 
-  // 🔹 поточний авторизований користувач
   const currentUserId = localStorage.getItem("currentUserId");
-  const isOwner = currentUserId === user.id; // 🔹 тільки власник може редагувати
+  const isOwner = currentUserId === user.id;
+  
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editableUser, setEditableUser] = useState({
+    username: user.username,
+    email: user.email,
+    avatarUrl: user.avatarUrl || "",
     bio: user.bio || "",
     skills: user.skills.join(", "),
     languages: user.languages.join(", "),
     timezone: user.timezone || "",
   });
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setEditableUser({ ...editableUser, avatarUrl: ev.target?.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  
+
   const handleSave = () => {
     userDb.update(user.id, {
+      username: editableUser.username,
+      email: editableUser.email,
+      avatarUrl: editableUser.avatarUrl,
       bio: editableUser.bio,
       skills: editableUser.skills.split(",").map((s) => s.trim()),
       languages: editableUser.languages.split(",").map((l) => l.trim()),
@@ -48,49 +70,62 @@ export default function ProfilePage() {
 
   const goToTasks = () => navigate(`/tasks/user/${user.id}`);
   const goToTeams = () => navigate(`/teams/user/${user.id}`);
+  
 
   return (
     <>
       <Header />
       <main className="max-w-7xl mx-auto px-4 py-8 pt-20 bg-[#f9fafb] min-h-screen rounded-lg shadow-sm border-t border-gray-200">
         <div className="flex flex-col items-center mb-8">
-          {/* 🔹 Фото або ініціал */}
-          {user.avatarUrl ? (
-            <img
-              src={user.avatarUrl}
-              alt={user.username}
-              className="w-24 h-24 rounded-full object-cover shadow-md border-2 border-white"
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-3xl font-bold text-white shadow-md">
-              {user.username.charAt(0).toUpperCase()}
-            </div>
-          )}
+          {/* Фото */}
+          <div className="relative">
+            {editableUser.avatarUrl ? (
+              <img
+                src={editableUser.avatarUrl}
+                alt={editableUser.username}
+                className="w-24 h-24 rounded-full object-cover shadow-md border-2 border-white"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-3xl font-bold text-white shadow-md">
+                {editableUser.username.charAt(0).toUpperCase()}
+              </div>
+            )}
+            {editing && isOwner && (
+              <label className="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 text-gray-600">
+                <Upload size={16} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
+            )}
+          </div>
 
           <h1 className="text-3xl font-bold mt-4 text-gray-800">
-            {user.fullname || user.username}
+            {editableUser.username}
           </h1>
-          <p className="text-gray-500">{user.email}</p>
+          <p className="text-gray-500">{editableUser.email}</p>
 
-          {/* 🔹 Кнопки дій */}
           <div className="flex gap-3 mt-5">
             <Button
               onClick={goToCalendar}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white hover:border-emerald-800"
             >
-              📅 Календар
+              Календар
             </Button>
             <Button
               onClick={goToTasks}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white hover:border-blue-800"
             >
-              ✅ Завдання
+              Завдання
             </Button>
             <Button
               onClick={goToTeams}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
+              className="bg-purple-600 hover:bg-purple-700 text-white hover:border-purple-800"
             >
-              👥 Команди
+              Команди
             </Button>
           </div>
         </div>
@@ -103,24 +138,45 @@ export default function ProfilePage() {
                 Про користувача
               </h2>
 
-              {/* 🔹 Кнопка редагування — тільки для власника */}
               {isOwner && (
                 <button
                   onClick={() => setEditing(!editing)}
-                  className="text-gray-500 hover:text-blue-600 transition"
+                  className="text-gray-500 hover:text-blue-600 transition hover:border-none"
                 >
                   <Pencil size={18} />
                 </button>
               )}
             </div>
 
-            {/* 🔹 Редагування або перегляд */}
             {editing && isOwner ? (
               <div className="space-y-3">
                 <div>
+                  <label className="text-sm text-gray-500">Нікнейм</label>
+                  <Input
+                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                    value={editableUser.username}
+                    onChange={(e) =>
+                      setEditableUser({ ...editableUser, username: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm text-gray-500">Ел. пошта</label>
+                  <Input
+                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                    type="email"
+                    value={editableUser.email}
+                    onChange={(e) =>
+                      setEditableUser({ ...editableUser, email: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
                   <label className="text-sm text-gray-500">Біо</label>
                   <Textarea
-                    className="w-full p-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                     rows={3}
                     value={editableUser.bio}
                     onChange={(e) =>
@@ -137,10 +193,7 @@ export default function ProfilePage() {
                     className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                     value={editableUser.skills}
                     onChange={(e) =>
-                      setEditableUser({
-                        ...editableUser,
-                        skills: e.target.value,
-                      })
+                      setEditableUser({ ...editableUser, skills: e.target.value })
                     }
                   />
                 </div>
@@ -153,10 +206,7 @@ export default function ProfilePage() {
                     className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                     value={editableUser.languages}
                     onChange={(e) =>
-                      setEditableUser({
-                        ...editableUser,
-                        languages: e.target.value,
-                      })
+                      setEditableUser({ ...editableUser, languages: e.target.value })
                     }
                   />
                 </div>
@@ -167,10 +217,7 @@ export default function ProfilePage() {
                     className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                     value={editableUser.timezone}
                     onChange={(e) =>
-                      setEditableUser({
-                        ...editableUser,
-                        timezone: e.target.value,
-                      })
+                      setEditableUser({ ...editableUser, timezone: e.target.value })
                     }
                   />
                 </div>
@@ -178,13 +225,13 @@ export default function ProfilePage() {
                 <div className="flex justify-end gap-2 pt-2">
                   <Button
                     onClick={() => setEditing(false)}
-                    className="bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:border-gray-400"
                   >
                     Скасувати
                   </Button>
                   <Button
                     onClick={handleSave}
-                    className="bg-blue-600 text-white hover:bg-blue-700"
+                    className="bg-blue-600 text-white hover:bg-blue-700 hover:border-blue-800"
                   >
                     Зберегти
                   </Button>
@@ -192,6 +239,12 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="space-y-2 text-gray-700">
+                <p>
+                  <strong>Нікнейм:</strong> {user.username}
+                </p>
+                <p>
+                  <strong>Ел. пошта:</strong> {user.email}
+                </p>
                 <p>
                   <strong>Біо:</strong> {user.bio || "—"}
                 </p>
@@ -210,29 +263,28 @@ export default function ProfilePage() {
             )}
           </section>
 
-          {/* ===== ACTIVITY ===== */}
-          <section className="bg-white p-6 rounded-2xl shadow-sm border">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
-              Активність
-            </h2>
+          <section>
             <ProfileActivity
               createdAt={user.createdAt.toISOString()}
               lastActiveAt={user.lastActive.toISOString()}
             />
           </section>
 
-          {/* ===== SETTINGS ===== */}
-          <section className="bg-white p-6 rounded-2xl shadow-sm border">
-            <ProfileSettings
-              interfaceLang={user.interfaceLang}
-              profileVisibility={user.profileVisibility}
-              onChange={(field, value) => {
-                if (isOwner) {
-                  userDb.update(user.id, { [field]: value });
-                }
-              }}
-            />
-          </section>
+          <section>
+  <ProfileSettings
+    interfaceLang={currentUser.interfaceLang}
+    profileVisibility={currentUser.profileVisibility}
+    disabled={!isOwner}
+    onChange={(field, value) => {
+      if (isOwner) {
+        // Оновити базу
+        userDb.update(currentUser.id, { [field]: value });
+        // Оновити локально для ререндера
+        setCurrentUser({ ...currentUser, [field]: value } as typeof currentUser);
+      }
+    }}
+  />
+</section>
         </div>
       </main>
       <Footer />
