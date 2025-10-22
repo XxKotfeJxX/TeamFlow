@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface TaskModalProps {
   task: Task;
   onClose: () => void;
+  onSave?: (updatedTask: Task) => void;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {

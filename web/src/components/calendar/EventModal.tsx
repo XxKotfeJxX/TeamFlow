@@ -10,6 +10,7 @@ interface EventModalProps {
   event: Event;
   onClose: () => void;
   isPersonalCalendar: boolean;
+  onSave?: (updatedEvent: Event) => void;
 }
 
 const EventModal: React.FC<EventModalProps> = ({ event, onClose, isPersonalCalendar }) => {
