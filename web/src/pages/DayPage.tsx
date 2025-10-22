@@ -461,6 +461,7 @@ const DayPage: React.FC = () => {
 
       {/* Створення події/таски */}
       {createModalInfo && (
+        console.log("🧾 calendar.id for creation =", calendar.id),
         <CreateItemModal
           calendarId={calendar.id}
           calendarType={calendar.ownerType}

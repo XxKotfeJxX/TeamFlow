@@ -83,12 +83,20 @@ function loadCalendars() {
 loadCalendars();
 
 export const calendarDb = {
-  create: (data: Omit<Calendar, "id"> & { id?: string }): Calendar => {
-    const calendar: Calendar = { id: data.id ?? genId(), ...data };
-    calendars.push(calendar);
-    saveCalendars();
-    return calendar;
-  },
+  create(data: Partial<Calendar>) {
+  const id = data.ownerId ?? crypto.randomUUID?.() ?? "cal" + Date.now();
+
+  const newCalendar: Calendar = {
+    id,
+    name: data.name || "Новий календар",
+    ownerType: data.ownerType || "user",
+    ownerId: data.ownerId || id,
+  };
+
+  calendars.push(newCalendar);
+  return newCalendar;
+}
+,
   getById: (id: string): Calendar | undefined =>
     calendars.find((c) => c.id === id),
   getAll: (): Calendar[] => [...calendars],

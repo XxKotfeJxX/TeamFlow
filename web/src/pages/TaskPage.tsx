@@ -32,6 +32,8 @@ const TasksPage: React.FC = () => {
   // === Отримуємо завдання календаря ===
   const tasks = useMemo(() => {
     if (!calendar) return [];
+    console.log("🧾 calendar.id =", calendar?.id);
+    console.log("🧾 all tasks =", taskDb.getAll());
     return taskDb.getByCalendarId(calendar.id);
   }, [calendar, tasksState]);
 
