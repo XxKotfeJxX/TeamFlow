@@ -460,25 +460,26 @@ const DayPage: React.FC = () => {
       <Footer />
 
       {/* Створення події/таски */}
-      {createModalInfo && (
-        console.log("🧾 calendar.id for creation =", calendar.id),
-        <CreateItemModal
-          calendarId={calendar.id}
-          calendarType={calendar.ownerType}
-          date={createModalInfo.time!}
-          onClose={() => setCreateModalInfo(null)}
-          onCreate={(newItem: Event | Task) => {
-            if (isEvent(newItem)) {
-              const created = eventDb.create(newItem);
-              setEvents((prev) => [...prev, created]);
-            } else {
-              const created = taskDb.create(newItem);
-              setTasks((prev) => [...prev, created]);
-            }
-            setCreateModalInfo(null);
-          }}
-        />
-      )}
+      {createModalInfo &&
+        (console.log("🧾 calendar.id for creation =", calendar.id),
+        (
+          <CreateItemModal
+            calendarId={calendar.id}
+            calendarType={calendar.ownerType}
+            date={createModalInfo.time!}
+            onClose={() => setCreateModalInfo(null)}
+            onCreate={(newItem: Event | Task) => {
+              if (isEvent(newItem)) {
+                const created = eventDb.create(newItem);
+                setEvents((prev) => [...prev, created]);
+              } else {
+                const created = taskDb.create(newItem);
+                setTasks((prev) => [...prev, created]);
+              }
+              setCreateModalInfo(null);
+            }}
+          />
+        ))}
 
       {/* Редагування події/таски */}
       {selectedEvent && (
@@ -491,7 +492,6 @@ const DayPage: React.FC = () => {
             setEvents((prev) =>
               prev.map((e) => (e.id === updated.id ? updated : e))
             );
-            setSelectedEvent(null);
           }}
         />
       )}
@@ -500,11 +500,12 @@ const DayPage: React.FC = () => {
           task={selectedTask}
           onClose={() => setSelectedTask(null)}
           onSave={(updated: Task) => {
+            // просто оновлюємо БД і стан, без закриття
             taskDb.update(updated.id, updated);
             setTasks((prev) =>
               prev.map((t) => (t.id === updated.id ? updated : t))
             );
-            setSelectedTask(null);
+            // не закриваємо TaskModal!
           }}
         />
       )}
