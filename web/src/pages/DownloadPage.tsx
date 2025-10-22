@@ -16,8 +16,8 @@ export default function DownloadPage() {
             Завантаж TeamFlow
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Отримай доступ до командного простору будь-де.  
-            Працюй офлайн, синхронізуй дані миттєво, залишайся на зв’язку навіть без браузера.
+            Отримай доступ до командного простору будь-де. Працюй офлайн,
+            синхронізуй дані миттєво, залишайся на зв’язку навіть без браузера.
           </p>
         </section>
 
@@ -31,8 +31,8 @@ export default function DownloadPage() {
             <Monitor className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">Windows</h2>
             <p className="text-gray-500 mb-4">
-              Сумісна з Windows 10 і новішими.  
-              Підтримка автооновлень і офлайн-режиму.
+              Сумісна з Windows 10 і новішими. Підтримка автооновлень і
+              офлайн-режиму.
             </p>
             <a
               href="/downloads/TeamFlow_Setup.exe"
@@ -50,8 +50,8 @@ export default function DownloadPage() {
             <Laptop className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">macOS</h2>
             <p className="text-gray-500 mb-10">
-              Підтримка Apple Silicon (M1, M2, M3).  
-              Оптимізовано для Sonoma та Ventura.
+              Підтримка Apple Silicon (M1, M2, M3). Оптимізовано для Sonoma та
+              Ventura.
             </p>
             <a
               href="/downloads/TeamFlow_Mac.dmg"
@@ -69,8 +69,8 @@ export default function DownloadPage() {
             <Smartphone className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">Мобільні пристрої</h2>
             <p className="text-gray-500 mb-4">
-              Завантаж додаток на свій смартфон,  
-              щоб бути з командою на зв’язку будь-де.
+              Завантаж додаток на свій смартфон, щоб бути з командою на зв’язку
+              будь-де.
             </p>
             <div className="flex gap-2 pt-4">
               <a
@@ -97,8 +97,8 @@ export default function DownloadPage() {
         <section className="text-center mb-20">
           <h2 className="text-2xl font-semibold mb-4">Швидке встановлення</h2>
           <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Відскануй QR-код, щоб миттєво завантажити мобільну версію  
-            або відкрий посилання вручну.
+            Відскануй QR-код, щоб миттєво завантажити мобільну версію або
+            відкрий посилання вручну.
           </p>
 
           <a

@@ -6,7 +6,11 @@ interface TagFilterProps {
   onToggleTag: (tag: string) => void;
 }
 
-const TagFilter: React.FC<TagFilterProps> = ({ tags, activeTags, onToggleTag }) => {
+const TagFilter: React.FC<TagFilterProps> = ({
+  tags,
+  activeTags,
+  onToggleTag,
+}) => {
   return (
     <div className="flex flex-wrap gap-2">
       {tags.map((tag) => (

@@ -89,17 +89,18 @@ export const calendarDb = {
     saveCalendars();
     return calendar;
   },
-  getById: (id: string): Calendar | undefined => calendars.find(c => c.id === id),
+  getById: (id: string): Calendar | undefined =>
+    calendars.find((c) => c.id === id),
   getAll: (): Calendar[] => [...calendars],
   update: (id: string, updates: Partial<Calendar>): Calendar | undefined => {
-    const calendar = calendars.find(c => c.id === id);
+    const calendar = calendars.find((c) => c.id === id);
     if (!calendar) return undefined;
     Object.assign(calendar, updates);
     saveCalendars();
     return calendar;
   },
   delete: (id: string): boolean => {
-    const index = calendars.findIndex(c => c.id === id);
+    const index = calendars.findIndex((c) => c.id === id);
     if (index === -1) return false;
     calendars.splice(index, 1);
     saveCalendars();
@@ -116,7 +117,7 @@ function saveEvents() {
   localStorage.setItem(
     EVENT_STORAGE_KEY,
     JSON.stringify(
-      events.map(e => ({
+      events.map((e) => ({
         ...e,
         startDate: e.startDate.toISOString(),
         endDate: e.endDate.toISOString(),
@@ -132,7 +133,7 @@ function loadEvents() {
       const parsed = JSON.parse(stored) as Event[];
       events.length = 0;
       events.push(
-        ...parsed.map(e => ({
+        ...parsed.map((e) => ({
           ...e,
           startDate: new Date(e.startDate),
           endDate: new Date(e.endDate),
@@ -155,19 +156,19 @@ export const eventDb = {
     saveEvents();
     return event;
   },
-  getById: (id: string): Event | undefined => events.find(e => e.id === id),
+  getById: (id: string): Event | undefined => events.find((e) => e.id === id),
   getAll: (): Event[] => [...events],
   getByCalendarId: (calendarId: string): Event[] =>
-    events.filter(e => e.calendarId === calendarId),
+    events.filter((e) => e.calendarId === calendarId),
   update: (id: string, updates: Partial<Event>): Event | undefined => {
-    const event = events.find(e => e.id === id);
+    const event = events.find((e) => e.id === id);
     if (!event) return undefined;
     Object.assign(event, updates);
     saveEvents();
     return event;
   },
   delete: (id: string): boolean => {
-    const index = events.findIndex(e => e.id === id);
+    const index = events.findIndex((e) => e.id === id);
     if (index === -1) return false;
     events.splice(index, 1);
     saveEvents();
@@ -191,7 +192,7 @@ function loadTasks() {
       const parsed: Task[] = JSON.parse(stored);
       tasks.length = 0;
       tasks.push(
-        ...parsed.map(t => ({
+        ...parsed.map((t) => ({
           ...t,
           createdAt: new Date(t.createdAt),
           updatedAt: new Date(t.updatedAt),
@@ -220,29 +221,28 @@ export const taskDb = {
     saveTasks();
     return task;
   },
-  getById: (id: string): Task | undefined => tasks.find(t => t.id === id),
+  getById: (id: string): Task | undefined => tasks.find((t) => t.id === id),
   getAll: (): Task[] => [...tasks],
   getByCalendarId: (calendarId: string): Task[] =>
-    tasks.filter(t => t.calendarId === calendarId),
+    tasks.filter((t) => t.calendarId === calendarId),
   update: (id: string, updates: Partial<Task>): Task | undefined => {
-    const task = tasks.find(t => t.id === id);
+    const task = tasks.find((t) => t.id === id);
     if (!task) return undefined;
     Object.assign(task, updates, { updatedAt: new Date() });
     saveTasks();
     return task;
   },
   delete: (id: string): boolean => {
-    const index = tasks.findIndex(t => t.id === id);
+    const index = tasks.findIndex((t) => t.id === id);
     if (index === -1) return false;
     tasks.splice(index, 1);
     saveTasks();
     return true;
   },
   toggleStatus: (id: string): Task | undefined => {
-    const task = tasks.find(t => t.id === id);
+    const task = tasks.find((t) => t.id === id);
     if (!task) return undefined;
-    task.status =
-      task.status === "completed" ? "inProgress" : "completed";
+    task.status = task.status === "completed" ? "inProgress" : "completed";
     task.updatedAt = new Date();
     saveTasks();
     return task;

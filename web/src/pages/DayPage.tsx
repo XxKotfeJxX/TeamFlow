@@ -16,24 +16,227 @@ import { FaPlusCircle } from "react-icons/fa";
 import OverlapMenu from "../components/calendar/OverlapMenu";
 import CreateItemModal from "../components/calendar/CreateItemModal";
 
+// ===== Розбиття дня на 3 секції =====
 const COLUMN_RANGES = [
-  { start: 0, end: 7 },
-  { start: 8, end: 15 },
-  { start: 16, end: 23 },
-];
+  { start: 0, end: 7 }, // [00:00, 08:00)
+  { start: 8, end: 15 }, // [08:00, 16:00)
+  { start: 16, end: 23 }, // [16:00, 24:00)
+] as const;
 
 const HOUR_HEIGHT = 128;
 const TASK_HEIGHT = 64;
 
+// ===== Type Guards =====
+function isEvent(item: Event | Task): item is Event {
+  return (item as Event).startDate instanceof Date;
+}
+
+// ===== Часові утиліти =====
+const rangeStartMs = (base: Date, startHour: number) =>
+  new Date(
+    base.getFullYear(),
+    base.getMonth(),
+    base.getDate(),
+    startHour,
+    0,
+    0,
+    0
+  ).getTime();
+
+const rangeEndMsExclusive = (base: Date, endHour: number) =>
+  new Date(
+    base.getFullYear(),
+    base.getMonth(),
+    base.getDate(),
+    endHour + 1,
+    0,
+    0,
+    0
+  ).getTime();
+
+// Подія має перетин із колонкою?
+function eventIntersectsRange(
+  e: Event,
+  day: Date,
+  range: { start: number; end: number }
+) {
+  const rs = rangeStartMs(day, range.start);
+  const re = rangeEndMsExclusive(day, range.end);
+  return e.endDate.getTime() > rs && e.startDate.getTime() < re;
+}
+
+// Обрізані межі події під колонку
+function getClippedEventBounds(
+  e: Event,
+  day: Date,
+  range: { start: number; end: number }
+): { start: Date; end: Date } {
+  const rs = rangeStartMs(day, range.start);
+  const re = rangeEndMsExclusive(day, range.end);
+  const start = new Date(Math.max(e.startDate.getTime(), rs));
+  const end = new Date(Math.min(e.endDate.getTime(), re));
+  return { start, end };
+}
+
+// Позиція/висота айтема з урахуванням обрізання в колонці
+function computeDisplayTopAndHeightForColumn(
+  item: Event | Task,
+  day: Date,
+  range: { start: number; end: number }
+) {
+  if (isEvent(item)) {
+    const { start, end } = getClippedEventBounds(item, day, range);
+    const minutesFromRangeStart =
+      start.getHours() * 60 + start.getMinutes() - range.start * 60;
+    const durationMin = Math.max(
+      0,
+      (end.getTime() - start.getTime()) / (1000 * 60)
+    );
+
+    let top = (minutesFromRangeStart / 60) * HOUR_HEIGHT;
+    let height = (durationMin / 60) * HOUR_HEIGHT;
+
+    // Мінімальний розмір, щоб було видно короткі події
+    if (height < TASK_HEIGHT) {
+      const pad = (TASK_HEIGHT - height) / 2;
+      top -= pad;
+      height = TASK_HEIGHT;
+    }
+    return { top, height };
+  }
+
+  // Task — точка в часі
+  const due = new Date(item.dueDate);
+  const minutesFromRangeStart =
+    due.getHours() * 60 + due.getMinutes() - range.start * 60;
+  const top = (minutesFromRangeStart / 60) * HOUR_HEIGHT - TASK_HEIGHT / 2;
+  const height = TASK_HEIGHT;
+  return { top, height };
+}
+
+// top для сортування в колонці
+function computeTopForColumn(
+  item: Event | Task,
+  day: Date,
+  range: { start: number; end: number }
+) {
+  if (isEvent(item)) {
+    const { start } = getClippedEventBounds(item, day, range);
+    const minutesFromRangeStart =
+      start.getHours() * 60 + start.getMinutes() - range.start * 60;
+    return (minutesFromRangeStart / 60) * HOUR_HEIGHT;
+  }
+  const due = new Date(item.dueDate);
+  const minutesFromRangeStart =
+    due.getHours() * 60 + due.getMinutes() - range.start * 60;
+  return (minutesFromRangeStart / 60) * HOUR_HEIGHT - TASK_HEIGHT / 2;
+}
+
+// ===== Пошук перекриттів у межах колонки =====
+type OverlapCluster = { id: string; top: number; items: (Event | Task)[] };
+
+function findOverlapsForColumn(
+  items: (Event | Task)[],
+  day: Date,
+  range: { start: number; end: number }
+): OverlapCluster[] {
+  const clusters: { top: number; items: (Event | Task)[] }[] = [];
+
+  items.forEach((item) => {
+    const { top, height } = computeDisplayTopAndHeightForColumn(
+      item,
+      day,
+      range
+    );
+
+    const cluster = clusters.find((c) =>
+      c.items.some((o) => {
+        const other = computeDisplayTopAndHeightForColumn(o, day, range);
+        return top < other.top + other.height && top + height > other.top;
+      })
+    );
+
+    if (cluster) {
+      cluster.items.push(item);
+      cluster.top = Math.min(cluster.top, top);
+    } else {
+      clusters.push({ top, items: [item] });
+    }
+  });
+
+  const dayKey = day.toDateString();
+  return clusters
+    .filter((c) => c.items.length > 1)
+    .map((c) => ({
+      id: `cluster-${c.items
+        .map((i) => i.id)
+        .sort()
+        .join("_")}-${dayKey}`, // глобальний для дня
+      top: c.top,
+      items: c.items,
+    }));
+}
+
+// ===== Вибір айтемів для показу в колонці =====
+function computeVisibleItemsForColumn(
+  allColumnItems: (Event | Task)[],
+  overlaps: OverlapCluster[],
+  range: { start: number; end: number },
+  day: Date,
+  globallySelectedEventId: string | null
+) {
+  // Якщо користувач явно вибрав подію — показуємо лише її (усі частини) у кожній колонці
+  if (globallySelectedEventId) {
+    const onlySelected = allColumnItems.filter(
+      (i) => i.id === globallySelectedEventId
+    );
+    return onlySelected.sort(
+      (a, b) =>
+        computeTopForColumn(a, day, range) - computeTopForColumn(b, day, range)
+    );
+  }
+
+  // Інакше: показуємо все, але у кластерах — лише одну (найпріоритетнішу)
+  const result: (Event | Task)[] = [];
+  const clusteredIds = new Set(
+    overlaps.flatMap((o) => o.items.map((i) => i.id))
+  );
+  const nonOverlap = allColumnItems.filter((i) => !clusteredIds.has(i.id));
+  result.push(...nonOverlap);
+
+  overlaps.forEach((cluster) => {
+    const chosen =
+      [...cluster.items].sort(
+        (a, b) =>
+          (isEvent(a) ? a.priority.personal : a.priority.personal) -
+          (isEvent(b) ? b.priority.personal : b.priority.personal)
+      )[0] ?? null;
+
+    if (chosen) result.push(chosen);
+  });
+
+  return result.sort(
+    (a, b) =>
+      computeTopForColumn(a, day, range) - computeTopForColumn(b, day, range)
+  );
+}
+
 const DayPage: React.FC = () => {
-  const { calendarId, date } = useParams<{ calendarId: string; date: string }>();
+  const { calendarId, date } = useParams<{
+    calendarId: string;
+    date: string;
+  }>();
 
   const [events, setEvents] = React.useState<Event[]>([]);
   const [tasks, setTasks] = React.useState<Task[]>([]);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [selectedTask, setSelectedTask] = React.useState<Task | null>(null);
 
-  const [activeEventOverrides, setActiveEventOverrides] = React.useState<Record<string, string>>({});
+  // Глобально вибрана подія з меню перекриття (показується у всіх секціях)
+  const [visibleEventId, setVisibleEventId] = React.useState<string | null>(
+    null
+  );
+
   const [overlapMenu, setOverlapMenu] = React.useState<{
     items: (Event | Task)[];
     position: { x: number; y: number };
@@ -48,14 +251,14 @@ const DayPage: React.FC = () => {
 
   const currentDate = date ? new Date(date) : new Date();
 
-  // 🔹 1. Підвантажуємо події/таски з localStorage через БД
+  // Завантаження з БД
   React.useEffect(() => {
     if (!calendarId) return;
     setEvents(eventDb.getByCalendarId(calendarId));
     setTasks(taskDb.getByCalendarId(calendarId));
   }, [calendarId]);
 
-  // 🔹 2. Закриваємо меню при скролі
+  // Закриття меню при скролі
   React.useEffect(() => {
     if (!overlapMenu) return;
     const startScrollY = window.scrollY;
@@ -70,9 +273,11 @@ const DayPage: React.FC = () => {
   const calendar = calendars.find((c) => c.id === calendarId);
   if (!calendar) return <div>Календар не знайдено</div>;
 
-  // 🔹 3. Вибір елементів на поточну дату
+  // Події/таски на поточну дату
   const todaysEvents = events.filter(
-    (e) => e.startDate.toDateString() === currentDate.toDateString()
+    (e) =>
+      e.startDate.toDateString() === currentDate.toDateString() ||
+      e.endDate.toDateString() === currentDate.toDateString()
   );
   const todaysTasks = tasks.filter(
     (t) => new Date(t.dueDate).toDateString() === currentDate.toDateString()
@@ -80,164 +285,101 @@ const DayPage: React.FC = () => {
 
   const handleEventClick = (ev: Event) => setSelectedEvent(ev);
   const handleTaskClick = (task: Task) => setSelectedTask(task);
+  const handleEmptySlotClick = (time: Date) =>
+    setCreateModalInfo({ type: null, time });
 
-  // 🔹 4. Клік по порожньому місцю
-  const handleEmptySlotClick = (time: Date) => {
-    if (calendar.ownerType === "user") {
-      setCreateModalInfo({ type: "task", time });
-    } else {
-      setCreateModalInfo({ type: null, time });
-    }
-  };
-
-  // 🔹 5. Вираховуємо позицію/висоту айтемів
-  const computeTop = (item: Event | Task, rangeStart: number) => {
-    const isEvent = "startDate" in item;
-    const dateObj = isEvent ? item.startDate : new Date(item.dueDate);
-    const minutes = dateObj.getHours() * 60 + dateObj.getMinutes();
-    return ((minutes / 60 - rangeStart) * HOUR_HEIGHT) - (isEvent ? 0 : TASK_HEIGHT / 2);
-  };
-
-  const computeDisplayTopAndHeight = (item: Event | Task, rangeStart: number) => {
-    const isEvent = "startDate" in item;
-    const actualHeight = isEvent
-      ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60 * 60)) * HOUR_HEIGHT
-      : TASK_HEIGHT;
-
-    let height = actualHeight;
-    let top = computeTop(item, rangeStart);
-
-    if (isEvent && actualHeight < TASK_HEIGHT) {
-      height = TASK_HEIGHT;
-      top -= (TASK_HEIGHT - actualHeight) / 2;
-    }
-    return { top, height };
-  };
-
-  // 🔹 6. Визначення накладань
-  const findOverlaps = (items: (Event | Task)[], rangeStart: number) => {
-    const clusters: { top: number; items: (Event | Task)[] }[] = [];
-    items.forEach((item) => {
-      const top = computeTop(item, rangeStart);
-      const height = "startDate" in item
-        ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60 * 60)) * HOUR_HEIGHT
-        : TASK_HEIGHT;
-
-      const cluster = clusters.find((c) =>
-        c.items.some((o) => {
-          const t2 = computeTop(o, rangeStart);
-          const h2 = "startDate" in o
-            ? ((o.endDate.getTime() - o.startDate.getTime()) / (1000 * 60 * 60)) * HOUR_HEIGHT
-            : TASK_HEIGHT;
-          return top < t2 + h2 && top + height > t2;
-        })
-      );
-      if (cluster) {
-        cluster.items.push(item);
-        cluster.top = Math.min(cluster.top, top);
-      } else clusters.push({ top, items: [item] });
-    });
-
-    return clusters
-      .filter((c) => c.items.length > 1)
-      .map((c) => ({
-        id: `cluster-${rangeStart}-${c.items.map((i) => i.id).sort().join("_")}`,
-        top: c.top,
-        items: c.items,
-      }));
-  };
-
-  // 🔹 7. Вибір айтемів для рендера
-  const computeVisibleItemsForColumn = (
-    allColumnItems: (Event | Task)[],
-    overlaps: { id: string; top: number; items: (Event | Task)[] }[],
-    rangeStart: number
-  ) => {
-    const result: (Event | Task)[] = [];
-    const clustered = new Set(overlaps.flatMap((o) => o.items.map((i) => i.id)));
-    const nonOverlap = allColumnItems.filter((i) => !clustered.has(i.id));
-    result.push(...nonOverlap);
-
-    overlaps.forEach((cluster) => {
-      const overrideId = activeEventOverrides[cluster.id];
-      const chosen = overrideId
-        ? cluster.items.find((i) => i.id === overrideId)
-        : [...cluster.items].sort(
-            (a, b) => (a.priority.personal ?? 0) - (b.priority.personal ?? 0)
-          )[0];
-      if (chosen) result.push(chosen);
-    });
-
-    result.sort((a, b) => computeTop(a, rangeStart) - computeTop(b, rangeStart));
-    return result;
-  };
-
-  // ===========================================================
-  // 🧩 Рендер сторінки
-  // ===========================================================
   return (
     <div>
       <Header />
 
-      <div className="flex border-t border-l border-gray-200 h-full p-4 pt-[var(--header-height,4rem)]">
+      <div className="flex border-t border-l border-gray-200 h-full p-4 pt-[var(--header-height,4rem)] pb-12">
         {COLUMN_RANGES.map((range, colIndex) => {
-          const columnEvents = todaysEvents.filter(
-            (e) => e.startDate.getHours() >= range.start && e.startDate.getHours() <= range.end
+          const columnEvents = todaysEvents.filter((e) =>
+            eventIntersectsRange(e, currentDate, range)
           );
-          const columnTasks = todaysTasks.filter(
-            (t) =>
-              new Date(t.dueDate).getHours() >= range.start &&
-              new Date(t.dueDate).getHours() <= range.end
+          const columnTasks = todaysTasks.filter((t) => {
+            const h = new Date(t.dueDate).getHours();
+            return h >= range.start && h <= range.end;
+          });
+
+          const allColumnItems: (Event | Task)[] = [
+            ...columnEvents,
+            ...columnTasks,
+          ];
+          const overlaps = findOverlapsForColumn(
+            allColumnItems,
+            currentDate,
+            range
           );
 
-          const allColumnItems = [...columnEvents, ...columnTasks];
-          const overlaps = findOverlaps(allColumnItems, range.start);
-          const visibleItems = computeVisibleItemsForColumn(allColumnItems, overlaps, range.start);
+          const visibleItems = computeVisibleItemsForColumn(
+            allColumnItems,
+            overlaps,
+            range,
+            currentDate,
+            visibleEventId
+          );
 
           return (
-            <div key={colIndex} className="flex-1 flex border-l border-gray-200 relative">
+            <div
+              key={colIndex}
+              className="flex-1 flex border-l border-gray-200 relative"
+            >
               {/* Ліва шкала */}
               <div className="w-16 flex flex-col border-r border-gray-200">
-                {Array.from({ length: range.end - range.start + 1 }).map((_, i) => {
-                  const hour = range.start + i;
-                  return (
-                    <div
-                      key={hour}
-                      className="h-32 border-b border-gray-100 text-[14px] text-right pr-2 text-gray-700"
-                    >
-                      {hour}:00
-                    </div>
-                  );
-                })}
+                {Array.from({ length: range.end - range.start + 1 }).map(
+                  (_, i) => {
+                    const hour = range.start + i;
+                    return (
+                      <div
+                        key={hour}
+                        className="h-32 border-b border-gray-100 text-[14px] text-right pr-2 text-gray-700"
+                      >
+                        {hour}:00
+                      </div>
+                    );
+                  }
+                )}
               </div>
 
               {/* Основна зона */}
               <div className="flex-1 relative">
-                {Array.from({ length: range.end - range.start + 1 }).map((_, i) => {
-                  const hour = range.start + i;
-                  return (
-                    <div
-                      key={hour}
-                      className="h-32 border-b border-gray-200"
-                      onClick={() =>
-                        handleEmptySlotClick(
-                          new Date(
-                            currentDate.getFullYear(),
-                            currentDate.getMonth(),
-                            currentDate.getDate(),
-                            hour
+                {Array.from({ length: range.end - range.start + 1 }).map(
+                  (_, i) => {
+                    const hour = range.start + i;
+                    return (
+                      <div
+                        key={hour}
+                        className="h-32 border-b border-gray-200"
+                        onClick={() =>
+                          handleEmptySlotClick(
+                            new Date(
+                              currentDate.getFullYear(),
+                              currentDate.getMonth(),
+                              currentDate.getDate(),
+                              hour
+                            )
                           )
-                        )
-                      }
-                    />
-                  );
-                })}
+                        }
+                      />
+                    );
+                  }
+                )}
 
                 {/* айтеми */}
                 {visibleItems.map((item) => {
-                  const isEvent = "startDate" in item;
-                  const { top, height } = computeDisplayTopAndHeight(item, range.start);
-                  const hasConflicts = overlaps.some((o) => o.items.some((i) => i.id === item.id));
+                  const { top, height } = computeDisplayTopAndHeightForColumn(
+                    item,
+                    currentDate,
+                    range
+                  );
+
+                  const hasConflicts = overlaps.some((o) =>
+                    o.items.some((i) => i.id === item.id)
+                  );
+
+                  const color = item.color ?? "";
+                  const description = item.description ?? "";
 
                   return (
                     <div
@@ -246,18 +388,22 @@ const DayPage: React.FC = () => {
                       style={{
                         top: `${top}px`,
                         height: `${height}px`,
-                        backgroundColor: item.color ? item.color + "80" : "rgba(203,213,225,0.5)",
-                        borderColor: item.color || "rgb(203,213,225)",
+                        backgroundColor: color
+                          ? `${color}80`
+                          : "rgba(203,213,225,0.5)",
+                        borderColor: color || "rgb(203,213,225)",
                         color: "white",
                       }}
                       onClick={() =>
-                        isEvent ? handleEventClick(item as Event) : handleTaskClick(item as Task)
+                        isEvent(item)
+                          ? handleEventClick(item)
+                          : handleTaskClick(item)
                       }
                     >
                       <div className="relative h-full">
                         <strong className="ml-4">{item.title}</strong>
-                        {item.description && (
-                          <div className="ml-4 mt-2">{item.description}</div>
+                        {description && (
+                          <div className="ml-4 mt-2">{description}</div>
                         )}
                       </div>
 
@@ -271,7 +417,9 @@ const DayPage: React.FC = () => {
                               o.items.some((i) => i.id === item.id)
                             );
                             if (!cluster) return;
-                            const rect = (e.currentTarget as unknown as HTMLElement).getBoundingClientRect();
+                            const rect = (
+                              e.currentTarget as unknown as HTMLElement
+                            ).getBoundingClientRect();
                             setOverlapMenu({
                               items: cluster.items,
                               position: { x: rect.right + 5, y: rect.top },
@@ -296,22 +444,22 @@ const DayPage: React.FC = () => {
             position={overlapMenu.position}
             selectedItem={overlapMenu.selectedItem}
             onSelect={(item) => {
-              if (overlapMenu.groupId) {
-                setActiveEventOverrides((prev) => ({
-                  ...prev,
-                  [overlapMenu.groupId!]: item.id,
-                }));
-              }
+              // Показуємо глобально тільки обрану подію (усі її частини в будь-яких секціях)
+              setVisibleEventId(item.id);
               setOverlapMenu(null);
             }}
-            onClose={() => setOverlapMenu(null)}
+            onClose={() => {
+              // Повернути стандартний режим (показувати всі)
+              setOverlapMenu(null);
+              setVisibleEventId(null);
+            }}
           />
         )}
       </div>
 
       <Footer />
 
-      {/* 🔹 модалки створення */}
+      {/* Створення події/таски */}
       {createModalInfo && (
         <CreateItemModal
           calendarId={calendar.id}
@@ -319,7 +467,7 @@ const DayPage: React.FC = () => {
           date={createModalInfo.time!}
           onClose={() => setCreateModalInfo(null)}
           onCreate={(newItem: Event | Task) => {
-            if ("startDate" in newItem) {
+            if (isEvent(newItem)) {
               const created = eventDb.create(newItem);
               setEvents((prev) => [...prev, created]);
             } else {
@@ -331,7 +479,7 @@ const DayPage: React.FC = () => {
         />
       )}
 
-      {/* 🔹 модалки редагування */}
+      {/* Редагування події/таски */}
       {selectedEvent && (
         <EventModal
           event={selectedEvent}

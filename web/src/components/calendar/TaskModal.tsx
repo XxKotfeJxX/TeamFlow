@@ -11,13 +11,21 @@ interface TaskModalProps {
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
-  const [activeTab, setActiveTab] = useState<"main" | "participants" | "settings">("main");
+  const [activeTab, setActiveTab] = useState<
+    "main" | "participants" | "settings"
+  >("main");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const [contextMenuPos, setContextMenuPos] = useState<{ x: number; y: number } | null>(null);
+  const [contextMenuPos, setContextMenuPos] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   const navigate = useNavigate();
 
-  const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) => {
+  const handleUserClick = (
+    userId: string,
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
     e.stopPropagation();
     setSelectedUser(userId);
     setContextMenuPos({ x: e.clientX, y: e.clientY });
@@ -65,8 +73,12 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
         <div className="flex-1 p-6 overflow-y-auto">
           {activeTab === "main" && (
             <div>
-              <h2 className="text-2xl font-bold mb-2 text-gray-800">{task.title}</h2>
-              {task.description && <p className="mb-2 text-gray-600">{task.description}</p>}
+              <h2 className="text-2xl font-bold mb-2 text-gray-800">
+                {task.title}
+              </h2>
+              {task.description && (
+                <p className="mb-2 text-gray-600">{task.description}</p>
+              )}
               <p className="text-sm text-gray-500">
                 Термін: {new Date(task.dueDate).toLocaleDateString()}
               </p>
@@ -91,14 +103,20 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
                         className="w-10 h-10 rounded-full mr-3"
                       />
                       <div className="flex flex-col">
-                        <span className="font-semibold text-gray-800">{user.username}</span>
-                        <span className="text-sm text-gray-500">{user.email}</span>
+                        <span className="font-semibold text-gray-800">
+                          {user.username}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {user.email}
+                        </span>
                       </div>
                     </div>
                   );
                 })
               ) : (
-                <p className="text-gray-800 font-semibold">Відповідальні користувачі відсутні</p>
+                <p className="text-gray-800 font-semibold">
+                  Відповідальні користувачі відсутні
+                </p>
               )}
             </div>
           )}
@@ -114,7 +132,11 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
         {selectedUser && contextMenuPos && (
           <div
             className="fixed bg-white p-2 rounded shadow-lg z-50 flex flex-col space-y-2"
-            style={{ top: contextMenuPos.y, left: contextMenuPos.x, minWidth: 140 }}
+            style={{
+              top: contextMenuPos.y,
+              left: contextMenuPos.x,
+              minWidth: 140,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <button

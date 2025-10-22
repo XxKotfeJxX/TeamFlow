@@ -24,8 +24,6 @@ export default function ProfilePage() {
   const isOwner = currentUserId === user.id;
   const isPrivate = user.profileVisibility === "private";
 
-  
-
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editableUser, setEditableUser] = useState({
     username: user.username,
@@ -42,13 +40,14 @@ export default function ProfilePage() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (ev) => {
-        setEditableUser({ ...editableUser, avatarUrl: ev.target?.result as string });
+        setEditableUser({
+          ...editableUser,
+          avatarUrl: ev.target?.result as string,
+        });
       };
       reader.readAsDataURL(file);
     }
   };
-
-  
 
   const handleSave = () => {
     userDb.update(user.id, {
@@ -72,7 +71,6 @@ export default function ProfilePage() {
 
   const goToTasks = () => navigate(`/tasks/user/${user.id}`);
   const goToTeams = () => navigate(`/teams/user/${user.id}`);
-  
 
   return (
     <>
@@ -135,170 +133,194 @@ export default function ProfilePage() {
 
         {isPrivate && !isOwner ? (
           <div className="text-center text-gray-500 italic py-16">
-          🔒 Цей профіль приватний. Ви можете бачити лише базову інформацію.
-        </div>
-      ) : (
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* ===== ABOUT ===== */}
-          <section className="bg-white p-6 rounded-2xl shadow-sm border relative">
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Про користувача
-              </h2>
+            🔒 Цей профіль приватний. Ви можете бачити лише базову інформацію.
+          </div>
+        ) : (
+          <div className="max-w-4xl mx-auto space-y-8">
+            {/* ===== ABOUT ===== */}
+            <section className="bg-white p-6 rounded-2xl shadow-sm border relative">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Про користувача
+                </h2>
 
-              {isOwner && (
-                <button
-                  onClick={() => setEditing(!editing)}
-                  className="text-gray-500 hover:text-blue-600 transition hover:border-none"
-                >
-                  <Pencil size={18} />
-                </button>
+                {isOwner && (
+                  <button
+                    onClick={() => setEditing(!editing)}
+                    className="text-gray-500 hover:text-blue-600 transition hover:border-none"
+                  >
+                    <Pencil size={18} />
+                  </button>
+                )}
+              </div>
+
+              {editing && isOwner ? (
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-sm text-gray-500">Нікнейм</label>
+                    <Input
+                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                      value={editableUser.username}
+                      onChange={(e) =>
+                        setEditableUser({
+                          ...editableUser,
+                          username: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-500">Ел. пошта</label>
+                    <Input
+                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                      type="email"
+                      value={editableUser.email}
+                      onChange={(e) =>
+                        setEditableUser({
+                          ...editableUser,
+                          email: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-500">Біо</label>
+                    <Textarea
+                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                      rows={3}
+                      value={editableUser.bio}
+                      onChange={(e) =>
+                        setEditableUser({
+                          ...editableUser,
+                          bio: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-500">
+                      Навички (через кому)
+                    </label>
+                    <Input
+                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                      value={editableUser.skills}
+                      onChange={(e) =>
+                        setEditableUser({
+                          ...editableUser,
+                          skills: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-500">
+                      Мови (через кому)
+                    </label>
+                    <Input
+                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                      value={editableUser.languages}
+                      onChange={(e) =>
+                        setEditableUser({
+                          ...editableUser,
+                          languages: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-500">
+                      Часовий пояс
+                    </label>
+                    <Input
+                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                      value={editableUser.timezone}
+                      onChange={(e) =>
+                        setEditableUser({
+                          ...editableUser,
+                          timezone: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <Button
+                      onClick={() => setEditing(false)}
+                      className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:border-gray-400"
+                    >
+                      Скасувати
+                    </Button>
+                    <Button
+                      onClick={handleSave}
+                      className="bg-blue-600 text-white hover:bg-blue-700 hover:border-blue-800"
+                    >
+                      Зберегти
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2 text-gray-700">
+                  <p>
+                    <strong>Нікнейм:</strong> {user.username}
+                  </p>
+                  <p>
+                    <strong>Ел. пошта:</strong> {user.email}
+                  </p>
+                  <p>
+                    <strong>Біо:</strong> {user.bio || "—"}
+                  </p>
+                  <p>
+                    <strong>Навички:</strong>{" "}
+                    {user.skills.length ? user.skills.join(", ") : "—"}
+                  </p>
+                  <p>
+                    <strong>Мови:</strong>{" "}
+                    {user.languages.length ? user.languages.join(", ") : "—"}
+                  </p>
+                  <p>
+                    <strong>Часовий пояс:</strong> {user.timezone || "—"}
+                  </p>
+                </div>
               )}
-            </div>
+            </section>
 
-            {editing && isOwner ? (
-              <div className="space-y-3">
-                <div>
-                  <label className="text-sm text-gray-500">Нікнейм</label>
-                  <Input
-                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                    value={editableUser.username}
-                    onChange={(e) =>
-                      setEditableUser({ ...editableUser, username: e.target.value })
-                    }
-                  />
-                </div>
+            <section>
+              <ProfileActivity
+                createdAt={user.createdAt.toISOString()}
+                lastActiveAt={user.lastActive.toISOString()}
+              />
+            </section>
 
-                <div>
-                  <label className="text-sm text-gray-500">Ел. пошта</label>
-                  <Input
-                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                    type="email"
-                    value={editableUser.email}
-                    onChange={(e) =>
-                      setEditableUser({ ...editableUser, email: e.target.value })
-                    }
-                  />
-                </div>
+            <ProfileSettings
+              interfaceLang={currentUser.interfaceLang}
+              profileVisibility={currentUser.profileVisibility}
+              disabled={!isOwner}
+              onChange={(field, value) => {
+                if (isOwner) {
+                  userDb.update(currentUser.id, { [field]: value });
+                  setCurrentUser({
+                    ...currentUser,
+                    [field]: value,
+                  } as typeof currentUser);
 
-                <div>
-                  <label className="text-sm text-gray-500">Біо</label>
-                  <Textarea
-                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                    rows={3}
-                    value={editableUser.bio}
-                    onChange={(e) =>
-                      setEditableUser({ ...editableUser, bio: e.target.value })
-                    }
-                  />
-                </div>
+                  // 🧠 якщо користувач змінює мову — зберігаємо в localStorage
+                  if (field === "interfaceLang") {
+                    localStorage.setItem("interfaceLang", value);
+                    document.documentElement.lang = value;
 
-                <div>
-                  <label className="text-sm text-gray-500">
-                    Навички (через кому)
-                  </label>
-                  <Input
-                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                    value={editableUser.skills}
-                    onChange={(e) =>
-                      setEditableUser({ ...editableUser, skills: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm text-gray-500">
-                    Мови (через кому)
-                  </label>
-                  <Input
-                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                    value={editableUser.languages}
-                    onChange={(e) =>
-                      setEditableUser({ ...editableUser, languages: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm text-gray-500">Часовий пояс</label>
-                  <Input
-                    className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                    value={editableUser.timezone}
-                    onChange={(e) =>
-                      setEditableUser({ ...editableUser, timezone: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="flex justify-end gap-2 pt-2">
-                  <Button
-                    onClick={() => setEditing(false)}
-                    className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:border-gray-400"
-                  >
-                    Скасувати
-                  </Button>
-                  <Button
-                    onClick={handleSave}
-                    className="bg-blue-600 text-white hover:bg-blue-700 hover:border-blue-800"
-                  >
-                    Зберегти
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-2 text-gray-700">
-                <p>
-                  <strong>Нікнейм:</strong> {user.username}
-                </p>
-                <p>
-                  <strong>Ел. пошта:</strong> {user.email}
-                </p>
-                <p>
-                  <strong>Біо:</strong> {user.bio || "—"}
-                </p>
-                <p>
-                  <strong>Навички:</strong>{" "}
-                  {user.skills.length ? user.skills.join(", ") : "—"}
-                </p>
-                <p>
-                  <strong>Мови:</strong>{" "}
-                  {user.languages.length ? user.languages.join(", ") : "—"}
-                </p>
-                <p>
-                  <strong>Часовий пояс:</strong> {user.timezone || "—"}
-                </p>
-              </div>
-            )}
-          </section>
-
-          <section>
-            <ProfileActivity
-              createdAt={user.createdAt.toISOString()}
-              lastActiveAt={user.lastActive.toISOString()}
+                    // 🔥 кидаємо глобальну подію, щоб Footer міг оновитись
+                    window.dispatchEvent(
+                      new CustomEvent("interfaceLangChange", { detail: value })
+                    );
+                  }
+                }
+              }}
             />
-          </section>
-
-          <ProfileSettings
-  interfaceLang={currentUser.interfaceLang}
-  profileVisibility={currentUser.profileVisibility}
-  disabled={!isOwner}
-  onChange={(field, value) => {
-    if (isOwner) {
-      userDb.update(currentUser.id, { [field]: value });
-      setCurrentUser({ ...currentUser, [field]: value } as typeof currentUser);
-
-      // 🧠 якщо користувач змінює мову — зберігаємо в localStorage
-      if (field === "interfaceLang") {
-  localStorage.setItem("interfaceLang", value);
-  document.documentElement.lang = value;
-
-  // 🔥 кидаємо глобальну подію, щоб Footer міг оновитись
-  window.dispatchEvent(new CustomEvent("interfaceLangChange", { detail: value }));
-}
-    }
-  }}
-/>
-
           </div>
         )}
       </main>

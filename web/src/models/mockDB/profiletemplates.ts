@@ -89,5 +89,5 @@ export const profileTemplates: ProfileTemplate[] = [
 export const profileTemplateDb = {
   getAll: (): ProfileTemplate[] => [...profileTemplates],
   getById: (id: string): ProfileTemplate | undefined =>
-    profileTemplates.find(t => t.id === id),
+    profileTemplates.find((t) => t.id === id),
 };

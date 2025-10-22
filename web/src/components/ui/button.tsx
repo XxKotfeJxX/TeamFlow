@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cn } from "../../utils/utils"
-import { buttonVariants } from "../../utils/buttonVariants"
-import type { VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cn } from "../../utils/utils";
+import { buttonVariants } from "../../utils/buttonVariants";
+import type { VariantProps } from "class-variance-authority";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -15,9 +15,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Button.displayName = "Button"
+);
+Button.displayName = "Button";
 
-export { Button }
+export { Button };

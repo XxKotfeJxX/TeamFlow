@@ -1,17 +1,22 @@
-import { useState, forwardRef } from "react"
-import type { ReactNode } from "react"
-import { cn } from "../../utils/utils"
+import { useState, forwardRef } from "react";
+import type { ReactNode } from "react";
+import { cn } from "../../utils/utils";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: ReactNode  // <- змінили string на ReactNode
+  label?: ReactNode; // <- змінили string на ReactNode
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, className, ...props }, ref) => {
-    const [checked, setChecked] = useState(props.checked || false)
+    const [checked, setChecked] = useState(props.checked || false);
 
     return (
-      <label className={cn("inline-flex items-center cursor-pointer select-none", className)}>
+      <label
+        className={cn(
+          "inline-flex items-center cursor-pointer select-none",
+          className
+        )}
+      >
         <span className="relative w-5 h-5 mr-2 flex-none">
           <input
             type="checkbox"
@@ -37,10 +42,10 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         </span>
         {label && <span className="text-sm text-gray-700">{label}</span>}
       </label>
-    )
+    );
   }
-)
+);
 
-Checkbox.displayName = "Checkbox"
+Checkbox.displayName = "Checkbox";
 
-export { Checkbox }
+export { Checkbox };

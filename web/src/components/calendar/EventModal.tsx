@@ -13,10 +13,19 @@ interface EventModalProps {
   onSave?: (updatedEvent: Event) => void;
 }
 
-const EventModal: React.FC<EventModalProps> = ({ event, onClose, isPersonalCalendar }) => {
-  const [activeTab, setActiveTab] = useState<"main" | "tasks" | "participants" | "settings">("main");
+const EventModal: React.FC<EventModalProps> = ({
+  event,
+  onClose,
+  isPersonalCalendar,
+}) => {
+  const [activeTab, setActiveTab] = useState<
+    "main" | "tasks" | "participants" | "settings"
+  >("main");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const [contextMenuPos, setContextMenuPos] = useState<{ x: number; y: number } | null>(null);
+  const [contextMenuPos, setContextMenuPos] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   const navigate = useNavigate();
 
@@ -25,14 +34,16 @@ const EventModal: React.FC<EventModalProps> = ({ event, onClose, isPersonalCalen
     if (task) alert(`Таск: ${task.title}`);
   };
 
-const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) => {
-  e.stopPropagation();
-  const clickX = e.clientX;
-  const clickY = e.clientY;
-  setSelectedUser(userId);
-  setContextMenuPos({ x: clickX, y: clickY });
-};
-
+  const handleUserClick = (
+    userId: string,
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    e.stopPropagation();
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+    setSelectedUser(userId);
+    setContextMenuPos({ x: clickX, y: clickY });
+  };
 
   const handleClickOutside = () => {
     setSelectedUser(null);
@@ -77,8 +88,12 @@ const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) =>
         <div className="flex-1 p-6 overflow-y-auto">
           {activeTab === "main" && (
             <div>
-              <h2 className="text-2xl font-bold mb-2 text-gray-800">{event.title}</h2>
-              {event.description && <p className="mb-2 text-gray-600">{event.description}</p>}
+              <h2 className="text-2xl font-bold mb-2 text-gray-800">
+                {event.title}
+              </h2>
+              {event.description && (
+                <p className="mb-2 text-gray-600">{event.description}</p>
+              )}
               <p className="text-sm text-gray-500">
                 Календар: {isPersonalCalendar ? "Особистий" : "Командний"}
               </p>
@@ -101,10 +116,12 @@ const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) =>
                       }}
                       onClick={() => handleTaskClick(id)}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = task.color + "50";
+                        e.currentTarget.style.backgroundColor =
+                          task.color + "50";
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = task.color + "30";
+                        e.currentTarget.style.backgroundColor =
+                          task.color + "30";
                       }}
                     >
                       <strong className="text-gray-500">{task.title}</strong>
@@ -138,11 +155,17 @@ const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) =>
                       className="w-10 h-10 rounded-full mr-3"
                     />
                     <div className="flex flex-col">
-                      <span className="font-semibold text-gray-800">{user.username}</span>
-                      <span className="text-sm text-gray-500">{user.email}</span>
+                      <span className="font-semibold text-gray-800">
+                        {user.username}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {user.email}
+                      </span>
                     </div>
                     {user.id === event.ownerId && (
-                      <span className="ml-auto text-xs text-gray-500 pr-2">адмін</span>
+                      <span className="ml-auto text-xs text-gray-500 pr-2">
+                        адмін
+                      </span>
                     )}
                   </div>
                 );
@@ -153,7 +176,9 @@ const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) =>
           {activeTab === "settings" && (
             <div>
               {isPersonalCalendar ? (
-                <p className="text-gray-800">Налаштування поки що недоступні для особистого календаря</p>
+                <p className="text-gray-800">
+                  Налаштування поки що недоступні для особистого календаря
+                </p>
               ) : (
                 <p>Тут можна змінювати налаштування події</p>
               )}
@@ -165,7 +190,11 @@ const handleUserClick = (userId: string, e: React.MouseEvent<HTMLDivElement>) =>
         {selectedUser && contextMenuPos && (
           <div
             className="fixed bg-white p-2 rounded shadow-lg z-50 flex flex-col space-y-2"
-            style={{ top: contextMenuPos.y, left: contextMenuPos.x, minWidth: 140 }}
+            style={{
+              top: contextMenuPos.y,
+              left: contextMenuPos.x,
+              minWidth: 140,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <button

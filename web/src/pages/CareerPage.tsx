@@ -29,7 +29,9 @@ export default function CareerPage() {
         <h1 className="text-4xl font-bold mb-8 text-center">Кар’єра</h1>
 
         <p className="text-center text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
-          Ми шукаємо людей, які хочуть зростати разом із нами. Якщо тебе драйвить створення сучасних інструментів для командної роботи — долучайся до TeamFlow!
+          Ми шукаємо людей, які хочуть зростати разом із нами. Якщо тебе
+          драйвить створення сучасних інструментів для командної роботи —
+          долучайся до TeamFlow!
         </p>
 
         <div className="grid gap-8">
@@ -51,13 +53,14 @@ export default function CareerPage() {
                 ))}
               </div>
               <Button
-  onClick={() => (window.location.href = "mailto:hr@teamflow.com")}
-  className="bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-6 py-3 text-lg rounded-xl transition-transform hover:scale-105"
-  style={{ border: "none" }}
->
-  Надіслати резюме
-</Button>
-
+                onClick={() =>
+                  (window.location.href = "mailto:hr@teamflow.com")
+                }
+                className="bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-6 py-3 text-lg rounded-xl transition-transform hover:scale-105"
+                style={{ border: "none" }}
+              >
+                Надіслати резюме
+              </Button>
             </div>
           ))}
         </div>

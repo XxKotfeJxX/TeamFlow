@@ -33,7 +33,9 @@ const TeamPage: React.FC = () => {
 
   // === Поточний місяць для переходу в календар ===
   const now = new Date();
-  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  const currentMonth = `${now.getFullYear()}-${String(
+    now.getMonth() + 1
+  ).padStart(2, "0")}`;
 
   // === Якщо команда не знайдена ===
   if (!team) {
@@ -83,13 +85,12 @@ const TeamPage: React.FC = () => {
 
           {/* Кнопки */}
           <div className="flex flex-wrap gap-2">
-           <button
-  onClick={() => navigate(`/tasks/team/${team.id}`)}
-  className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition border-none"
->
-  Перейти до Завдань
-</button>
-
+            <button
+              onClick={() => navigate(`/tasks/team/${team.id}`)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition border-none"
+            >
+              Перейти до Завдань
+            </button>
 
             <button
               onClick={() => navigate(`/calendar/${team.id}/${currentMonth}`)}
@@ -149,7 +150,9 @@ const TeamPage: React.FC = () => {
                   <p className="font-semibold text-center text-gray-900">
                     {member.fullname || member.username}
                   </p>
-                  <p className="text-sm text-gray-500 text-center">{member.email}</p>
+                  <p className="text-sm text-gray-500 text-center">
+                    {member.email}
+                  </p>
 
                   <p
                     className={`text-xs mt-1 ${

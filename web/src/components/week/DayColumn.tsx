@@ -20,11 +20,7 @@ const DayColumn: React.FC<DayColumnProps> = ({ events, onEventClick }) => {
 
       {/* Події */}
       {events.map((ev) => (
-        <EventBlock
-          key={ev.id}
-          event={ev}
-          onClick={() => onEventClick?.(ev)}
-        />
+        <EventBlock key={ev.id} event={ev} onClick={() => onEventClick?.(ev)} />
       ))}
     </div>
   );

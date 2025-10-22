@@ -80,7 +80,9 @@ const plans: Plan[] = [
 const planOrder: PlanType[] = ["Base", "Lite", "Pro", "Enterprise"];
 
 export default function PricePage() {
-  const [currentUser, setCurrentUser] = useState<ReturnType<typeof userDb.getById> | null>(null);
+  const [currentUser, setCurrentUser] = useState<ReturnType<
+    typeof userDb.getById
+  > | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
@@ -121,17 +123,17 @@ export default function PricePage() {
   };
 
   const confirmDowngrade = () => {
-  if (currentUser && selectedPlan) {
-    setShowConfirm(false);
+    if (currentUser && selectedPlan) {
+      setShowConfirm(false);
 
-    if (selectedPlan.name === "Base") {
-      userDb.update(currentUser.id, { plan: selectedPlan.name });
-      setCurrentUser({ ...currentUser, plan: selectedPlan.name });
-      return;
+      if (selectedPlan.name === "Base") {
+        userDb.update(currentUser.id, { plan: selectedPlan.name });
+        setCurrentUser({ ...currentUser, plan: selectedPlan.name });
+        return;
+      }
+      setShowPayment(true);
     }
-    setShowPayment(true);
-  }
-};
+  };
 
   const handlePaymentComplete = () => {
     if (currentUser && selectedPlan) {
@@ -146,14 +148,19 @@ export default function PricePage() {
       <Header />
 
       <main className="flex-1 px-4 py-24 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-12">Тарифи TeamFlow</h1>
+        <h1 className="text-3xl font-bold text-center mb-12">
+          Тарифи TeamFlow
+        </h1>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan) => {
             const isCurrent = currentUser?.plan === plan.name;
 
             return (
-              <Card key={plan.name} className="border-gray-300 bg-white shadow-md flex flex-col">
+              <Card
+                key={plan.name}
+                className="border-gray-300 bg-white shadow-md flex flex-col"
+              >
                 <CardContent className="flex flex-col flex-1">
                   <h2 className="text-2xl font-bold text-center pt-4 mb-0 text-gray-800">
                     {plan.name}
@@ -171,13 +178,18 @@ export default function PricePage() {
                       {plan.priceYear ? `або $${plan.priceYear}/рік` : ""}
                     </p>
                     <p className="text-blue-600 text-sm mt-1">
-                      {plan.studentDiscount ? "Студентам доступна знижка" : "\u00A0"}
+                      {plan.studentDiscount
+                        ? "Студентам доступна знижка"
+                        : "\u00A0"}
                     </p>
                   </div>
 
                   <ul className="mb-4 space-y-1 flex-1">
                     {plan.features.map((f) => (
-                      <li key={f.name} className="flex items-center gap-2 text-gray-700">
+                      <li
+                        key={f.name}
+                        className="flex items-center gap-2 text-gray-700"
+                      >
                         <span className="flex-none w-4">
                           {f.available ? (
                             <FaCheck className="text-green-600" />

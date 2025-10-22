@@ -16,8 +16,16 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   onDayClick,
   onWeekClick,
 }) => {
-  const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  const startOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  );
+  const endOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  );
 
   const startDay = new Date(startOfMonth);
   startDay.setDate(startOfMonth.getDate() - ((startOfMonth.getDay() + 6) % 7));

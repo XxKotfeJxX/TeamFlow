@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/Button";
 import { Label } from "../components/ui/Label";
 import { Card, CardContent } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
@@ -16,10 +16,19 @@ function isValidEmail(email: string): boolean {
 // 🔹 Умови для пароля
 const passwordRules = [
   { test: (p: string) => p.length >= 8, text: "Мінімум 8 символів" },
-  { test: (p: string) => /[A-Z]/.test(p), text: "Принаймні одна велика літера" },
-  { test: (p: string) => /[a-z]/.test(p), text: "Принаймні одна маленька літера" },
+  {
+    test: (p: string) => /[A-Z]/.test(p),
+    text: "Принаймні одна велика літера",
+  },
+  {
+    test: (p: string) => /[a-z]/.test(p),
+    text: "Принаймні одна маленька літера",
+  },
   { test: (p: string) => /\d/.test(p), text: "Принаймні одна цифра" },
-  { test: (p: string) => /[^A-Za-z0-9]/.test(p), text: "Принаймні один спеціальний символ" },
+  {
+    test: (p: string) => /[^A-Za-z0-9]/.test(p),
+    text: "Принаймні один спеціальний символ",
+  },
 ];
 
 export default function RegisterPage() {
@@ -73,24 +82,23 @@ export default function RegisterPage() {
       return;
     }
 
-const newUser = userDb.create({
-  username: login,
-  email,
-  password,
-  tags: [],
-  skills: [],
-  links: [],
-  languages: [],
-  interfaceLang: "uk",
-  profileVisibility: "public",
-  teams: [],
-  plan: "Base",
-});
+    const newUser = userDb.create({
+      username: login,
+      email,
+      password,
+      tags: [],
+      skills: [],
+      links: [],
+      languages: [],
+      interfaceLang: "uk",
+      profileVisibility: "public",
+      teams: [],
+      plan: "Base",
+    });
 
-localStorage.setItem("currentUserId", newUser.id);
+    localStorage.setItem("currentUserId", newUser.id);
 
-navigate(`/profile/${newUser.id}`);
-
+    navigate(`/profile/${newUser.id}`);
   };
 
   return (
@@ -104,7 +112,11 @@ navigate(`/profile/${newUser.id}`);
               Створити акаунт
             </h1>
 
-            <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              autoComplete="off"
+              className="space-y-4"
+            >
               {/* Логін */}
               <div>
                 <Label htmlFor="login">Логін</Label>

@@ -7,7 +7,10 @@ import { teamDb, type Team } from "../models/mockDB/teams";
 import { users, type User } from "../models/mockDB/users";
 
 const TasksPage: React.FC = () => {
-  const { ownerType, ownerId } = useParams<{ ownerType: "user" | "team"; ownerId: string }>();
+  const { ownerType, ownerId } = useParams<{
+    ownerType: "user" | "team";
+    ownerId: string;
+  }>();
   const [filter, setFilter] = useState<"all" | "active" | "done">("all");
   const [tasksState, setTasksState] = useState<Task[]>([]);
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null); // 🔹 модалка
@@ -15,13 +18,15 @@ const TasksPage: React.FC = () => {
   // === Визначаємо власника ===
   const owner = useMemo(() => {
     if (ownerType === "team") return teamDb.getById(ownerId!);
-    if (ownerType === "user") return users.find(u => u.id === ownerId!);
+    if (ownerType === "user") return users.find((u) => u.id === ownerId!);
     return undefined;
   }, [ownerType, ownerId]);
 
   // === Знаходимо календар ===
   const calendar = useMemo(() => {
-    return calendars.find(c => c.ownerType === ownerType && c.ownerId === ownerId);
+    return calendars.find(
+      (c) => c.ownerType === ownerType && c.ownerId === ownerId
+    );
   }, [ownerType, ownerId]);
 
   // === Отримуємо завдання календаря ===
@@ -45,7 +50,9 @@ const TasksPage: React.FC = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-1 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">Календар або власник не знайдені</p>
+          <p className="text-gray-500 text-lg">
+            Календар або власник не знайдені
+          </p>
         </main>
         <Footer />
       </div>

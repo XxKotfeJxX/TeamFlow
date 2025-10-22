@@ -27,8 +27,12 @@ export const teams: Team[] = [...seedTeams];
 const genId = () => crypto.randomUUID();
 
 // ===== Внутрішні утиліти роботи з учасниками =====
-const upsertMember = (team: Team, userId: string, role: TeamRole = "member") => {
-  const exists = team.members.find(m => m.userId === userId);
+const upsertMember = (
+  team: Team,
+  userId: string,
+  role: TeamRole = "member"
+) => {
+  const exists = team.members.find((m) => m.userId === userId);
   if (exists) {
     exists.role = role;
   } else {
@@ -39,12 +43,12 @@ const upsertMember = (team: Team, userId: string, role: TeamRole = "member") => 
 
 const removeMemberById = (team: Team, userId: string) => {
   const before = team.members.length;
-  team.members = team.members.filter(m => m.userId !== userId);
+  team.members = team.members.filter((m) => m.userId !== userId);
   if (before !== team.members.length) team.updatedAt = new Date();
 };
 
 const ensureHasAdmin = (team: Team) => {
-  if (!team.members.some(m => m.role === "admin")) {
+  if (!team.members.some((m) => m.role === "admin")) {
     // якщо немає жодного адміна — перетворимо першого учасника на адміна (якщо він є)
     if (team.members[0]) {
       team.members[0].role = "admin";
@@ -68,16 +72,16 @@ export const teamDb = {
     return team;
   },
 
-  getById: (id: string): Team | undefined => teams.find(t => t.id === id),
+  getById: (id: string): Team | undefined => teams.find((t) => t.id === id),
   getAll: (): Team[] => [...teams],
 
   update: (id: string, updates: Partial<Team>): Team | undefined => {
-    const team = teams.find(t => t.id === id);
+    const team = teams.find((t) => t.id === id);
     if (!team) return undefined;
 
     // Якщо приходять members — переконаємось, що це масив TeamMember
     if (updates.members) {
-      team.members = updates.members.map(m => ({
+      team.members = updates.members.map((m) => ({
         userId: m.userId,
         role: m.role ?? "member",
       }));
@@ -90,23 +94,31 @@ export const teamDb = {
   },
 
   delete: (id: string): boolean => {
-    const index = teams.findIndex(t => t.id === id);
+    const index = teams.findIndex((t) => t.id === id);
     if (index === -1) return false;
     teams.splice(index, 1);
     return true;
   },
 
   // ===== ОПЕРАЦІЇ З УЧАСНИКАМИ =====
-  addMember: (teamId: string, userId: string, role: TeamRole = "member"): Team | undefined => {
-    const team = teams.find(t => t.id === teamId);
+  addMember: (
+    teamId: string,
+    userId: string,
+    role: TeamRole = "member"
+  ): Team | undefined => {
+    const team = teams.find((t) => t.id === teamId);
     if (!team) return undefined;
     upsertMember(team, userId, role);
     ensureHasAdmin(team);
     return team;
   },
 
-  setRole: (teamId: string, userId: string, role: TeamRole): Team | undefined => {
-    const team = teams.find(t => t.id === teamId);
+  setRole: (
+    teamId: string,
+    userId: string,
+    role: TeamRole
+  ): Team | undefined => {
+    const team = teams.find((t) => t.id === teamId);
     if (!team) return undefined;
     upsertMember(team, userId, role);
     ensureHasAdmin(team);
@@ -114,7 +126,7 @@ export const teamDb = {
   },
 
   removeMember: (teamId: string, userId: string): Team | undefined => {
-    const team = teams.find(t => t.id === teamId);
+    const team = teams.find((t) => t.id === teamId);
     if (!team) return undefined;
     removeMemberById(team, userId);
     ensureHasAdmin(team);
@@ -122,13 +134,11 @@ export const teamDb = {
   },
 
   getMemberRole: (teamId: string, userId: string): TeamRole | undefined => {
-    const team = teams.find(t => t.id === teamId);
-    const m = team?.members.find(x => x.userId === userId);
+    const team = teams.find((t) => t.id === teamId);
+    const m = team?.members.find((x) => x.userId === userId);
     return m?.role;
   },
 };
-
-
 
 // ===== LocalStorage persistence =====
 const STORAGE_KEY = "teamsDB";
@@ -143,11 +153,13 @@ function loadTeams() {
   try {
     const parsed: Team[] = JSON.parse(stored);
     teams.length = 0;
-    teams.push(...parsed.map(t => ({
-      ...t,
-      createdAt: new Date(t.createdAt),
-      updatedAt: new Date(t.updatedAt),
-    })));
+    teams.push(
+      ...parsed.map((t) => ({
+        ...t,
+        createdAt: new Date(t.createdAt),
+        updatedAt: new Date(t.updatedAt),
+      }))
+    );
   } catch (e) {
     console.error("Помилка завантаження команд із LocalStorage:", e);
   }
@@ -179,31 +191,30 @@ teamDb.delete = (id) => {
 };
 
 teamDb.addMember = (teamId, userId, role) => {
-  const t = teams.find(x => x.id === teamId);
+  const t = teams.find((x) => x.id === teamId);
   if (!t) return;
   const result = teamDb.setRole(teamId, userId, role ?? "member");
   saveTeams();
   return result;
 };
 
-
 // ========== TEAM PROFILE (ВІЗИТКА) ==========
 
 // Тип шаблону блоку
 export type TeamProfileBlockType =
-  | "text_basic"   // текстові блоки
-  | "list"         // списки
-  | "links"        // посилання
-  | "gallery"      // галереї з фото
-  | "custom";      // інше (на майбутнє)
+  | "text_basic" // текстові блоки
+  | "list" // списки
+  | "links" // посилання
+  | "gallery" // галереї з фото
+  | "custom"; // інше (на майбутнє)
 
 // Один блок візитки
 export interface TeamProfileBlock {
   id: string;
-  teamId: string;          // прив’язка до команди
-  templateId: string;      // id шаблону (для визначення структури)
+  teamId: string; // прив’язка до команди
+  templateId: string; // id шаблону (для визначення структури)
   data: Record<string, unknown>; // будь-який JSON контент (залежно від шаблону)
-  orderIndex: number;      // порядок відображення
+  orderIndex: number; // порядок відображення
   createdAt: Date;
   updatedAt: Date;
 }
@@ -234,24 +245,24 @@ export const teamProfileDb = {
 
   getByTeamId: (teamId: string): TeamProfileBlock[] =>
     teamProfiles
-      .filter(b => b.teamId === teamId)
+      .filter((b) => b.teamId === teamId)
       .sort((a, b) => a.orderIndex - b.orderIndex),
 
   getById: (id: string): TeamProfileBlock | undefined =>
-    teamProfiles.find(b => b.id === id),
+    teamProfiles.find((b) => b.id === id),
 
   update: (
     id: string,
     updates: Partial<Omit<TeamProfileBlock, "id" | "teamId">>
   ): TeamProfileBlock | undefined => {
-    const block = teamProfiles.find(b => b.id === id);
+    const block = teamProfiles.find((b) => b.id === id);
     if (!block) return undefined;
     Object.assign(block, updates, { updatedAt: new Date() });
     return block;
   },
 
   delete: (id: string): boolean => {
-    const index = teamProfiles.findIndex(b => b.id === id);
+    const index = teamProfiles.findIndex((b) => b.id === id);
     if (index === -1) return false;
     teamProfiles.splice(index, 1);
     return true;

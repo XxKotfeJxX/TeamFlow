@@ -24,11 +24,10 @@ const TabOverview: React.FC<TabOverviewProps> = ({ teamId }) => {
   };
 
   const handleAdd = async (templateId: string) => {
-  teamProfileDb.create(teamId, templateId, {}, blocks.length);
-  const refreshed = teamProfileDb.getByTeamId(teamId);
-  setBlocks(refreshed);
-};
-
+    teamProfileDb.create(teamId, templateId, {}, blocks.length);
+    const refreshed = teamProfileDb.getByTeamId(teamId);
+    setBlocks(refreshed);
+  };
 
   return (
     <div className="space-y-6">

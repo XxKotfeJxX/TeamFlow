@@ -9,7 +9,9 @@ import { userDb } from "../models/mockDB/users";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<ReturnType<typeof userDb.getById> | null>(null);
+  const [currentUser, setCurrentUser] = useState<ReturnType<
+    typeof userDb.getById
+  > | null>(null);
 
   // ============================
   // 🔹 Перевірка на авторизацію
@@ -38,7 +40,6 @@ export default function Home() {
     <>
       <Header />
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-start overflow-x-hidden drop-shadow-2xl">
-
         {/* Hero Section */}
         <section className="w-full bg-white pt-32 pb-20 px-6 md:px-12 lg:px-24 flex flex-col lg:flex-row items-center gap-10">
           <div className="flex-1">
@@ -48,10 +49,12 @@ export default function Home() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl font-bold mb-6 text-gray-800"
             >
-              Робота в команді — <span className="text-blue-600">без хаосу</span>
+              Робота в команді —{" "}
+              <span className="text-blue-600">без хаосу</span>
             </motion.h1>
             <p className="text-gray-600 text-lg mb-8">
-              TeamFlow об'єднує задачі, календарі, чати та інструменти в єдиному просторі для продуктивної командної роботи.
+              TeamFlow об'єднує задачі, календарі, чати та інструменти в єдиному
+              просторі для продуктивної командної роботи.
             </p>
             <div className="flex gap-4">
               <Button
@@ -105,10 +108,14 @@ export default function Home() {
           ].map((feature, index) => (
             <div
               key={index}
-              className={`flex flex-col-reverse lg:flex-row ${index % 2 === 1 ? "lg:flex-row-reverse" : ""} items-center gap-10`}
+              className={`flex flex-col-reverse lg:flex-row ${
+                index % 2 === 1 ? "lg:flex-row-reverse" : ""
+              } items-center gap-10`}
             >
               <div className="flex-1">
-                <h2 className="text-3xl font-semibold mb-4 text-gray-800">{feature.title}</h2>
+                <h2 className="text-3xl font-semibold mb-4 text-gray-800">
+                  {feature.title}
+                </h2>
                 <p className="text-gray-600 text-lg">{feature.desc}</p>
               </div>
               <div className="flex-1">
@@ -124,9 +131,12 @@ export default function Home() {
 
         {/* CTA Section */}
         <section className="w-full bg-gray-800 text-white py-16 px-6 md:px-12 lg:px-24 text-center">
-          <h2 className="text-4xl font-bold mb-4">Готові приєднатись до TeamFlow?</h2>
+          <h2 className="text-4xl font-bold mb-4">
+            Готові приєднатись до TeamFlow?
+          </h2>
           <p className="text-lg mb-8">
-            Зареєструйтесь сьогодні та почніть керувати своїми проєктами як професіонал.
+            Зареєструйтесь сьогодні та почніть керувати своїми проєктами як
+            професіонал.
           </p>
           <Button
             size="lg"

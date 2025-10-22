@@ -1,5 +1,5 @@
 // eventUtils.ts
-import { CalendarEvent } from '../models/Event';
+import { CalendarEvent } from "../models/Event";
 
 export interface EventLayout {
   event: CalendarEvent;
@@ -22,7 +22,7 @@ export function layoutEventsForDay(events: CalendarEvent[]): EventLayout[] {
   for (const ev of sorted) {
     let placed = false;
     for (const group of groups) {
-      if (group.some(g => g.overlapsWith(ev))) {
+      if (group.some((g) => g.overlapsWith(ev))) {
         group.push(ev);
         placed = true;
         break;
@@ -75,7 +75,8 @@ export function calculateTopHeightForEvent(
   pxPerMinute = 1
 ): { top: number; height: number } {
   const startMinutes =
-    (event.startTime.getHours() - dayStartHour) * 60 + event.startTime.getMinutes();
+    (event.startTime.getHours() - dayStartHour) * 60 +
+    event.startTime.getMinutes();
   const endMinutes =
     (event.endTime.getHours() - dayStartHour) * 60 + event.endTime.getMinutes();
   const top = Math.max(0, startMinutes * pxPerMinute);

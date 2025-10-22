@@ -32,7 +32,9 @@ export default function MyTeamPage() {
               />
               <h2 className="text-2xl font-semibold">{m.name}</h2>
               <p className="text-indigo-600 font-medium">{m.role}</p>
-              <p className="text-gray-600 mt-4 text-sm leading-relaxed">{m.bio}</p>
+              <p className="text-gray-600 mt-4 text-sm leading-relaxed">
+                {m.bio}
+              </p>
             </div>
           ))}
         </div>

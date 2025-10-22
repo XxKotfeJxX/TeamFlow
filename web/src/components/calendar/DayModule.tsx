@@ -17,27 +17,36 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    containerRef.current?.scrollTo({ top: HOUR_HEIGHT * 6, behavior: "smooth" });
+    containerRef.current?.scrollTo({
+      top: HOUR_HEIGHT * 6,
+      behavior: "smooth",
+    });
   }, []);
 
   const formatDate = (d: Date) =>
-    d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+    d.toLocaleDateString(undefined, {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    });
 
   // Визначаємо top для елемента
   const computeTop = (item: Event | Task) => {
     const isEvent = "startDate" in item;
     const d = isEvent ? item.startDate : new Date(item.dueDate);
     const minutes = d.getHours() * 60 + d.getMinutes();
-    return ((minutes / 60) * HOUR_HEIGHT) - (isEvent ? 0 : TASK_HEIGHT / 2);
+    return (minutes / 60) * HOUR_HEIGHT - (isEvent ? 0 : TASK_HEIGHT / 2);
   };
 
   // Визначаємо висоту та top з центруванням для коротких подій
   const computeDisplayTopAndHeight = (item: Event | Task) => {
     const isEvent = "startDate" in item;
     const actualHeight = isEvent
-      ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60 * 60)) * HOUR_HEIGHT
+      ? ((item.endDate.getTime() - item.startDate.getTime()) /
+          (1000 * 60 * 60)) *
+        HOUR_HEIGHT
       : TASK_HEIGHT;
-    
+
     let displayHeight = actualHeight;
     let top = computeTop(item);
 
@@ -55,16 +64,22 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
 
     items.forEach((item) => {
       const top = computeTop(item);
-      const height = "startDate" in item
-        ? ((item.endDate.getTime() - item.startDate.getTime()) / (1000 * 60 * 60)) * HOUR_HEIGHT
-        : TASK_HEIGHT;
+      const height =
+        "startDate" in item
+          ? ((item.endDate.getTime() - item.startDate.getTime()) /
+              (1000 * 60 * 60)) *
+            HOUR_HEIGHT
+          : TASK_HEIGHT;
 
       const cluster = clusters.find((c) =>
         c.items.some((other) => {
           const otherTop = computeTop(other);
-          const otherHeight = "startDate" in other
-            ? ((other.endDate.getTime() - other.startDate.getTime()) / (1000 * 60 * 60)) * HOUR_HEIGHT
-            : TASK_HEIGHT;
+          const otherHeight =
+            "startDate" in other
+              ? ((other.endDate.getTime() - other.startDate.getTime()) /
+                  (1000 * 60 * 60)) *
+                HOUR_HEIGHT
+              : TASK_HEIGHT;
           return top < otherTop + otherHeight && top + height > otherTop;
         })
       );
@@ -75,7 +90,9 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
 
     return clusters.map((c) => {
       if (c.items.length === 1) return c.items[0];
-      return c.items.sort((a, b) => (a.priority.personal ?? 0) - (b.priority.personal ?? 0))[0];
+      return c.items.sort(
+        (a, b) => (a.priority.personal ?? 0) - (b.priority.personal ?? 0)
+      )[0];
     });
   };
 
@@ -103,7 +120,7 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
       >
         {/* Часова шкала */}
         <div className="relative z-10 pointer-events-none">
-          {hours.map(hour => (
+          {hours.map((hour) => (
             <div
               key={hour}
               className="h-[128px] border-b border-gray-200 text-[13px] text-gray-800 pl-3 flex items-start"
@@ -115,7 +132,7 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
 
         {/* Події та таски */}
         <div className="absolute inset-0 z-20 px-4 pointer-events-auto">
-          {visibleItems.map(item => {
+          {visibleItems.map((item) => {
             const { top, height } = computeDisplayTopAndHeight(item);
 
             return (
@@ -127,7 +144,9 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
                   left: `${TIME_COLUMN_WIDTH}px`,
                   right: "1rem",
                   height: `${height}px`,
-                  backgroundColor: item.color ? item.color + "80" : "rgba(203, 213, 225, 0.5)",
+                  backgroundColor: item.color
+                    ? item.color + "80"
+                    : "rgba(203, 213, 225, 0.5)",
                   borderColor: item.color || "rgb(203, 213, 225)",
                   borderWidth: 1,
                   borderStyle: "solid",
@@ -136,7 +155,9 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
               >
                 <div className="relative h-full p-1">
                   <strong className="ml-2 truncate">{item.title}</strong>
-                  {item.description && <div className="ml-2 mt-1 text-xs">{item.description}</div>}
+                  {item.description && (
+                    <div className="ml-2 mt-1 text-xs">{item.description}</div>
+                  )}
                 </div>
               </div>
             );

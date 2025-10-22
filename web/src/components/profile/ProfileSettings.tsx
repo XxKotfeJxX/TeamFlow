@@ -31,9 +31,7 @@ export default function ProfileSettings({
               id="language"
               value={interfaceLang}
               disabled={disabled}
-              onChange={(e) =>
-                onChange?.("interfaceLang", e.target.value)
-              }
+              onChange={(e) => onChange?.("interfaceLang", e.target.value)}
             >
               <SelectContent>
                 <SelectItem value="uk">Українська</SelectItem>
@@ -50,9 +48,7 @@ export default function ProfileSettings({
               id="visibility"
               value={profileVisibility}
               disabled={disabled}
-              onChange={(e) =>
-                onChange?.("profileVisibility", e.target.value)
-              }
+              onChange={(e) => onChange?.("profileVisibility", e.target.value)}
             >
               <SelectContent>
                 <SelectItem value="public">Публічний</SelectItem>
@@ -63,7 +59,8 @@ export default function ProfileSettings({
         </div>
 
         <div className="text-muted-foreground text-sm">
-          Інші опції зʼявляться тут згодом, наприклад — темна тема, email-сповіщення тощо.
+          Інші опції зʼявляться тут згодом, наприклад — темна тема,
+          email-сповіщення тощо.
         </div>
       </CardContent>
     </Card>

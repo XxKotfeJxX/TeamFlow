@@ -82,20 +82,20 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     key={field.key}
                     className="text-blue-600 space-y-1 mb-2 underline-offset-2"
                   >
-                    {(value as { label: string; url: string }[] | undefined)?.map(
-                      (l, idx) => (
-                        <li key={idx}>
-                          <a
-                            href={l.url}
-                            className="hover:underline"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {l.label}
-                          </a>
-                        </li>
-                      )
-                    )}
+                    {(
+                      value as { label: string; url: string }[] | undefined
+                    )?.map((l, idx) => (
+                      <li key={idx}>
+                        <a
+                          href={l.url}
+                          className="hover:underline"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {l.label}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 );
 

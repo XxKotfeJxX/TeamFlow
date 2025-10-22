@@ -18,8 +18,7 @@ interface AccordionTriggerProps
   children: React.ReactNode;
 }
 
-interface AccordionContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface AccordionContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
@@ -59,7 +58,9 @@ interface AccordionContextValue {
   collapsible: boolean;
 }
 
-const AccordionContext = React.createContext<AccordionContextValue | null>(null);
+const AccordionContext = React.createContext<AccordionContextValue | null>(
+  null
+);
 
 function useAccordionContext() {
   const ctx = React.useContext(AccordionContext);

@@ -14,7 +14,8 @@ const docsSections = [
   },
   {
     title: "📅 Календар API",
-    description: "Створення, редагування і видалення подій у командному календарі.",
+    description:
+      "Створення, редагування і видалення подій у командному календарі.",
     example: `GET /api/calendars/:id/events
 Authorization: Bearer <token>`,
   },
@@ -44,7 +45,9 @@ export default function DocsPage() {
       <Header />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold mb-10 text-center">Документація API</h1>
+        <h1 className="text-4xl font-bold mb-10 text-center">
+          Документація API
+        </h1>
 
         <div className="space-y-10">
           {docsSections.map((section) => (
@@ -65,7 +68,9 @@ export default function DocsPage() {
         </div>
 
         <div className="text-center mt-12 text-gray-600">
-          <p>Версія API: <b>v1.0</b></p>
+          <p>
+            Версія API: <b>v1.0</b>
+          </p>
         </div>
       </main>
 

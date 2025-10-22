@@ -83,8 +83,9 @@ export default function GithubIntegrationPage() {
           </h2>
           <p>
             Усі події GitHub — нові коміти, рев’ю, коментарі — відображаються у
-            твоєму внутрішньому потоці активності. Ми фільтруємо лише релевантне:
-            якщо подія не стосується тебе чи твоєї команди — ти її не побачиш.
+            твоєму внутрішньому потоці активності. Ми фільтруємо лише
+            релевантне: якщо подія не стосується тебе чи твоєї команди — ти її
+            не побачиш.
           </p>
           <img
             src="/images/github-notifications.jpg"
@@ -132,7 +133,10 @@ export default function GithubIntegrationPage() {
         </section>
 
         <div className="flex justify-center mt-12">
-          <Button onClick={() => navigate("/blog")} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            onClick={() => navigate("/blog")}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
             ← Повернутись до блогу
           </Button>
         </div>

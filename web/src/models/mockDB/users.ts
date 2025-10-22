@@ -3,12 +3,12 @@ import { seedUsers } from "./users.seed";
 export type PlanType = "Base" | "Lite" | "Pro" | "Enterprise";
 
 export interface User {
-  id: string;              // унікальний ID
-  username: string;        // 🔹 логін
-  fullname?: string;       // ім’я та прізвище (опційно)
-  email: string;           // 🔹 email
-  password: string;        // 🔹 пароль (поки без хешування)
-  avatarUrl?: string;      // аватар
+  id: string; // унікальний ID
+  username: string; // 🔹 логін
+  fullname?: string; // ім’я та прізвище (опційно)
+  email: string; // 🔹 email
+  password: string; // 🔹 пароль (поки без хешування)
+  avatarUrl?: string; // аватар
   tags: string[];
   bio?: string;
   skills: string[];

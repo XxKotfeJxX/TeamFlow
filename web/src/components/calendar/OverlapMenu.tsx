@@ -32,46 +32,43 @@ const OverlapMenu: React.FC<OverlapMenuProps> = ({
   }, [onClose]);
 
   return ReactDOM.createPortal(
-  <>
-    {/* бекдроп, який ловить всі кліки */}
-    <div
-      className="fixed inset-0 z-[9998]"
-      onClick={onClose}
-    />
+    <>
+      {/* бекдроп, який ловить всі кліки */}
+      <div className="fixed inset-0 z-[9998]" onClick={onClose} />
 
-    <div
-      ref={menuRef}
-      className="fixed bg-white border border-gray-300 rounded shadow-lg z-[9999] w-56"
-      style={{
-        top: position.y,
-        left: position.x,
-      }}
-      onClick={(e) => e.stopPropagation()} // щоб кліки всередині меню не закривали його
-    >
-      <ul className="max-h-60 overflow-auto">
-        {items.map((item) => {
-          const isActive = selectedItem?.id === item.id;
-          return (
-            <li
-              key={item.id}
-              className={`px-3 py-2 cursor-pointer flex items-center text-black truncate ${
-                isActive ? "bg-blue-100 font-semibold" : "hover:bg-gray-100"
-              }`}
-              onClick={() => onSelect(item)}
-            >
-              <div
-                className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
-                style={{ backgroundColor: item.color || "#94a3b8" }}
-              />
-              <span className="truncate">{item.title}</span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  </>,
-  document.body
-);
+      <div
+        ref={menuRef}
+        className="fixed bg-white border border-gray-300 rounded shadow-lg z-[9999] w-56"
+        style={{
+          top: position.y,
+          left: position.x,
+        }}
+        onClick={(e) => e.stopPropagation()} // щоб кліки всередині меню не закривали його
+      >
+        <ul className="max-h-60 overflow-auto">
+          {items.map((item) => {
+            const isActive = selectedItem?.id === item.id;
+            return (
+              <li
+                key={item.id}
+                className={`px-3 py-2 cursor-pointer flex items-center text-black truncate ${
+                  isActive ? "bg-blue-100 font-semibold" : "hover:bg-gray-100"
+                }`}
+                onClick={() => onSelect(item)}
+              >
+                <div
+                  className="w-3 h-3 rounded-full mr-2 flex-shrink-0"
+                  style={{ backgroundColor: item.color || "#94a3b8" }}
+                />
+                <span className="truncate">{item.title}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </>,
+    document.body
+  );
 };
 
 export default OverlapMenu;

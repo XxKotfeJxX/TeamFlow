@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/Button";
 import { Label } from "../components/ui/Label";
 import { Card, CardContent } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
@@ -142,7 +142,9 @@ export default function LoginPage() {
               </h2>
               <form onSubmit={handleReset} className="space-y-4">
                 <div>
-                  <Label htmlFor="resetEmail">Введіть вашу електронну пошту</Label>
+                  <Label htmlFor="resetEmail">
+                    Введіть вашу електронну пошту
+                  </Label>
                   <Input
                     id="resetEmail"
                     type="email"

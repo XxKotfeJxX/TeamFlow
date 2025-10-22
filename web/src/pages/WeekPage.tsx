@@ -13,14 +13,19 @@ import {
 } from "../models/mockDB/calendar";
 
 const DAYS_VISIBLE = 3; // рівно 3 дні на екран
-const TOTAL_DAYS = 7;   // показуємо 7 днів (понеділок–неділя)
+const TOTAL_DAYS = 7; // показуємо 7 днів (понеділок–неділя)
 
 const WeekPage: React.FC = () => {
-  const { calendarId, weekStart } = useParams<{ calendarId: string; weekStart: string }>();
+  const { calendarId, weekStart } = useParams<{
+    calendarId: string;
+    weekStart: string;
+  }>();
   const carouselRef = useRef<HTMLDivElement>(null);
 
   if (!calendarId) return <div>❌ Invalid URL parameters</div>;
-  const calendar: Calendar | undefined = calendars.find(c => c.id === calendarId);
+  const calendar: Calendar | undefined = calendars.find(
+    (c) => c.id === calendarId
+  );
   if (!calendar) return <div>❌ Calendar not found</div>;
 
   const initialDate = weekStart ? new Date(weekStart) : new Date();
@@ -38,10 +43,18 @@ const WeekPage: React.FC = () => {
   });
 
   const eventsByDay = (day: Date): Event[] =>
-    allEvents.filter(ev => ev.calendarId === calendarId && ev.startDate.toDateString() === day.toDateString());
+    allEvents.filter(
+      (ev) =>
+        ev.calendarId === calendarId &&
+        ev.startDate.toDateString() === day.toDateString()
+    );
 
   const tasksByDay = (day: Date): Task[] =>
-    allTasks.filter(t => t.calendarId === calendarId && new Date(t.dueDate).toDateString() === day.toDateString());
+    allTasks.filter(
+      (t) =>
+        t.calendarId === calendarId &&
+        new Date(t.dueDate).toDateString() === day.toDateString()
+    );
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
@@ -49,7 +62,10 @@ const WeekPage: React.FC = () => {
 
       <div className="flex flex-col flex-1 px-4">
         <h2 className="text-lg font-semibold text-gray-700 mb-3">
-          {monday.toLocaleDateString(undefined, { month: "long", year: "numeric" })}
+          {monday.toLocaleDateString(undefined, {
+            month: "long",
+            year: "numeric",
+          })}
         </h2>
 
         <div
@@ -57,8 +73,11 @@ const WeekPage: React.FC = () => {
           className="flex overflow-x-auto no-scrollbar gap-2"
           style={{ width: "100%", scrollSnapType: "x mandatory" }}
         >
-          {days.map(day => {
-            const items: (Event | Task)[] = [...eventsByDay(day), ...tasksByDay(day)];
+          {days.map((day) => {
+            const items: (Event | Task)[] = [
+              ...eventsByDay(day),
+              ...tasksByDay(day),
+            ];
             return (
               <div
                 key={day.toDateString()}
@@ -66,15 +85,15 @@ const WeekPage: React.FC = () => {
                 style={{ width: `${100 / DAYS_VISIBLE}%` }}
               >
                 <DayModule
-  date={day}
-  items={items}
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onItemClick={_ => {
-    const dateStr = day.toISOString().split("T")[0]; // yyyy-mm-dd
-    const url = `http://localhost:5173/calendar/${calendarId}/day/${dateStr}`;
-    window.location.href = url;
-  }}
-/>
+                  date={day}
+                  items={items}
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  onItemClick={(_) => {
+                    const dateStr = day.toISOString().split("T")[0]; // yyyy-mm-dd
+                    const url = `http://localhost:5173/calendar/${calendarId}/day/${dateStr}`;
+                    window.location.href = url;
+                  }}
+                />
               </div>
             );
           })}

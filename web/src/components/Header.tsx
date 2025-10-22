@@ -9,7 +9,9 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [currentUser, setCurrentUser] = useState<ReturnType<typeof userDb.getById> | null>(null);
+  const [currentUser, setCurrentUser] = useState<ReturnType<
+    typeof userDb.getById
+  > | null>(null);
 
   // ============================
   // 🔹 Отримуємо користувача
@@ -79,7 +81,9 @@ const Header = () => {
           options: [
             {
               name: "Календар",
-              path: `/calendar/${currentUser.id}/${new Date().getFullYear()}-${String(
+              path: `/calendar/${
+                currentUser.id
+              }/${new Date().getFullYear()}-${String(
                 new Date().getMonth() + 1
               ).padStart(2, "0")}`,
             },
@@ -138,7 +142,11 @@ const Header = () => {
               <button
                 className={`p-2 rounded-xl transition duration-150 
                   hover:text-blue-600 focus:outline-none focus:ring-0 
-                  ${openMenu === idx ? "bg-gray-100 text-blue-600" : "bg-transparent"}
+                  ${
+                    openMenu === idx
+                      ? "bg-gray-100 text-blue-600"
+                      : "bg-transparent"
+                  }
                 `}
                 style={{ border: "none" }}
               >
@@ -231,11 +239,14 @@ const Header = () => {
 
       {/* Випливаюче меню (мобільна версія) */}
       {mobileOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex"
-        onClick={() => setMobileOpen(false)}
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-50 flex"
+          onClick={() => setMobileOpen(false)}
         >
-          <div className="bg-white w-3/4 max-w-xs h-full shadow-xl p-5 flex flex-col gap-6 animate-slide-in"
-          onClick={(e) => e.stopPropagation()}>
+          <div
+            className="bg-white w-3/4 max-w-xs h-full shadow-xl p-5 flex flex-col gap-6 animate-slide-in"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Верхня панель */}
             <div className="flex items-center justify-between">
               <span className="font-bold text-lg text-gray-800">Меню</span>
@@ -253,9 +264,7 @@ const Header = () => {
               {navItems.map((item, idx) => (
                 <div key={idx}>
                   <button
-                    onClick={() =>
-                      setOpenMenu(openMenu === idx ? null : idx)
-                    }
+                    onClick={() => setOpenMenu(openMenu === idx ? null : idx)}
                     className="flex justify-between items-center w-full text-left py-2 px-3 rounded-md hover:bg-gray-100"
                     style={{ border: "none" }}
                   >
@@ -275,8 +284,8 @@ const Header = () => {
                           }}
                           className="py-1.5 text-gray-700 hover:text-blue-600 text-left px-3 rounded-md hover:bg-gray-100"
                           style={{
-                            border: "none"
-                           }}
+                            border: "none",
+                          }}
                         >
                           {option.name}
                         </button>

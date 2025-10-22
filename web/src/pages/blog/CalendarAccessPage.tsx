@@ -118,20 +118,23 @@ export default function CalendarAccessPage() {
           </h2>
           <p>
             Ми плануємо інтеграцію календаря з GitHub, Google Calendar та
-            Notion. Ідея — щоб усі твої зобов’язання збиралися в одному
-            вікні TeamFlow, без необхідності перемикатись між платформами.
+            Notion. Ідея — щоб усі твої зобов’язання збиралися в одному вікні
+            TeamFlow, без необхідності перемикатись між платформами.
           </p>
         </section>
 
         <section className="text-lg italic text-gray-600 border-l-4 border-teal-500 pl-4">
           <p>
-            “Календар — це не просто список подій. Це дзеркало твоєї уваги.
-            І якщо правильно його організувати — команда працює як годинник.”
+            “Календар — це не просто список подій. Це дзеркало твоєї уваги. І
+            якщо правильно його організувати — команда працює як годинник.”
           </p>
         </section>
 
         <div className="flex justify-center mt-12">
-          <Button onClick={() => navigate("/blog")} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            onClick={() => navigate("/blog")}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
             ← Повернутись до блогу
           </Button>
         </div>

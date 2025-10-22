@@ -62,12 +62,15 @@ export default function BlogPage() {
     centerMode: true,
     centerPadding: "20px",
     responsive: [
-      { breakpoint: 1280, settings: { slidesToShow: 2, centerPadding: "16px" } },
+      {
+        breakpoint: 1280,
+        settings: { slidesToShow: 2, centerPadding: "16px" },
+      },
       { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: "0px" } },
     ],
   };
 
-  const renderCard = (post: typeof blogPosts[0]) => (
+  const renderCard = (post: (typeof blogPosts)[0]) => (
     <div
       key={post.id}
       className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-transform duration-300 transform hover:-translate-y-1 

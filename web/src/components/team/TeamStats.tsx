@@ -23,7 +23,10 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
 
   // === 1️⃣ Отримуємо задачі та події ===
   const teamTasks = useMemo(
-    () => taskDb.getAll().filter((t) => t.type === "team" && t.calendarId === teamId),
+    () =>
+      taskDb
+        .getAll()
+        .filter((t) => t.type === "team" && t.calendarId === teamId),
     [teamId]
   );
 
@@ -106,10 +109,10 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
         <h3 className="text-xl font-semibold mb-3">Загальна активність</h3>
         <p className="text-gray-600">
           {`Період: ${periodLabel}. `}
-          Команда створила <b>{filteredTasks.length}</b> задач,{" "}
-          виконала <b>{completedTasks.length}</b>,{" "}
-          додано <b>{filteredEvents.length}</b> нових подій,{" "}
-          активно брали участь <b>{activeUserIds.size}</b> користувачів.
+          Команда створила <b>{filteredTasks.length}</b> задач, виконала{" "}
+          <b>{completedTasks.length}</b>, додано <b>{filteredEvents.length}</b>{" "}
+          нових подій, активно брали участь <b>{activeUserIds.size}</b>{" "}
+          користувачів.
         </p>
       </div>
 

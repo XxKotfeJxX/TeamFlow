@@ -19,9 +19,7 @@ export const seedTeams: Team[] = [
     name: "Frontend Masters",
     description: "Команда фронтендерів",
     avatarUrl: "",
-    members: [
-      { userId: "u3", role: "admin" },
-    ],
+    members: [{ userId: "u3", role: "admin" }],
     createdAt: new Date(),
     updatedAt: new Date(),
   },

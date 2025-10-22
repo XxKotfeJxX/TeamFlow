@@ -1,22 +1,22 @@
-import { CalendarDays, Clock } from 'lucide-react'
+import { CalendarDays, Clock } from "lucide-react";
 
 type ProfileActivityProps = {
-  createdAt: string
-  lastActiveAt: string
-}
+  createdAt: string;
+  lastActiveAt: string;
+};
 
 export default function ProfileActivity({
   createdAt,
   lastActiveAt,
 }: ProfileActivityProps) {
   const formatDate = (iso: string) => {
-    const date = new Date(iso)
-    return date.toLocaleDateString('uk-UA', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-  }
+    const date = new Date(iso);
+    return date.toLocaleDateString("uk-UA", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow-md mb-6">
@@ -38,5 +38,5 @@ export default function ProfileActivity({
         </span>
       </div>
     </div>
-  )
+  );
 }

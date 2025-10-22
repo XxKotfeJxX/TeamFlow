@@ -11,7 +11,11 @@ interface EventFormModalProps {
   }) => void;
 }
 
-const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSave }) => {
+const EventFormModal: React.FC<EventFormModalProps> = ({
+  isOpen,
+  onClose,
+  onSave,
+}) => {
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -48,7 +52,10 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSave
           onChange={(e) => setDescription(e.target.value)}
         />
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-lg bg-gray-200">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg bg-gray-200"
+          >
             Скасувати
           </button>
           <button

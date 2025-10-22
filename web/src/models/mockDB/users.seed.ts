@@ -303,6 +303,5 @@ export const seedUsers: User[] = [
     profileVisibility: "public",
     teams: ["t9"],
     plan: "Base",
-  }
+  },
 ];
-

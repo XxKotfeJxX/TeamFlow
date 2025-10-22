@@ -53,10 +53,12 @@ export default function OverviewPage() {
       <main className="flex-1 pt-12">
         {/* Hero Section */}
         <section className="text-center py-20 bg-gradient-to-b from-white to-gray-100">
-          <h1 className="text-4xl font-bold mb-4 text-gray-800">Командна робота без хаосу</h1>
+          <h1 className="text-4xl font-bold mb-4 text-gray-800">
+            Командна робота без хаосу
+          </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Календар, задачі, чати й дзвінки — усе в одному місці.  
-            Працюй синхронно з командою будь-де.
+            Календар, задачі, чати й дзвінки — усе в одному місці. Працюй
+            синхронно з командою будь-де.
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <Button
@@ -91,7 +93,9 @@ export default function OverviewPage() {
               >
                 <CardContent className="pt-8 pb-6">
                   <f.icon className="w-10 h-10 mx-auto mb-4 text-blue-600" />
-                  <h3 className="text-xl font-medium mb-2 text-gray-800">{f.title}</h3>
+                  <h3 className="text-xl font-medium mb-2 text-gray-800">
+                    {f.title}
+                  </h3>
                   <p className="text-gray-600 text-sm">{f.desc}</p>
                 </CardContent>
               </Card>
@@ -101,7 +105,9 @@ export default function OverviewPage() {
 
         {/* CTA Section */}
         <section className="py-20 bg-gray-100 text-gray-800 text-center">
-          <h2 className="text-3xl font-semibold mb-4">Готовий спробувати TeamFlow?</h2>
+          <h2 className="text-3xl font-semibold mb-4">
+            Готовий спробувати TeamFlow?
+          </h2>
           <p className="text-gray-600 mb-8">
             Почни працювати з командою ефективніше вже сьогодні.
           </p>

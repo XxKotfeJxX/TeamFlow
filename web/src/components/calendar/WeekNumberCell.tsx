@@ -5,7 +5,10 @@ interface WeekNumberCellProps {
   onClick?: () => void;
 }
 
-const WeekNumberCell: React.FC<WeekNumberCellProps> = ({ weekNumber, onClick }) => {
+const WeekNumberCell: React.FC<WeekNumberCellProps> = ({
+  weekNumber,
+  onClick,
+}) => {
   return (
     <div
       className="

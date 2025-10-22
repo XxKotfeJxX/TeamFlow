@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import { FaCcVisa, FaCcMastercard, FaPaypal, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaCcVisa,
+  FaCcMastercard,
+  FaPaypal,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
 interface Props {
   plan: { name: string; priceMonth?: number; priceYear?: number };
@@ -51,7 +57,8 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
 
   const formatExpiry = (val: string) => {
     const cleaned = val.replace(/[^\d]/g, "").slice(0, 4);
-    if (cleaned.length >= 3) return cleaned.slice(0, 2) + "/" + cleaned.slice(2);
+    if (cleaned.length >= 3)
+      return cleaned.slice(0, 2) + "/" + cleaned.slice(2);
     return cleaned;
   };
 
@@ -77,7 +84,8 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
 
     if (name.trim().length < 2) return "Введіть ім’я власника картки";
     if (plainNumber.length !== 16) return "Некоректний номер картки";
-    if (!isValidCardNumber(plainNumber)) return "Номер картки невалідний (перевірка Луна)";
+    if (!isValidCardNumber(plainNumber))
+      return "Номер картки невалідний (перевірка Луна)";
     if (!validateExpiry()) return "Картка не дійсна (перевірте дату)";
     if (cvv.length !== 3) return "CVV має складатися з 3 цифр";
     return "";
@@ -120,8 +128,8 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
         {/* Закриття */}
         <button
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
-                  onClick={onClose}
-            style={{ border: "none" }}
+          onClick={onClose}
+          style={{ border: "none" }}
         >
           ×
         </button>
@@ -164,7 +172,9 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
         {method === "card" ? (
           <div className="space-y-3">
             <div>
-              <label className="block text-sm text-gray-700 mb-1">Ім’я власника картки</label>
+              <label className="block text-sm text-gray-700 mb-1">
+                Ім’я власника картки
+              </label>
               <Input
                 type="text"
                 placeholder="Same Doe"
@@ -174,15 +184,21 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-1">Номер картки</label>
+              <label className="block text-sm text-gray-700 mb-1">
+                Номер картки
+              </label>
               <div className="relative">
                 <Input
                   type={showCard ? "text" : "password"}
                   placeholder="0000 0000 0000 0000"
                   value={cardNumber}
-                  onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                  onChange={(e) =>
+                    setCardNumber(formatCardNumber(e.target.value))
+                  }
                   className={`pr-10 ${
-                    cardValid ? "" : "border-red-500 focus:border-red-500 focus:ring-red-500"
+                    cardValid
+                      ? ""
+                      : "border-red-500 focus:border-red-500 focus:ring-red-500"
                   }`}
                 />
                 <button
@@ -195,13 +211,17 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
                 </button>
               </div>
               {!cardValid && (
-                <p className="text-red-600 text-xs mt-1">Номер картки невалідний (перевірка Луна)</p>
+                <p className="text-red-600 text-xs mt-1">
+                  Номер картки невалідний (перевірка Луна)
+                </p>
               )}
             </div>
 
             <div className="flex gap-2">
               <div className="w-1/2 relative">
-                <label className="block text-sm text-gray-700 mb-1">Термін дії</label>
+                <label className="block text-sm text-gray-700 mb-1">
+                  Термін дії
+                </label>
                 <Input
                   type="text"
                   placeholder="MM/YY"
@@ -234,8 +254,8 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
 
             <Button
               className="w-full bg-green-600 hover:bg-green-700 text-white mt-4"
-                          onClick={handleSubmit}
-                style={{ border: "none" }}
+              onClick={handleSubmit}
+              style={{ border: "none" }}
             >
               Оплатити
             </Button>

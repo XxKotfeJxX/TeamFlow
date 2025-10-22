@@ -1,14 +1,26 @@
 import { Clock, Calendar } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
-function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: string) => void }) {
+function CustomTimePicker({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [manual, setManual] = useState(value || (() => {
-  const now = new Date();
-  return `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-}));
+  const [manual, setManual] = useState(
+    value ||
+      (() => {
+        const now = new Date();
+        return `${now.getHours().toString().padStart(2, "0")}:${now
+          .getMinutes()
+          .toString()
+          .padStart(2, "0")}`;
+      })
+  );
 
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [selectedMinute, setSelectedMinute] = useState<number | null>(null);
@@ -16,16 +28,15 @@ function CustomTimePicker({ value, onChange }: { value: string; onChange: (val: 
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-useEffect(() => {
-  if (!isTyping && value !== manual) {
-    setManual(value);
-    const [h, m] = value.split(":").map(Number);
-    setSelectedHour(h);
-    setSelectedMinute(m);
-  }
-}, [value, isTyping, manual]);
+  useEffect(() => {
+    if (!isTyping && value !== manual) {
+      setManual(value);
+      const [h, m] = value.split(":").map(Number);
+      setSelectedHour(h);
+      setSelectedMinute(m);
+    }
+  }, [value, isTyping, manual]);
 
-  
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -35,31 +46,32 @@ useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-    
-  const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const val = e.target.value.replace(/[^0-9:]/g, "");
-  setManual(val);
-  setIsTyping(true);
-};
 
+  const handleManualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/[^0-9:]/g, "");
+    setManual(val);
+    setIsTyping(true);
+  };
 
   const fixTime = (input: string) => {
-  let [h, m] = input.split(":");
-  h = h || "00";
-  m = m || "00";
+    let [h, m] = input.split(":");
+    h = h || "00";
+    m = m || "00";
 
-  let hourNum = parseInt(h, 10);
-  let minuteNum = parseInt(m, 10);
+    let hourNum = parseInt(h, 10);
+    let minuteNum = parseInt(m, 10);
 
-  if (isNaN(hourNum)) hourNum = 0;
-  if (isNaN(minuteNum)) minuteNum = 0;
+    if (isNaN(hourNum)) hourNum = 0;
+    if (isNaN(minuteNum)) minuteNum = 0;
 
-  if (hourNum > 23) hourNum = 23;
-  if (minuteNum > 59) minuteNum = 59;
+    if (hourNum > 23) hourNum = 23;
+    if (minuteNum > 59) minuteNum = 59;
 
-  return `${hourNum.toString().padStart(2, "0")}:${minuteNum.toString().padStart(2, "0")}`;
+    return `${hourNum.toString().padStart(2, "0")}:${minuteNum
+      .toString()
+      .padStart(2, "0")}`;
   };
-  
+
   const updateTime = (h: number | null, m: number | null) => {
     const hour = h !== null ? h : selectedHour ?? 0;
     const minute = m !== null ? m : selectedMinute ?? 0;
@@ -70,122 +82,117 @@ useEffect(() => {
     onChange(formatted);
   };
 
-  
-const handlePointerDown = (e: React.MouseEvent) => {
-  setDragging(true);
-  handlePointerMove(e); // оновимо одразу при натисканні
-};
+  const handlePointerDown = (e: React.MouseEvent) => {
+    setDragging(true);
+    handlePointerMove(e); // оновимо одразу при натисканні
+  };
 
-const handlePointerMove = (e: React.MouseEvent) => {
-  if (!dragging) return;
+  const handlePointerMove = (e: React.MouseEvent) => {
+    if (!dragging) return;
 
-  const rect = e.currentTarget.getBoundingClientRect();
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-  const dx = e.clientX - rect.left - centerX;
-  const dy = e.clientY - rect.top - centerY;
-  let angle = Math.atan2(dy, dx) * (180 / Math.PI);
-  angle = (angle + 90 + 360) % 360;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const dx = e.clientX - rect.left - centerX;
+    const dy = e.clientY - rect.top - centerY;
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    angle = (angle + 90 + 360) % 360;
 
-  if (mode === "hour") {
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    // визначаємо коло
-    const isInner = distance < 60; // внутрішнє коло радіус 45, зовнішнє 70, поріг можна підкорегувати
-    const hour = Math.round(angle / 30) % 12;
-    const hour12 = isInner ? hour + 12 : hour;
-    setSelectedHour(hour12);
-    updateTime(hour12, null);
-  } else {
-    const minute = Math.round(angle / 6) % 60;
-    setSelectedMinute(minute);
-    updateTime(null, minute);
-  }
-};
+    if (mode === "hour") {
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      // визначаємо коло
+      const isInner = distance < 60; // внутрішнє коло радіус 45, зовнішнє 70, поріг можна підкорегувати
+      const hour = Math.round(angle / 30) % 12;
+      const hour12 = isInner ? hour + 12 : hour;
+      setSelectedHour(hour12);
+      updateTime(hour12, null);
+    } else {
+      const minute = Math.round(angle / 6) % 60;
+      setSelectedMinute(minute);
+      updateTime(null, minute);
+    }
+  };
 
-const handlePointerUp = () => setDragging(false);
+  const handlePointerUp = () => setDragging(false);
 
   const getHourCoords = (hour: number) => {
-  // зовнішнє коло 0-11
-  if (hour <= 11) {
-    const angle = (hour * 30 * Math.PI) / 180;
+    // зовнішнє коло 0-11
+    if (hour <= 11) {
+      const angle = (hour * 30 * Math.PI) / 180;
+      return {
+        x: 90 + 70 * Math.sin(angle),
+        y: 90 - 70 * Math.cos(angle),
+      };
+    } else {
+      const angle = ((hour - 12) * 30 * Math.PI) / 180;
+      return {
+        x: 90 + 45 * Math.sin(angle),
+        y: 90 - 45 * Math.cos(angle),
+      };
+    }
+  };
+
+  const getMinuteCoords = (minute: number) => {
+    const angle = (minute * 6 * Math.PI) / 180; // 6° на хвилину
     return {
       x: 90 + 70 * Math.sin(angle),
       y: 90 - 70 * Math.cos(angle),
     };
-  } else {
-    const angle = ((hour - 12) * 30 * Math.PI) / 180;
-    return {
-      x: 90 + 45 * Math.sin(angle),
-      y: 90 - 45 * Math.cos(angle),
-    };
-  }
-};
-
-  const getMinuteCoords = (minute: number) => {
-  const angle = (minute * 6 * Math.PI) / 180; // 6° на хвилину
-  return {
-    x: 90 + 70 * Math.sin(angle),
-    y: 90 - 70 * Math.cos(angle),
   };
+
+  const isOverlappingCircle = (
+    digitX: number,
+    digitY: number,
+    mode: "hour" | "minute"
+  ) => {
+    let circleX: number, circleY: number;
+
+    if (mode === "hour") {
+      if (selectedHour === null) return false;
+      ({ x: circleX, y: circleY } = getHourCoords(selectedHour));
+    } else {
+      if (selectedMinute === null) return false;
+      ({ x: circleX, y: circleY } = getMinuteCoords(selectedMinute));
+    }
+
+    const circleRadius = 16; // радіус кружечка (w-8 h-8)
+    const digitRadius = 6; // приблизний радіус цифри
+    const dx = digitX - circleX;
+    const dy = digitY - circleY;
+
+    return Math.sqrt(dx * dx + dy * dy) < circleRadius + digitRadius;
   };
-  
-const isOverlappingCircle = (
-  digitX: number,
-  digitY: number,
-  mode: "hour" | "minute"
-) => {
-  let circleX: number, circleY: number;
 
-  if (mode === "hour") {
-    if (selectedHour === null) return false;
-    ({ x: circleX, y: circleY } = getHourCoords(selectedHour));
-  } else {
-    if (selectedMinute === null) return false;
-    ({ x: circleX, y: circleY } = getMinuteCoords(selectedMinute));
-  }
-
-  const circleRadius = 16; // радіус кружечка (w-8 h-8)
-  const digitRadius = 6;   // приблизний радіус цифри
-  const dx = digitX - circleX;
-  const dy = digitY - circleY;
-
-  return Math.sqrt(dx * dx + dy * dy) < circleRadius + digitRadius;
-};
-
-
-
-
-const handleBlur = () => {
-  const formatted = fixTime(manual);
-  setManual(formatted);
-  setSelectedHour(Number(formatted.split(":")[0]));
-  setSelectedMinute(Number(formatted.split(":")[1]));
-  onChange(formatted);
-  setIsTyping(false);
-};
-
-const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  if (e.key === "Enter") {
+  const handleBlur = () => {
     const formatted = fixTime(manual);
     setManual(formatted);
     setSelectedHour(Number(formatted.split(":")[0]));
     setSelectedMinute(Number(formatted.split(":")[1]));
     onChange(formatted);
     setIsTyping(false);
-  }
-};
+  };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const formatted = fixTime(manual);
+      setManual(formatted);
+      setSelectedHour(Number(formatted.split(":")[0]));
+      setSelectedMinute(Number(formatted.split(":")[1]));
+      onChange(formatted);
+      setIsTyping(false);
+    }
+  };
 
   return (
     <div className="relative flex items-center border rounded-lg bg-white min-w-[130px] px-2 py-1">
       {/* Поле для ручного вводу */}
       <input
-  type="text"
-  value={manual}
-  onChange={handleManualChange}
-  onBlur={handleBlur}
-  onKeyDown={handleKeyDown}
-  placeholder="HH:MM"
+        type="text"
+        value={manual}
+        onChange={handleManualChange}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        placeholder="HH:MM"
         className="flex-1 bg-transparent text-black focus:outline-none"
       />
       <Clock
@@ -198,232 +205,253 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       {open && (
         <div
           ref={modalRef}
-          className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4">
-    {/* Кнопки зверху */}
-    <div className="flex justify-center gap-2 mb-4">
-      <button
-  className={`px-3 py-1 rounded ${mode === "hour" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-  onClick={() => setMode("hour")}
->
-  {selectedHour !== null ? selectedHour.toString().padStart(2, "0") : manual.split(":")[0] || "HH"}
-</button>
-<button
-  className={`px-3 py-1 rounded ${mode === "minute" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-  onClick={() => setMode("minute")}
->
-  {selectedMinute !== null ? selectedMinute.toString().padStart(2, "0") : manual.split(":")[1] || "MM"}
-</button>
-
-    </div>
-
-    {/* Циферблат */}
-          <div className="relative w-[180px] h-[180px] rounded-full mx-auto"
-         style={{ userSelect: "none" }}
-  onMouseDown={(e) => { e.preventDefault(); handlePointerDown(e); }}
-  onMouseMove={handlePointerMove}
-  onMouseUp={handlePointerUp}
-  onMouseLeave={handlePointerUp}
-          >
-      {mode === "hour" &&
-              <>
-              
-          {/* Зовнішнє коло 0-11 */}
-          {Array.from({ length: 12 }).map((_, i) => {
-            const angle = (i * 30 * Math.PI) / 180;
-            const x = 90 + 70 * Math.sin(angle);
-            const y = 90 - 70 * Math.cos(angle);
-            const hour = i;
-            
-            
-            return (
-              <div
-                key={`outer-${i}`}
-                className={`absolute cursor-pointer z-10 text-sm ${
-    isOverlappingCircle(x, y, "hour") ? "text-white font-bold" : "text-gray-700"
-  }`}
-                style={{ left: `${x-6}px`, top: `${y-6}px` }}
-                onClick={() => {
-                  setSelectedHour(hour);
-                  updateTime(hour, null);
-                }}
-              >
-                {hour.toString().padStart(2, "0")}
-              </div>
-            );
-          })}
-          {/* Внутрішнє коло 12-23 */}
-          {Array.from({ length: 12 }).map((_, i) => {
-            const angle = (i * 30 * Math.PI) / 180;
-            const x = 90 + 45 * Math.sin(angle);
-            const y = 90 - 45 * Math.cos(angle);
-            const hour = i + 12;
-            return (
-              <div
-                key={`inner-${i}`}
-                className={`absolute cursor-pointer z-10 text-sm ${
-    isOverlappingCircle(x, y, "hour") ? "text-white font-bold" : "text-gray-700"
-  }`}
-                style={{ left: `${x-6}px`, top: `${y-6}px` }}
-                onClick={() => {
-                  setSelectedHour(hour);
-                  updateTime(hour, null);
-                }}
-              >
-                {hour.toString().padStart(2, "0")}
-              </div>
-            );
-          })}
-              {selectedHour !== null && (() => {
-  // Розміри       // w-3 h-3 → радіус 1.5px
-  const circleSize = 32;           // w-8 h-8 → 32px
-  const circleRadius = circleSize / 2;
-  const center = 93.5;
-
-                
-  // Центр кружечка
-  const rawCircle = getHourCoords(selectedHour);
-
-
-                
-
-  return (
-    <>
-      {/* Точка */}
-<div
-  className="absolute w-3 h-3 bg-blue-500 rounded-full"
-  style={{
-    left: `${90 - 1.5}px`, // центр циферблату - радіус точки
-    top: `${90 - 1.5}px`,
-  }}
-/>
-
-{/* Лінія від центру до кружечка */}
-<div
-  className="absolute bg-blue-500"
-  style={{
-    left: `${center}px`,
-    top: `${center}px`,
-    width: `${Math.hypot(
-      rawCircle.x + circleRadius - center - 14,
-      rawCircle.y + circleRadius - center - 14
-    )}px`,
-    height: "2px",
-    transformOrigin: "0 50%",
-    transform: `rotate(${Math.atan2(
-      rawCircle.y + circleRadius - center - 14,
-      rawCircle.x + circleRadius - center - 14
-    )}rad)`,
-  }}
-/>
-
-
-      {/* Кружечок */}
-      <div
-  className="absolute w-8 h-8 bg-blue-500 rounded-full"
-  style={{
-    left: `${rawCircle.x - 14}px`,
-    top: `${rawCircle.y - 12}px`,
-    zIndex: 0,
-  }}
-/>
-    </>
-  );
-})()}
-
-
-        </>
-      }
-
-      {mode === "minute" && (
-  <div
-    className="relative w-[180px] h-[180px] rounded-full flex items-center justify-center mx-auto cursor-pointer"
-    onClick={(e) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-
-      const dx = clickX - centerX;
-      const dy = clickY - centerY;
-
-      // кут у градусах
-      let angle = Math.atan2(dy, dx) * (180 / Math.PI);
-      angle = (angle + 90 + 360) % 360;
-
-      // переводимо кут у хвилини
-      const minutes = Math.round(angle / 6) % 60;
-      setSelectedMinute(minutes);
-      updateTime(null, minutes);
-    }}
-  >
-    {/* 5-хвилинні мітки */}
-    {Array.from({ length: 12 }).map((_, i) => {
-      const minute = i * 5;
-      const angle = (i * 30 * Math.PI) / 180;
-      const x = 90 + 70 * Math.sin(angle);
-      const y = 90 - 70 * Math.cos(angle);
-      return (
-        <div
-          key={minute}
-          className={`absolute cursor-pointer z-10 text-sm ${
-    isOverlappingCircle(x, y, "minute") ? "text-white font-bold" : "text-gray-700"
-  }`}
-          style={{ left: `${x-6}px`, top: `${y-6}px`, userSelect: "none" }}
+          className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4"
         >
-          {minute.toString().padStart(2, "0")}
-        </div>
-      );
-    })}
-                {selectedMinute !== null && (() => {
-  // обчислюємо координати для кружечка
-  const minuteCoords = getMinuteCoords(selectedMinute);
-
-  return (
-    <>
-      {/* Центр */}
-      <div
-        className="absolute w-3 h-3 bg-blue-500 rounded-full"
-        style={{ left: `calc(90px - 1.5px)`, top: `calc(90px - 1.5px)` }}
-      />
-
-      {/* Лінія від центру до вибраної хвилини */}
-      <div
-        className="absolute bg-blue-500"
-        style={{
-          left: "93.5px",
-          top: "93.5px",
-          width: `${Math.hypot(minuteCoords.x - 90 + 4, minuteCoords.y - 90 + 4)}px`,
-          height: "2px",
-          transformOrigin: "0 50%",
-          transform: `rotate(${Math.atan2(minuteCoords.y - 90 + 2, minuteCoords.x - 90 - 2)}rad)`,
-        }}
-      />
-
-      {/* Кружечок на вибраній хвилині */}
-      <div
-        className="absolute w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"
-        style={{ left: `${minuteCoords.x - 14}px`, top: `${minuteCoords.y - 10}px` }}
-      >
-        <span className="text-white text-xs font-bold">
-        </span>
-      </div>
-    </>
-  );
-})()}
-
-  </div>
-)}      
-
+          {/* Кнопки зверху */}
+          <div className="flex justify-center gap-2 mb-4">
+            <button
+              className={`px-3 py-1 rounded ${
+                mode === "hour" ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setMode("hour")}
+            >
+              {selectedHour !== null
+                ? selectedHour.toString().padStart(2, "0")
+                : manual.split(":")[0] || "HH"}
+            </button>
+            <button
+              className={`px-3 py-1 rounded ${
+                mode === "minute" ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setMode("minute")}
+            >
+              {selectedMinute !== null
+                ? selectedMinute.toString().padStart(2, "0")
+                : manual.split(":")[1] || "MM"}
+            </button>
           </div>
-  </div>
-)}
 
+          {/* Циферблат */}
+          <div
+            className="relative w-[180px] h-[180px] rounded-full mx-auto"
+            style={{ userSelect: "none" }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              handlePointerDown(e);
+            }}
+            onMouseMove={handlePointerMove}
+            onMouseUp={handlePointerUp}
+            onMouseLeave={handlePointerUp}
+          >
+            {mode === "hour" && (
+              <>
+                {/* Зовнішнє коло 0-11 */}
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const angle = (i * 30 * Math.PI) / 180;
+                  const x = 90 + 70 * Math.sin(angle);
+                  const y = 90 - 70 * Math.cos(angle);
+                  const hour = i;
+
+                  return (
+                    <div
+                      key={`outer-${i}`}
+                      className={`absolute cursor-pointer z-10 text-sm ${
+                        isOverlappingCircle(x, y, "hour")
+                          ? "text-white font-bold"
+                          : "text-gray-700"
+                      }`}
+                      style={{ left: `${x - 6}px`, top: `${y - 6}px` }}
+                      onClick={() => {
+                        setSelectedHour(hour);
+                        updateTime(hour, null);
+                      }}
+                    >
+                      {hour.toString().padStart(2, "0")}
+                    </div>
+                  );
+                })}
+                {/* Внутрішнє коло 12-23 */}
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const angle = (i * 30 * Math.PI) / 180;
+                  const x = 90 + 45 * Math.sin(angle);
+                  const y = 90 - 45 * Math.cos(angle);
+                  const hour = i + 12;
+                  return (
+                    <div
+                      key={`inner-${i}`}
+                      className={`absolute cursor-pointer z-10 text-sm ${
+                        isOverlappingCircle(x, y, "hour")
+                          ? "text-white font-bold"
+                          : "text-gray-700"
+                      }`}
+                      style={{ left: `${x - 6}px`, top: `${y - 6}px` }}
+                      onClick={() => {
+                        setSelectedHour(hour);
+                        updateTime(hour, null);
+                      }}
+                    >
+                      {hour.toString().padStart(2, "0")}
+                    </div>
+                  );
+                })}
+                {selectedHour !== null &&
+                  (() => {
+                    // Розміри       // w-3 h-3 → радіус 1.5px
+                    const circleSize = 32; // w-8 h-8 → 32px
+                    const circleRadius = circleSize / 2;
+                    const center = 93.5;
+
+                    // Центр кружечка
+                    const rawCircle = getHourCoords(selectedHour);
+
+                    return (
+                      <>
+                        {/* Точка */}
+                        <div
+                          className="absolute w-3 h-3 bg-blue-500 rounded-full"
+                          style={{
+                            left: `${90 - 1.5}px`, // центр циферблату - радіус точки
+                            top: `${90 - 1.5}px`,
+                          }}
+                        />
+
+                        {/* Лінія від центру до кружечка */}
+                        <div
+                          className="absolute bg-blue-500"
+                          style={{
+                            left: `${center}px`,
+                            top: `${center}px`,
+                            width: `${Math.hypot(
+                              rawCircle.x + circleRadius - center - 14,
+                              rawCircle.y + circleRadius - center - 14
+                            )}px`,
+                            height: "2px",
+                            transformOrigin: "0 50%",
+                            transform: `rotate(${Math.atan2(
+                              rawCircle.y + circleRadius - center - 14,
+                              rawCircle.x + circleRadius - center - 14
+                            )}rad)`,
+                          }}
+                        />
+
+                        {/* Кружечок */}
+                        <div
+                          className="absolute w-8 h-8 bg-blue-500 rounded-full"
+                          style={{
+                            left: `${rawCircle.x - 14}px`,
+                            top: `${rawCircle.y - 12}px`,
+                            zIndex: 0,
+                          }}
+                        />
+                      </>
+                    );
+                  })()}
+              </>
+            )}
+
+            {mode === "minute" && (
+              <div
+                className="relative w-[180px] h-[180px] rounded-full flex items-center justify-center mx-auto cursor-pointer"
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const centerX = rect.width / 2;
+                  const centerY = rect.height / 2;
+                  const clickX = e.clientX - rect.left;
+                  const clickY = e.clientY - rect.top;
+
+                  const dx = clickX - centerX;
+                  const dy = clickY - centerY;
+
+                  // кут у градусах
+                  let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                  angle = (angle + 90 + 360) % 360;
+
+                  // переводимо кут у хвилини
+                  const minutes = Math.round(angle / 6) % 60;
+                  setSelectedMinute(minutes);
+                  updateTime(null, minutes);
+                }}
+              >
+                {/* 5-хвилинні мітки */}
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const minute = i * 5;
+                  const angle = (i * 30 * Math.PI) / 180;
+                  const x = 90 + 70 * Math.sin(angle);
+                  const y = 90 - 70 * Math.cos(angle);
+                  return (
+                    <div
+                      key={minute}
+                      className={`absolute cursor-pointer z-10 text-sm ${
+                        isOverlappingCircle(x, y, "minute")
+                          ? "text-white font-bold"
+                          : "text-gray-700"
+                      }`}
+                      style={{
+                        left: `${x - 6}px`,
+                        top: `${y - 6}px`,
+                        userSelect: "none",
+                      }}
+                    >
+                      {minute.toString().padStart(2, "0")}
+                    </div>
+                  );
+                })}
+                {selectedMinute !== null &&
+                  (() => {
+                    // обчислюємо координати для кружечка
+                    const minuteCoords = getMinuteCoords(selectedMinute);
+
+                    return (
+                      <>
+                        {/* Центр */}
+                        <div
+                          className="absolute w-3 h-3 bg-blue-500 rounded-full"
+                          style={{
+                            left: `calc(90px - 1.5px)`,
+                            top: `calc(90px - 1.5px)`,
+                          }}
+                        />
+
+                        {/* Лінія від центру до вибраної хвилини */}
+                        <div
+                          className="absolute bg-blue-500"
+                          style={{
+                            left: "93.5px",
+                            top: "93.5px",
+                            width: `${Math.hypot(
+                              minuteCoords.x - 90 + 4,
+                              minuteCoords.y - 90 + 4
+                            )}px`,
+                            height: "2px",
+                            transformOrigin: "0 50%",
+                            transform: `rotate(${Math.atan2(
+                              minuteCoords.y - 90 + 2,
+                              minuteCoords.x - 90 - 2
+                            )}rad)`,
+                          }}
+                        />
+
+                        {/* Кружечок на вибраній хвилині */}
+                        <div
+                          className="absolute w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"
+                          style={{
+                            left: `${minuteCoords.x - 14}px`,
+                            top: `${minuteCoords.y - 10}px`,
+                          }}
+                        >
+                          <span className="text-white text-xs font-bold"></span>
+                        </div>
+                      </>
+                    );
+                  })()}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-
 
 interface CustomDatePickerProps {
   value: string;
@@ -438,11 +466,11 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-  if (value !== externalValue) {
-    setExternalValue(value);
-    setManual(value); // оновлюємо manual лише тоді, коли value змінюється зовні
-  }
-}, [value, externalValue]);
+    if (value !== externalValue) {
+      setExternalValue(value);
+      setManual(value); // оновлюємо manual лише тоді, коли value змінюється зовні
+    }
+  }, [value, externalValue]);
 
   const today = new Date();
   const initialDate = manual
@@ -450,7 +478,9 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
     : today;
 
   const [selectedDay, setSelectedDay] = useState(initialDate.getDate());
-  const [selectedMonth, setSelectedMonth] = useState(initialDate.getMonth() + 1);
+  const [selectedMonth, setSelectedMonth] = useState(
+    initialDate.getMonth() + 1
+  );
   const [selectedYear, setSelectedYear] = useState(initialDate.getFullYear());
 
   const minYear = today.getFullYear();
@@ -479,91 +509,96 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
     return days[month - 1];
   };
 
-const handleManualDate = () => {
-  const today = new Date();
-  const val = manual.replace(/[^\d]/g, ""); // лишаємо лише цифри
+  const handleManualDate = () => {
+    const today = new Date();
+    const val = manual.replace(/[^\d]/g, ""); // лишаємо лише цифри
 
-  // --- День ---
-  let day = "01";
-  if (val.length >= 2) {
-    day = val.slice(0, 2);
-    if (Number(day) < 1) day = "01";
-    if (Number(day) > 31) day = "31";
-  }
-
-  // --- Місяць ---
-  let month = "01";
-  if (val.length >= 4) {
-    month = val.slice(2, 4);
-    if (Number(month) < 1) month = "01";
-    if (Number(month) > 12) month = "12";
-  }
-
-  // --- Рік ---
-  const yearInput = val.slice(4); // все після 4 цифр
-let year = String(today.getFullYear());
-
-if (yearInput.length > 0) {
-  const getClosestYear = (input: string, currentYear: number): number => {
-    // якщо ввід більше 4 символів — відразу повертаємо поточний рік
-    if (input.length > 4) return currentYear;
-
-    // якщо 4 або більше цифр (але input.length <= 4) — беремо перші 4
-    if (input.length === 4) {
-      const num = Number(input);
-      return num === 0 || num > 3999 ? currentYear : num;
+    // --- День ---
+    let day = "01";
+    if (val.length >= 2) {
+      day = val.slice(0, 2);
+      if (Number(day) < 1) day = "01";
+      if (Number(day) > 31) day = "31";
     }
 
-    const block = input;
-    const free = 4 - block.length;
-    const patterns: string[] = [];
-
-    // створюємо всі варіанти розташування блоку
-    for (let i = 0; i <= free; i++) {
-      patterns.push("x".repeat(i) + block + "x".repeat(free - i));
+    // --- Місяць ---
+    let month = "01";
+    if (val.length >= 4) {
+      month = val.slice(2, 4);
+      if (Number(month) < 1) month = "01";
+      if (Number(month) > 12) month = "12";
     }
 
-    const candidates: number[] = [];
+    // --- Рік ---
+    const yearInput = val.slice(4); // все після 4 цифр
+    let year = String(today.getFullYear());
 
-    // підставляємо цифри 0–9 у кожен "x"
-    for (const pattern of patterns) {
-      const count = (pattern.match(/x/g) || []).length;
-      const max = 10 ** count;
+    if (yearInput.length > 0) {
+      const getClosestYear = (input: string, currentYear: number): number => {
+        // якщо ввід більше 4 символів — відразу повертаємо поточний рік
+        if (input.length > 4) return currentYear;
 
-      for (let n = 0; n < max; n++) {
-        const digits = n.toString().padStart(count, "0").split("");
-        let str = pattern;
-        for (const d of digits) str = str.replace("x", d);
-        const yearNum = Number(str);
-        if (yearNum > 0 && yearNum <= 3999) candidates.push(yearNum); // 0000 не беремо
-      }
+        // якщо 4 або більше цифр (але input.length <= 4) — беремо перші 4
+        if (input.length === 4) {
+          const num = Number(input);
+          return num === 0 || num > 3999 ? currentYear : num;
+        }
+
+        const block = input;
+        const free = 4 - block.length;
+        const patterns: string[] = [];
+
+        // створюємо всі варіанти розташування блоку
+        for (let i = 0; i <= free; i++) {
+          patterns.push("x".repeat(i) + block + "x".repeat(free - i));
+        }
+
+        const candidates: number[] = [];
+
+        // підставляємо цифри 0–9 у кожен "x"
+        for (const pattern of patterns) {
+          const count = (pattern.match(/x/g) || []).length;
+          const max = 10 ** count;
+
+          for (let n = 0; n < max; n++) {
+            const digits = n.toString().padStart(count, "0").split("");
+            let str = pattern;
+            for (const d of digits) str = str.replace("x", d);
+            const yearNum = Number(str);
+            if (yearNum > 0 && yearNum <= 3999) candidates.push(yearNum); // 0000 не беремо
+          }
+        }
+
+        if (candidates.length === 0) return currentYear;
+
+        // вибираємо рік найближчий до поточного
+        return candidates.reduce((a, b) =>
+          Math.abs(a - currentYear) < Math.abs(b - currentYear) ? a : b
+        );
+      };
+
+      year = String(getClosestYear(yearInput, today.getFullYear()));
     }
 
-    if (candidates.length === 0) return currentYear;
+    const newVal = `${String(day).padStart(2, "0")}.${String(month).padStart(
+      2,
+      "0"
+    )}.${year}`;
+    setManual(newVal);
+    onChange(newVal);
 
-    // вибираємо рік найближчий до поточного
-    return candidates.reduce((a, b) =>
-      Math.abs(a - currentYear) < Math.abs(b - currentYear) ? a : b
-    );
+    // --- Форматування з крапками ---
+    const formatted = `${day.padStart(2, "0")}.${month.padStart(
+      2,
+      "0"
+    )}.${year}`;
+    setManual(formatted);
+    setSelectedDay(Number(day));
+    setSelectedMonth(Number(month));
+    setSelectedYear(Number(year));
+    onChange?.(formatted);
   };
 
-  year = String(getClosestYear(yearInput, today.getFullYear()));
-}
-
-
-  const newVal = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${year}`;
-  setManual(newVal);
-  onChange(newVal);
-
-  // --- Форматування з крапками ---
-  const formatted = `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year}`;
-  setManual(formatted);
-  setSelectedDay(Number(day));
-  setSelectedMonth(Number(month));
-  setSelectedYear(Number(year));
-  onChange?.(formatted);
-};
-  
   const updateManual = (
     d = selectedDay,
     m = selectedMonth,
@@ -618,7 +653,9 @@ if (yearInput.length > 0) {
         <button
           key={idx}
           className={`w-8 h-8 text-center rounded ${
-            d === selectedDay ? "bg-blue-500 text-white" : "border border-gray-300 text-black"
+            d === selectedDay
+              ? "bg-blue-500 text-white"
+              : "border border-gray-300 text-black"
           }`}
           onClick={() => handleDayClick(d)}
         >
@@ -646,9 +683,10 @@ if (yearInput.length > 0) {
   };
 
   const renderYears = () => {
-    const years = Array.from({ length: 12 }, (_, i) => minYear + yearOffset + i).filter(
-      (y) => y <= maxYear
-    );
+    const years = Array.from(
+      { length: 12 },
+      (_, i) => minYear + yearOffset + i
+    ).filter((y) => y <= maxYear);
     return years.map((y) => (
       <button
         key={y}
@@ -672,46 +710,44 @@ if (yearInput.length > 0) {
   return (
     <div className="relative flex items-center border rounded-md px-2 py-1 bg-white mb-2">
       <input
-  type="text"
-  value={manual}
-  onChange={(e) => {
-  let v = e.target.value.replace(/[^\d.]/g, ""); // залишаємо тільки цифри та крапки
+        type="text"
+        value={manual}
+        onChange={(e) => {
+          let v = e.target.value.replace(/[^\d.]/g, ""); // залишаємо тільки цифри та крапки
 
-  // знайти всі крапки
-  const dots = [...v.matchAll(/\./g)].map(m => m.index!);
+          // знайти всі крапки
+          const dots = [...v.matchAll(/\./g)].map((m) => m.index!);
 
-  // обмежуємо максимум дві крапки (щоб дата була у форматі DD.MM.YYYY)
-  if (dots.length > 2) {
-    const thirdDot = dots[2];
-    v = v.slice(0, thirdDot); // усе після третьої зрізаємо
-  }
+          // обмежуємо максимум дві крапки (щоб дата була у форматі DD.MM.YYYY)
+          if (dots.length > 2) {
+            const thirdDot = dots[2];
+            v = v.slice(0, thirdDot); // усе після третьої зрізаємо
+          }
 
-  // вставляємо першу крапку після двох цифр, якщо її ще нема
-  if (!v.includes(".") && v.length > 2) {
-    v = v.slice(0, 2) + "." + v.slice(2);
-  }
+          // вставляємо першу крапку після двох цифр, якщо її ще нема
+          if (!v.includes(".") && v.length > 2) {
+            v = v.slice(0, 2) + "." + v.slice(2);
+          }
 
-  // вставляємо другу крапку через ще два символи після першої
-  const firstDotIndex = v.indexOf(".");
-  if (firstDotIndex !== -1) {
-    const afterFirst = v.slice(firstDotIndex + 1);
-    if (afterFirst.length > 2 && !afterFirst.includes(".")) {
-      const insertPos = firstDotIndex + 3;
-      v = v.slice(0, insertPos) + "." + v.slice(insertPos);
-    }
-  }
+          // вставляємо другу крапку через ще два символи після першої
+          const firstDotIndex = v.indexOf(".");
+          if (firstDotIndex !== -1) {
+            const afterFirst = v.slice(firstDotIndex + 1);
+            if (afterFirst.length > 2 && !afterFirst.includes(".")) {
+              const insertPos = firstDotIndex + 3;
+              v = v.slice(0, insertPos) + "." + v.slice(insertPos);
+            }
+          }
 
-  setManual(v);
-}}
-onBlur={handleManualDate}
-onKeyDown={(e) => {
-  if (e.key === "Enter") handleManualDate();
-}}
-  className="flex-1 bg-transparent text-black focus:outline-none"
-  placeholder="DD.MM.YYYY"
-/>
-
-
+          setManual(v);
+        }}
+        onBlur={handleManualDate}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleManualDate();
+        }}
+        className="flex-1 bg-transparent text-black focus:outline-none"
+        placeholder="DD.MM.YYYY"
+      />
 
       <Calendar
         size={18}
@@ -753,17 +789,27 @@ onKeyDown={(e) => {
           </div>
 
           {/* Контент вкладки */}
-          {mode === "day" && <div className="grid grid-cols-7 gap-1">{renderDays()}</div>}
+          {mode === "day" && (
+            <div className="grid grid-cols-7 gap-1">{renderDays()}</div>
+          )}
 
-          {mode === "month" && <div className="grid grid-cols-3 gap-1">{renderMonths()}</div>}
+          {mode === "month" && (
+            <div className="grid grid-cols-3 gap-1">{renderMonths()}</div>
+          )}
 
           {mode === "year" && (
             <div>
               <div className="flex justify-between mb-2">
-                <button onClick={prevYears} className="px-2 py-1 border rounded text-black">
+                <button
+                  onClick={prevYears}
+                  className="px-2 py-1 border rounded text-black"
+                >
                   ◀
                 </button>
-                <button onClick={nextYears} className="px-2 py-1 border rounded text-black">
+                <button
+                  onClick={nextYears}
+                  className="px-2 py-1 border rounded text-black"
+                >
                   ▶
                 </button>
               </div>

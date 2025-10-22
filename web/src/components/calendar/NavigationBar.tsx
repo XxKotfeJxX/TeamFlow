@@ -7,18 +7,48 @@ interface NavigationBarProps {
   onToday: () => void;
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({ currentDate, onPrevMonth, onNextMonth, onToday }) => {
+const NavigationBar: React.FC<NavigationBarProps> = ({
+  currentDate,
+  onPrevMonth,
+  onNextMonth,
+  onToday,
+}) => {
   const monthNames = [
-    "Січень","Лютий","Березень","Квітень","Травень","Червень",
-    "Липень","Серпень","Вересень","Жовтень","Листопад","Грудень"
+    "Січень",
+    "Лютий",
+    "Березень",
+    "Квітень",
+    "Травень",
+    "Червень",
+    "Липень",
+    "Серпень",
+    "Вересень",
+    "Жовтень",
+    "Листопад",
+    "Грудень",
   ];
 
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex gap-2">
-        <button onClick={onPrevMonth} className="px-3 py-1 rounded-lg bg-gray-200 text-black">◀</button>
-        <button onClick={onNextMonth} className="px-3 py-1 rounded-lg bg-gray-200 text-black">▶</button>
-        <button onClick={onToday} className="px-3 py-1 rounded-lg bg-blue-600 text-white">Сьогодні</button>
+        <button
+          onClick={onPrevMonth}
+          className="px-3 py-1 rounded-lg bg-gray-200 text-black"
+        >
+          ◀
+        </button>
+        <button
+          onClick={onNextMonth}
+          className="px-3 py-1 rounded-lg bg-gray-200 text-black"
+        >
+          ▶
+        </button>
+        <button
+          onClick={onToday}
+          className="px-3 py-1 rounded-lg bg-blue-600 text-white"
+        >
+          Сьогодні
+        </button>
       </div>
       <h2 className="text-lg font-semibold text-black">
         {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}

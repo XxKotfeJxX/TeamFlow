@@ -6,7 +6,7 @@ import type { Event, Task } from "../../models/mockDB/calendar";
 import { Select, SelectItem } from "../ui/Select";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
 import { CustomTimePicker, CustomDatePicker } from "../ui/DateTimePicker";
 
@@ -25,8 +25,12 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   onClose,
   onCreate,
 }) => {
-  const [activeTab, setActiveTab] = useState<"main" | "participants" | "settings">("main");
-  const [type, setType] = useState<"event" | "task">(calendarType === "user" ? "task" : "event");
+  const [activeTab, setActiveTab] = useState<
+    "main" | "participants" | "settings"
+  >("main");
+  const [type, setType] = useState<"event" | "task">(
+    calendarType === "user" ? "task" : "event"
+  );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10)); // "yyyy-mm-dd"
@@ -35,8 +39,8 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   const [endTime, setEndTime] = useState(date.toTimeString().slice(0, 5));
   const [color, setColor] = useState("#33C3FF");
   const [assignedUsers, setAssignedUsers] = useState<string[]>([]);
-  const [titleError, setTitleError] = useState(""); 
-  const [dateError, setDateError] = useState("");  
+  const [titleError, setTitleError] = useState("");
+  const [dateError, setDateError] = useState("");
 
   const titleRef = React.useRef<HTMLInputElement>(null);
   const startDateRef = React.useRef<HTMLDivElement>(null);
@@ -63,7 +67,10 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
     if (type === "event" && start > end) {
       setDateError("Дата початку не може бути після дати кінця");
       hasError = true;
-      startDateRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      startDateRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     } else {
       setDateError("");
     }
@@ -84,6 +91,8 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
         status: "inProgress",
         calendarId,
         tags: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
       onCreate(newTask);
     } else {
@@ -149,7 +158,11 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           {activeTab === "main" && (
             <div className="space-y-4">
               {calendarType === "team" && (
-                <Select className="mb-4" value={type} onChange={(e) => setType(e.target.value as "task" | "event")}>
+                <Select
+                  className="mb-4"
+                  value={type}
+                  onChange={(e) => setType(e.target.value as "task" | "event")}
+                >
                   <SelectItem value="task">Таск</SelectItem>
                   <SelectItem value="event">Подія</SelectItem>
                 </Select>
@@ -162,7 +175,9 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              {titleError && <p className="text-red-600 text-sm pb-4">{titleError}</p>}
+              {titleError && (
+                <p className="text-red-600 text-sm pb-4">{titleError}</p>
+              )}
 
               <Label>Опис:</Label>
               <Textarea
@@ -218,7 +233,8 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
               )}
 
               <Label>Колір:</Label>
-              <Input className="px-0 py-0 h-10 cursor-pointer"
+              <Input
+                className="px-0 py-0 h-10 cursor-pointer"
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}

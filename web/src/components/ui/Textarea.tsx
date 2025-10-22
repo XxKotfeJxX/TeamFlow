@@ -15,7 +15,10 @@ export function Textarea({
   ...props
 }: TextareaProps) {
   return (
-    <div className="relative w-full" style={{ height: typeof height === "number" ? height : undefined }}>
+    <div
+      className="relative w-full"
+      style={{ height: typeof height === "number" ? height : undefined }}
+    >
       <textarea
         className={cn(
           "w-full h-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm resize-none overflow-auto relative z-10",

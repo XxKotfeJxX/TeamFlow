@@ -5,10 +5,15 @@ import Footer from "../components/Footer";
 import NavigationBar from "../components/calendar/NavigationBar";
 import CalendarGrid from "../components/calendar/CalendarGrid";
 import { calendarDb, eventDb } from "../models/mockDB/calendar";
+import { teamDb } from "../models/mockDB/teams";
+import { userDb } from "../models/mockDB/users";
 
 const MonthPage: React.FC = () => {
   const navigate = useNavigate();
-  const { calendarId, month } = useParams<{ calendarId: string; month: string }>();
+  const { calendarId, month } = useParams<{
+    calendarId: string;
+    month: string;
+  }>();
 
   // =========================
   // 🔹 1. Перевіряємо/створюємо календар
@@ -21,16 +26,29 @@ const MonthPage: React.FC = () => {
     const existing = calendarDb.getById(calendarId);
     if (existing) {
       setCalendarExists(true);
-    } else {
-      // створюємо новий календар у базі
-      calendarDb.create({
-        id: calendarId,
-        name: `Новий календар ${new Date().toLocaleDateString()}`,
-        ownerType: "user",
-        ownerId: "current-user", // або currentUserId з localStorage
-      });
-      setCalendarExists(true);
+      return;
     }
+
+    // Визначаємо тип
+    let ownerType: "user" | "team" = "user";
+    let ownerId = "current-user";
+
+    if (teamDb.getById(calendarId)) {
+      ownerType = "team";
+      ownerId = calendarId;
+    } else if (userDb.getById(calendarId)) {
+      ownerType = "user";
+      ownerId = calendarId;
+    }
+
+    calendarDb.create({
+      id: calendarId,
+      name: `Новий календар ${new Date().toLocaleDateString()}`,
+      ownerType,
+      ownerId,
+    });
+
+    setCalendarExists(true);
   }, [calendarId]);
 
   // =========================
@@ -55,7 +73,9 @@ const MonthPage: React.FC = () => {
   // 🔹 4. Навігація
   // =========================
   const navigateToMonth = (date: Date) => {
-    const formatted = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    const formatted = `${date.getFullYear()}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}`;
     navigate(`/calendar/${calendarId}/${formatted}`);
     setCurrentDate(date);
   };
@@ -88,7 +108,12 @@ const MonthPage: React.FC = () => {
   };
 
   if (!calendarId) return <div>❌ Не вказано календар</div>;
-  if (!calendarExists) return <div className="text-center mt-20 text-gray-600">⏳ Завантаження календаря...</div>;
+  if (!calendarExists)
+    return (
+      <div className="text-center mt-20 text-gray-600">
+        ⏳ Завантаження календаря...
+      </div>
+    );
 
   // =========================
   // 🔹 6. Рендер
