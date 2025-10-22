@@ -9,6 +9,7 @@ import { Textarea } from "../ui/Textarea";
 import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
 import { CustomTimePicker, CustomDatePicker } from "../ui/DateTimePicker";
+import { Checkbox } from "../ui/Checkbox";
 
 interface CreateItemModalProps {
   calendarId: string;
@@ -33,14 +34,17 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10)); // "yyyy-mm-dd"
-  const [startTime, setStartTime] = useState(date.toTimeString().slice(0, 5)); // "HH:mm"
+  const [startDate, setStartDate] = useState(date.toISOString().slice(0, 10));
+  const [startTime, setStartTime] = useState(date.toTimeString().slice(0, 5));
   const [endDate, setEndDate] = useState(date.toISOString().slice(0, 10));
   const [endTime, setEndTime] = useState(date.toTimeString().slice(0, 5));
   const [color, setColor] = useState("#33C3FF");
   const [assignedUsers, setAssignedUsers] = useState<string[]>([]);
   const [titleError, setTitleError] = useState("");
   const [dateError, setDateError] = useState("");
+
+  const currentUserId = localStorage.getItem("currentUserId") || "u1";
+  const allUsers = userDb.getAll();
 
   const titleRef = React.useRef<HTMLInputElement>(null);
   const startDateRef = React.useRef<HTMLDivElement>(null);
@@ -77,6 +81,11 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
     if (hasError) return;
 
+    // автор завжди додається до учасників
+    const participantsList = Array.from(
+      new Set([currentUserId, ...assignedUsers])
+    );
+
     if (type === "task") {
       const newTask: Task = {
         id: "ta" + Date.now(),
@@ -86,7 +95,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
         color,
         priority: { personal: 1, team: 1 },
         recurring: { isRecurring: false, periodDays: 0 },
-        assignedUsers,
+        assignedUsers: participantsList,
         type: calendarType === "user" ? "personal" : "team",
         status: "inProgress",
         calendarId,
@@ -104,9 +113,9 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
         endDate: end,
         color,
         priority: { personal: 1, team: 1 },
-        participants: assignedUsers,
+        participants: participantsList,
         calendarId,
-        ownerId: "u1",
+        ownerId: currentUserId,
         recurring: { isRecurring: false, periodDays: 0 },
         status: "active",
         tags: [],
@@ -133,11 +142,12 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
       <div className="bg-white rounded-lg w-3/4 max-w-2xl h-3/4 flex overflow-hidden shadow-lg relative">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-black z-50"
+          className="absolute top-3 right-3 text-gray-500 hover:text-black z-50 hover:border-gray-300 rounded-full p-1 transition-colors"
         >
           <X size={24} strokeWidth={2.5} />
         </button>
 
+        {/* вкладки */}
         <div className="w-48 border-r border-gray-300 flex flex-col">
           {["main", "participants", "settings"].map((tab) => (
             <button
@@ -154,6 +164,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           ))}
         </div>
 
+        {/* контент */}
         <div className="flex-1 p-6 overflow-y-auto mt-4">
           {activeTab === "main" && (
             <div className="space-y-4">
@@ -252,8 +263,44 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           )}
 
           {activeTab === "participants" && (
-            <div>
-              <p>Учасники (реалізація через userDb)</p>
+            <div className="space-y-2">
+              <h3 className="font-semibold text-gray-700 mb-2">
+                Виберіть учасників
+              </h3>
+              {allUsers.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center gap-2 border p-2 rounded hover:bg-gray-50"
+                >
+                  <Checkbox
+                    checked={assignedUsers.includes(user.id)}
+                    disabled={user.id === currentUserId}
+                    onChange={(e) => {
+                      if (e.target.checked)
+                        setAssignedUsers((prev) => [...prev, user.id]);
+                      else
+                        setAssignedUsers((prev) =>
+                          prev.filter((id) => id !== user.id)
+                        );
+                    }}
+                    label={
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={user.avatarUrl || "/default-avatar.png"}
+                          alt={user.username}
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <span className="text-gray-800">{user.username}</span>
+                        {user.id === currentUserId && (
+                          <span className="ml-auto text-xs text-gray-500">
+                            (ви)
+                          </span>
+                        )}
+                      </div>
+                    }
+                  />
+                </div>
+              ))}
             </div>
           )}
 
