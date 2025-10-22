@@ -79,9 +79,9 @@ const Footer = () => {
             <h4 className="text-white font-semibold mb-2">Слідкуйте за нами</h4>
             <div className="flex gap-4 text-lg">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaFacebook /></a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaXTwitter /></a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaInstagram /></a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaLinkedin /></a>
+              <a href="https://x.com/TeamflowC" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaXTwitter /></a>
+              <a href="https://www.instagram.com/p_teamflow_q/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaInstagram /></a>
+              <a href="https://www.linkedin.com/in/team-flow-2964ba390/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition"><FaLinkedin /></a>
             </div>
           </div>
 
