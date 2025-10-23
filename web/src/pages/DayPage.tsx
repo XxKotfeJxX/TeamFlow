@@ -357,7 +357,7 @@ const DayPage: React.FC = () => {
         className="
     flex flex-col sm:flex-row
     border-t border-l border-gray-200
-    h-full p-0 my-8 relative
+    h-full p-0 my-12 relative
   "
       >
         {COLUMN_RANGES.map((range, colIndex) => {
