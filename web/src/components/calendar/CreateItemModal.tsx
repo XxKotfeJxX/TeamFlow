@@ -159,7 +159,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
         <div
           className="
     flex border-b md:border-b-0 md:border-r border-gray-300
-    md:flex-col w-full md:w-48
+    md:flex-col w-full md:w-48 mt-12
   "
         >
           {["main", "participants", "settings"].map((tab) => (
