@@ -50,8 +50,11 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
 
   // функція прокрутки в кінець
   const scrollToBottom = useCallback(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (document.activeElement && document.activeElement.tagName === "INPUT")
+      return;
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, []);
+
 
   // перевірка чи користувач внизу
   const handleScroll = () => {
@@ -257,6 +260,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyPress}
+          autoFocus={false}
           placeholder="Напишіть повідомлення..."
           className="flex-1 text-sm"
         />

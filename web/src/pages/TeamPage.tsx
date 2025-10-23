@@ -330,7 +330,9 @@ const TeamPage: React.FC = () => {
           )}
 
           {activeTab === "Чати" && !isGuest && currentUserId && (
-            <TeamChat teamId={team.id} currentUserId={currentUserId} />
+            <div className="overflow-y-hidden">
+              <TeamChat teamId={team.id} currentUserId={currentUserId} />
+            </div>
           )}
 
           {activeTab === "Статистика" && !isGuest && (
