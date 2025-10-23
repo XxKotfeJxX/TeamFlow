@@ -163,18 +163,19 @@ const TeamPage: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
-      <main className="flex-1 container mx-auto px-6 py-8 pt-[var(--header-height,4rem)]">
+      <main className="flex-1 container mx-auto px-4 sm:px-6 py-6 pt-[var(--header-height,4rem)]">
         {/* HERO */}
         <section className="bg-white rounded-2xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div className="flex items-center space-x-4">
+          {/* 🔹 ліва частина */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4 text-center sm:text-left">
             {team.avatarUrl ? (
               <img
                 src={team.avatarUrl}
                 alt={team.name}
-                className="w-20 h-20 rounded-full object-cover"
+                className="w-20 h-20 rounded-full object-cover mb-3 sm:mb-0"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold">
+              <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold mb-3 sm:mb-0">
                 {team.name.charAt(0) || "?"}
               </div>
             )}
@@ -189,67 +190,70 @@ const TeamPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          {/* 🔹 кнопки */}
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 w-full md:w-auto">
             {isGuest ? (
               <button
                 onClick={handleSendRequest}
-                className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
+                className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
               >
                 Надіслати запит
               </button>
             ) : (
-              <div className="flex justify-end flex-wrap gap-2">
-                <button
-                  onClick={() => navigate(`/tasks/team/${team.id}`)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
-                >
-                  Завдання
-                </button>
-
-                <button
-                  onClick={() =>
-                    navigate(`/calendar/${team.id}/${currentMonth}`)
-                  }
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 hover:border-emerald-800"
-                >
-                  Календар
-                </button>
+              <>
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                  <button
+                    onClick={() => navigate(`/tasks/team/${team.id}`)}
+                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
+                  >
+                    Завдання
+                  </button>
+                  <button
+                    onClick={() =>
+                      navigate(`/calendar/${team.id}/${currentMonth}`)
+                    }
+                    className="w-full sm:w-auto px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700"
+                  >
+                    Календар
+                  </button>
+                </div>
 
                 {isAdmin && (
-                  <>
-                    <button
-                      onClick={() => setShowAddModal(true)}
-                      className="px-4 py-2 bg-gray-200 rounded-xl text-gray-800 hover:bg-gray-300 hover:border-gray-400"
-                    >
-                      Додати учасника
-                    </button>
-                    <AddMemberModal
-                      isOpen={showAddModal}
-                      teamId={team.id}
-                      onClose={() => setShowAddModal(false)}
-                      onAdded={() => setTeam(teamDb.getById(team.id))}
-                    />
-                  </>
+                  <button
+                    onClick={() => setShowAddModal(true)}
+                    className="w-full sm:w-auto px-4 py-2 bg-gray-200 text-gray-800 rounded-xl hover:bg-gray-300"
+                  >
+                    Додати учасника
+                  </button>
                 )}
 
                 <button
                   onClick={handleLeaveTeam}
-                  className="px-4 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 hover:border-red-300"
+                  className="w-full sm:w-auto px-4 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200"
                 >
                   Покинути команду
                 </button>
-              </div>
+
+                {isAdmin && (
+                  <AddMemberModal
+                    isOpen={showAddModal}
+                    teamId={team.id}
+                    onClose={() => setShowAddModal(false)}
+                    onAdded={() => setTeam(teamDb.getById(team.id))}
+                  />
+                )}
+              </>
             )}
           </div>
         </section>
 
-        {/* ТАБИ */}
-        <nav className="flex space-x-4 mt-8 bg-white rounded-2xl shadow-sm p-2">
+        {/* 🔹 Таби */}
+        <nav className="flex space-x-2 sm:space-x-4 mt-6 bg-white rounded-2xl shadow-sm p-2">
           {visibleTabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+              className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                 activeTab === tab
                   ? "bg-blue-600 text-white"
                   : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
@@ -260,8 +264,8 @@ const TeamPage: React.FC = () => {
           ))}
         </nav>
 
-        {/* ВМІСТ */}
-        <section className="mt-8">
+        {/* 🔹 Вміст */}
+        <section className="mt-6">
           {activeTab === "Візитка" && (
             <TabOverview teamId={team.id} canEdit={isAdmin} />
           )}
@@ -280,18 +284,16 @@ const TeamPage: React.FC = () => {
                       className="w-16 h-16 rounded-full mb-3 object-cover"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-lg font-bold mb-3 ">
+                    <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-lg font-bold mb-3">
                       {(member.username ?? member.fullname ?? "?")[0] ?? "?"}
                     </div>
                   )}
-
                   <p className="font-semibold text-center text-gray-900">
                     {member.fullname || member.username}
                   </p>
                   <p className="text-sm text-gray-500 text-center">
                     {member.email}
                   </p>
-
                   <p
                     className={`text-xs mt-1 ${
                       member.role === "admin"
@@ -306,7 +308,7 @@ const TeamPage: React.FC = () => {
                     {isAdmin && member.id !== currentUserId && (
                       <button
                         onClick={() => openRemoveConfirm(member.id)}
-                        className="px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200 hover:border-red-300"
+                        className="px-2 py-1 text-xs bg-red-100 text-red-600 rounded hover:bg-red-200"
                       >
                         Видалити
                       </button>
@@ -316,7 +318,7 @@ const TeamPage: React.FC = () => {
                       member.id !== currentUserId && (
                         <button
                           onClick={() => openPromoteConfirm(member.id)}
-                          className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 hover:border-blue-300"
+                          className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
                         >
                           Адмін
                         </button>
@@ -332,14 +334,16 @@ const TeamPage: React.FC = () => {
           )}
 
           {activeTab === "Статистика" && !isGuest && (
-            <TeamStats teamId={team.id} teamMembers={teamMembers} />
+            <div className="overflow-x-auto">
+              <TeamStats teamId={team.id} teamMembers={teamMembers} />
+            </div>
           )}
         </section>
       </main>
 
       <Footer />
 
-      {/* 🔸 МОДАЛКИ ПІДТВЕРДЖЕНЬ 🔸 */}
+      {/* 🔸 Модалки підтверджень */}
       <ConfirmModal
         isOpen={confirmLeaveOpen}
         title="Покинути команду"
@@ -371,6 +375,7 @@ const TeamPage: React.FC = () => {
       />
     </div>
   );
+
 };
 
 export default TeamPage;
