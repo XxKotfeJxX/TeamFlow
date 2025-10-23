@@ -8,6 +8,7 @@ import TabOverview from "../components/team/TabOverview";
 import TeamStats from "../components/team/TeamStats";
 import AddMemberModal from "../components/team/AddMemberModal";
 import ConfirmModal from "../components/team/ConfirmModal";
+import TeamChat from "../components/team/TeamChat";
 
 const tabsAll = ["Візитка", "Учасники", "Чати", "Статистика"];
 const tabsLimited = ["Візитка", "Учасники"];
@@ -326,22 +327,8 @@ const TeamPage: React.FC = () => {
             </div>
           )}
 
-          {activeTab === "Чати" && !isGuest && (
-            <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col h-[400px]">
-              <div className="flex-1 overflow-y-auto mb-4 text-center text-gray-400 mt-16">
-                💬 Тут зʼявиться чат команди.
-              </div>
-              <div className="flex border-t border-gray-200 pt-3">
-                <input
-                  type="text"
-                  className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Напишіть повідомлення..."
-                />
-                <button className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
-                  Надіслати
-                </button>
-              </div>
-            </div>
+          {activeTab === "Чати" && !isGuest && currentUserId && (
+            <TeamChat teamId={team.id} currentUserId={currentUserId} />
           )}
 
           {activeTab === "Статистика" && !isGuest && (
