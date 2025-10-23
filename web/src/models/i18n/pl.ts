@@ -18,4 +18,31 @@ export default {
     privacy: "Polityka prywatności",
     terms: "Warunki korzystania",
   },
+
+  header: {
+    product: "Produkt",
+    overview: "Przegląd",
+    features: "Funkcje",
+    pricing: "Ceny",
+
+    company: "Firma",
+    about: "O nas",
+    team: "Zespół",
+    career: "Kariera",
+
+    resources: "Zasoby",
+    blog: "Blog",
+    support: "Wsparcie",
+    docs: "Dokumentacja",
+
+    mySpace: "Moja przestrzeń",
+    calendar: "Kalendarz",
+    tasks: "Zadania",
+    teams: "Zespoły",
+
+    login: "Zaloguj się",
+    register: "Zarejestruj się",
+    logout: "Wyloguj się",
+    menu: "Menu",
+  },
 };

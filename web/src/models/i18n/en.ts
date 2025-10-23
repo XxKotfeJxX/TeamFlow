@@ -18,4 +18,31 @@ export default {
     privacy: "Privacy Policy",
     terms: "Terms of Use",
   },
+
+  header: {
+    product: "Product",
+    overview: "Overview",
+    features: "Features",
+    pricing: "Pricing",
+
+    company: "Company",
+    about: "About",
+    team: "Team",
+    career: "Career",
+
+    resources: "Resources",
+    blog: "Blog",
+    support: "Support",
+    docs: "Documentation",
+
+    mySpace: "My Space",
+    calendar: "Calendar",
+    tasks: "Tasks",
+    teams: "Teams",
+
+    login: "Login",
+    register: "Sign up",
+    logout: "Logout",
+    menu: "Menu",
+  },
 };

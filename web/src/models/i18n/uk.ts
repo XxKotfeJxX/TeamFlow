@@ -18,4 +18,31 @@ export default {
     privacy: "Політика конфіденційності",
     terms: "Умови користування",
   },
+
+  header: {
+    product: "Продукт",
+    overview: "Огляд",
+    features: "Функції",
+    pricing: "Ціни",
+
+    company: "Компанія",
+    about: "Про нас",
+    team: "Команда",
+    career: "Кар’єра",
+
+    resources: "Ресурси",
+    blog: "Блог",
+    support: "Підтримка",
+    docs: "Документація",
+
+    mySpace: "Мій простір",
+    calendar: "Календар",
+    tasks: "Завдання",
+    teams: "Команди",
+
+    login: "Увійти",
+    register: "Зареєструватися",
+    logout: "Вийти",
+    menu: "Меню",
+  },
 };
