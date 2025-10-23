@@ -52,18 +52,18 @@ export default function OverviewPage() {
 
       <main className="flex-1 pt-12">
         {/* Hero Section */}
-        <section className="text-center py-20 bg-gradient-to-b from-white to-gray-100">
-          <h1 className="text-4xl font-bold mb-4 text-gray-800">
+        <section className="text-center py-20 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-100">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-4 text-gray-800">
             Командна робота без хаосу
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Календар, задачі, чати й дзвінки — усе в одному місці. Працюй
             синхронно з командою будь-де.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Button
               size="lg"
-              className="bg-blue-600 text-white hover:bg-blue-700 transition"
+              className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700 transition"
               style={{ border: "none" }}
               onClick={handleTryFree}
             >
@@ -72,7 +72,7 @@ export default function OverviewPage() {
             <Button
               size="lg"
               variant="outline"
-              className="border-gray-400 text-gray-800 hover:bg-gray-100 hover:border-gray-600 transition"
+              className="w-full sm:w-auto border-gray-400 text-gray-800 hover:bg-gray-100 hover:border-gray-600 transition"
               onClick={handleDemo}
             >
               Демо-режим

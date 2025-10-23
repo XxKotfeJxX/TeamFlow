@@ -60,7 +60,7 @@ export default function DocsPage() {
                 <h2 className="text-2xl font-semibold">{section.title}</h2>
               </div>
               <p className="text-gray-700 mb-4">{section.description}</p>
-              <pre className="bg-gray-100 text-sm p-4 rounded-lg overflow-x-auto">
+              <pre className="bg-gray-100 text-xs sm:text-sm p-4 rounded-lg overflow-x-auto max-w-full">
                 <code>{section.example}</code>
               </pre>
             </div>
