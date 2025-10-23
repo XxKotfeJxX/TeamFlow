@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/slick-custom.css";
+import { useEffect, useState } from "react";
 
 const blogPosts = [
   {
@@ -40,7 +41,7 @@ const blogPosts = [
     title: "Психологія фокусування: як не відволікатись у команді",
     date: "1 серпня 2025",
     excerpt:
-      "Ми дослідили як глибокий фокус допомагає командам працювати швидше та якісніше.",
+      "Ми дослідили, як глибокий фокус допомагає командам працювати швидше та якісніше.",
     image: "/images/focus.jpg",
     path: "/blog/focus",
   },
@@ -48,6 +49,15 @@ const blogPosts = [
 
 export default function BlogPage() {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 🔹 Автоматично визначаємо мобільний режим
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
   const sliderSettings = {
     dots: true,
@@ -60,13 +70,26 @@ export default function BlogPage() {
     autoplaySpeed: 4000,
     pauseOnHover: true,
     centerMode: true,
-    centerPadding: "20px",
+    centerPadding: "40px",
     responsive: [
       {
-        breakpoint: 1280,
-        settings: { slidesToShow: 2, centerPadding: "16px" },
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          centerMode: true,
+          centerPadding: "20px",
+        },
       },
-      { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: "0px" } },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          centerMode: false,
+          centerPadding: "0px",
+          variableWidth: false,
+          adaptiveHeight: true,
+        },
+      },
     ],
   };
 
@@ -74,21 +97,23 @@ export default function BlogPage() {
     <div
       key={post.id}
       className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-transform duration-300 transform hover:-translate-y-1 
-                 overflow-hidden flex flex-col justify-between my-6 min-h-[520px] h-full"
+                 overflow-hidden flex flex-col justify-between my-4 sm:my-6 mx-auto w-full sm:w-[300px] md:w-[320px] lg:w-[340px]"
     >
       <img
         src={post.image}
         alt={post.title}
-        className="h-56 w-full object-cover"
+        className="h-52 sm:h-56 w-full object-cover"
         loading="lazy"
       />
 
       <div className="p-6 flex flex-col flex-grow">
-        <h2 className="text-xl font-semibold mb-2 text-gray-900 line-clamp-2">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900 line-clamp-2">
           {post.title}
         </h2>
         <p className="text-gray-500 text-sm mb-3">{post.date}</p>
-        <p className="text-gray-700 flex-grow line-clamp-3">{post.excerpt}</p>
+        <p className="text-gray-700 flex-grow text-sm sm:text-base line-clamp-3">
+          {post.excerpt}
+        </p>
 
         <div className="mt-4">
           <Button
@@ -106,18 +131,21 @@ export default function BlogPage() {
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
-      <main className="w-full max-w-7xl mx-auto px-6 py-24">
-        <h1 className="text-4xl font-bold mb-4 text-center">Блог</h1>
+      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center pt-12">
+          Блог
+        </h1>
 
-        {blogPosts.length > 3 ? (
+        {/* 🔹 Для мобільних – просто список, для більших екранів – слайдер */}
+        {isMobile ? (
+          <div className="flex flex-col gap-6 items-center">
+            {blogPosts.map((post) => renderCard(post))}
+          </div>
+        ) : (
           <div className="w-full overflow-hidden pb-12">
             <Slider {...sliderSettings} className="custom-slick-slider">
               {blogPosts.map((post) => renderCard(post))}
             </Slider>
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {blogPosts.map((post) => renderCard(post))}
           </div>
         )}
       </main>
