@@ -12,10 +12,13 @@ import { profileTemplateDb } from "../../models/mockDB/profiletemplates";
  */
 interface TabOverviewProps {
   teamId: string;
-  canEdit?: boolean;
+  canEdit?: boolean; // 🔹 контролює права на редагування
 }
 
-const TabOverview: React.FC<TabOverviewProps> = ({ teamId }) => {
+const TabOverview: React.FC<TabOverviewProps> = ({
+  teamId,
+  canEdit = false,
+}) => {
   const [blocks, setBlocks] = useState<TeamProfileBlock[]>([]);
 
   // === Початкове завантаження ===
@@ -36,18 +39,21 @@ const TabOverview: React.FC<TabOverviewProps> = ({ teamId }) => {
 
   // === Оновлення блока ===
   const handleSave = (updated: TeamProfileBlock) => {
+    if (!canEdit) return;
     teamProfileDb.update(updated.id, updated);
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   };
 
   // === Додавання нового блока ===
   const handleAdd = (templateId: string) => {
+    if (!canEdit) return;
     teamProfileDb.create(teamId, templateId, {}, blocks.length);
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   };
 
   // === Видалення блока ===
   const handleDelete = (blockId: string) => {
+    if (!canEdit) return;
     teamProfileDb.delete(blockId);
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   };
@@ -56,7 +62,7 @@ const TabOverview: React.FC<TabOverviewProps> = ({ teamId }) => {
     <div className="space-y-6">
       {blocks.length === 0 && (
         <p className="text-gray-500 text-center mt-6">
-          Блоків поки немає — додай перший 👇
+          Блоків поки немає {canEdit ? "— додай перший 👇" : ""}
         </p>
       )}
 
@@ -70,11 +76,13 @@ const TabOverview: React.FC<TabOverviewProps> = ({ teamId }) => {
             template={template}
             onSave={handleSave}
             onDelete={() => handleDelete(block.id)}
+            canEdit={canEdit} // 🔹 передаємо право редагування
           />
         );
       })}
 
-      <AddCardButton onAdd={handleAdd} />
+      {/* 🔹 Кнопка “додати блок” — лише якщо користувач адмін */}
+      {canEdit && <AddCardButton onAdd={handleAdd} />}
     </div>
   );
 };
