@@ -243,13 +243,13 @@ const DayPage: React.FC = () => {
   const goToPreviousDay = () => {
     const prev = new Date(currentDate);
     prev.setDate(prev.getDate() - 1);
-    navigate(`/calendar/${calendarId}/${prev.toISOString().split("T")[0]}`);
+    navigate(`/calendar/${calendarId}/day/${prev.toISOString().split("T")[0]}`);
   };
 
   const goToNextDay = () => {
     const next = new Date(currentDate);
     next.setDate(next.getDate() + 1);
-    navigate(`/calendar/${calendarId}/${next.toISOString().split("T")[0]}`);
+    navigate(`/calendar/${calendarId}/day/${next.toISOString().split("T")[0]}`);
   };
 
   const [overlapMenu, setOverlapMenu] = React.useState<{
