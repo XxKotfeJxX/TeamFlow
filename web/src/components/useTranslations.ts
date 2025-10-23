@@ -15,7 +15,6 @@ export function useTranslation() {
       const newLang = (e as CustomEvent<string>).detail as LangKey;
       setLang(newLang);
     };
-
     window.addEventListener("interfaceLangChange", handler);
     return () => window.removeEventListener("interfaceLangChange", handler);
   }, []);
@@ -25,5 +24,5 @@ export function useTranslation() {
     (key: TranslationKeys<T>): string =>
       String(translations[lang][section][key] ?? "");
 
-  return { t, lang };
+  return { t, lang, translations }; // ✅ тепер доступно і translations
 }

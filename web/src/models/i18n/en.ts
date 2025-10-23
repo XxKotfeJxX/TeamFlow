@@ -45,4 +45,32 @@ export default {
     logout: "Logout",
     menu: "Menu",
   },
+
+  home: {
+    heroTitle: "Teamwork — <highlight>without chaos</highlight>",
+    heroText:
+      "TeamFlow brings together tasks, calendars, chats, and tools in one workspace for productive collaboration.",
+    tryFree: "Try for free",
+    learnMore: "Learn more",
+
+    features: [
+      {
+        title: "Powerful task manager",
+        desc: "Flexible Kanban, deadlines, assignments, and progress tracking — all in one view.",
+      },
+      {
+        title: "Interactive calendars",
+        desc: "Personal and team events with synchronization. Work and plan effortlessly.",
+      },
+      {
+        title: "Built-in chat and calls",
+        desc: "Communicate in real time with group calls and instant messaging.",
+      },
+    ],
+
+    ctaTitle: "Ready to join TeamFlow?",
+    ctaText:
+      "Sign up today and start managing your projects like a professional.",
+    createAccount: "Create an account",
+  },
 };

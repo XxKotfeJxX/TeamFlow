@@ -45,4 +45,32 @@ export default {
     logout: "Wyloguj się",
     menu: "Menu",
   },
+
+  home: {
+    heroTitle: "Praca zespołowa — <highlight>bez chaosu</highlight>",
+    heroText:
+      "TeamFlow łączy zadania, kalendarze, czaty i narzędzia w jednej przestrzeni do produktywnej pracy zespołowej.",
+    tryFree: "Wypróbuj za darmo",
+    learnMore: "Dowiedz się więcej",
+
+    features: [
+      {
+        title: "Potężny menedżer zadań",
+        desc: "Elastyczny Kanban, terminy, przypisania i śledzenie postępów — wszystko w jednym miejscu.",
+      },
+      {
+        title: "Interaktywne kalendarze",
+        desc: "Wydarzenia osobiste i zespołowe z synchronizacją. Pracuj i planuj z łatwością.",
+      },
+      {
+        title: "Wbudowany czat i połączenia",
+        desc: "Komunikuj się w czasie rzeczywistym z obsługą rozmów grupowych i wiadomości.",
+      },
+    ],
+
+    ctaTitle: "Gotowy dołączyć do TeamFlow?",
+    ctaText:
+      "Zarejestruj się dziś i zacznij zarządzać swoimi projektami jak profesjonalista.",
+    createAccount: "Utwórz konto",
+  },
 };
