@@ -81,7 +81,6 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
     if (hasError) return;
 
-    // автор завжди додається до учасників
     const participantsList = Array.from(
       new Set([currentUserId, ...assignedUsers])
     );
@@ -139,7 +138,16 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg w-3/4 max-w-2xl h-3/4 flex overflow-hidden shadow-lg relative">
+      {/* 🔹 Контейнер модалки */}
+      <div
+        className="
+          bg-white rounded-lg shadow-lg relative flex overflow-hidden
+          w-[90%] h-[90%] max-w-2xl
+          md:w-3/4 md:h-3/4
+          flex-col md:flex-row
+        "
+      >
+        {/* кнопка закриття */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-black z-50 hover:border-gray-300 rounded-full p-1 transition-colors"
@@ -147,14 +155,22 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           <X size={24} strokeWidth={2.5} />
         </button>
 
-        {/* вкладки */}
-        <div className="w-48 border-r border-gray-300 flex flex-col">
+        {/* 🔹 вкладки (горизонтально на мобілках, вертикально на пк) */}
+        <div
+          className="
+    flex border-b md:border-b-0 md:border-r border-gray-300
+    md:flex-col w-full md:w-48
+  "
+        >
           {["main", "participants", "settings"].map((tab) => (
             <button
               key={tab}
-              className={`p-4 text-left border-b border-gray-300 text-black ${
-                activeTab === tab ? "bg-gray-100" : "hover:bg-gray-50"
-              } rounded-none`}
+              className={`
+        flex-1 md:flex-none p-3 md:p-4 text-center md:text-left
+        border-b border-gray-300 text-gray-700
+        rounded-none
+        ${activeTab === tab ? "bg-gray-100 font-medium" : "hover:bg-gray-50"}
+      `}
               onClick={() => setActiveTab(tab as typeof activeTab)}
             >
               {tab === "main" && "Основне"}
@@ -164,8 +180,8 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           ))}
         </div>
 
-        {/* контент */}
-        <div className="flex-1 p-6 overflow-y-auto mt-4">
+        {/* 🔹 контент */}
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto">
           {activeTab === "main" && (
             <div className="space-y-4">
               {calendarType === "team" && (
@@ -285,11 +301,17 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                     }}
                     label={
                       <div className="flex items-center gap-2">
-                        <img
-                          src={user.avatarUrl || "/default-avatar.png"}
-                          alt={user.username}
-                          className="w-8 h-8 rounded-full"
-                        />
+                        {user.avatarUrl ? (
+                          <img
+                            src={user.avatarUrl}
+                            alt={user.username}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-500 text-white font-semibold uppercase">
+                            {user.username?.charAt(0) || "?"}
+                          </div>
+                        )}
                         <span className="text-gray-800">{user.username}</span>
                         {user.id === currentUserId && (
                           <span className="ml-auto text-xs text-gray-500">
@@ -306,7 +328,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
           {activeTab === "settings" && (
             <div>
-              <p>Налаштування (повторюваність, статус тощо)</p>
+              <p className="text-gray-700">Налаштування (повторюваність, статус тощо)</p>
             </div>
           )}
         </div>
