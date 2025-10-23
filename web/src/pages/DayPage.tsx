@@ -307,17 +307,15 @@ const DayPage: React.FC = () => {
     <div>
       <Header />
 
-      <div className="relative flex items-center justify-center mt-24">
-        {/* ← Попередній день */}
-        <button
-          onClick={goToPreviousDay}
-          className="absolute left-8 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
-        >
-          ← Попередній день
-        </button>
-
+      <div
+        className="
+    mt-24 text-center relative 
+    flex flex-col items-center
+    sm:block
+  "
+      >
         {/* Поточна дата */}
-        <h2 className="text-xl font-semibold text-gray-800 text-center w-full">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-0">
           {currentDate.toLocaleDateString("uk-UA", {
             weekday: "long",
             year: "numeric",
@@ -326,16 +324,42 @@ const DayPage: React.FC = () => {
           })}
         </h2>
 
-        {/* Наступний день → */}
-        <button
-          onClick={goToNextDay}
-          className="absolute right-8 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
+        {/* Кнопки навігації */}
+        <div
+          className="
+      flex justify-center gap-4
+      sm:block
+    "
         >
-          Наступний день →
-        </button>
+          <button
+            onClick={goToPreviousDay}
+            className="
+        px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white
+        sm:absolute sm:left-8
+      "
+          >
+            ← Попередній день
+          </button>
+
+          <button
+            onClick={goToNextDay}
+            className="
+        px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white
+        sm:absolute sm:right-8
+      "
+          >
+            Наступний день →
+          </button>
+        </div>
       </div>
 
-      <div className="flex border-t border-l border-gray-200 h-full p-0 my-8 relative">
+      <div
+        className="
+    flex flex-col sm:flex-row
+    border-t border-l border-gray-200
+    h-full p-0 my-8 relative
+  "
+      >
         {COLUMN_RANGES.map((range, colIndex) => {
           const columnEvents = todaysEvents.filter((e) =>
             eventIntersectsRange(e, currentDate, range)
