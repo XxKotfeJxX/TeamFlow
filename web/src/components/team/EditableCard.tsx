@@ -11,6 +11,7 @@ interface EditableCardProps {
   template: ProfileTemplate;
   onSave: (updatedBlock: TeamProfileBlock) => void;
   onDelete?: () => void;
+  canEdit?: boolean; // 🔹 контролює права на редагування
 }
 
 const EditableCard: React.FC<EditableCardProps> = ({
@@ -18,78 +19,77 @@ const EditableCard: React.FC<EditableCardProps> = ({
   template,
   onSave,
   onDelete,
+  canEdit = false, // 🔹 значення за замовчуванням — не можна редагувати
 }) => {
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState<Record<string, unknown>>(block.data || {});
 
   // 🔹 Зберегти зміни в БД + локально
   const save = () => {
+    if (!canEdit) return; // ❌ захист від редагування через консоль
     const updatedBlock: TeamProfileBlock = {
       ...block,
       data,
       updatedAt: new Date(),
     };
-
-    // 🔸 Запис у БД (in-memory + автоматичне збереження у localStorage)
     teamProfileDb.update(updatedBlock.id, updatedBlock);
-
-    // 🔸 Оновлення в React
     onSave(updatedBlock);
-
     setEditing(false);
   };
 
   // 🔹 Видалити блок
   const handleDelete = () => {
-    if (!onDelete) return;
+    if (!canEdit || !onDelete) return;
     if (confirm("Видалити цей блок?")) onDelete();
   };
 
   return (
     <div
-      className="relative bg-white rounded-2xl shadow-sm p-6 transition"
+      className="relative bg-white rounded-2xl shadow-sm p-6 transition pt-12"
       style={template.styles as React.CSSProperties}
     >
-      {/* Кнопки дій */}
-      <div className="absolute top-3 right-3 flex gap-2">
-        {editing ? (
-          <>
-            <button
-              onClick={() => setEditing(false)}
-              className="text-gray-400 hover:text-gray-600"
-              title="Скасувати"
-            >
-              <X size={18} />
-            </button>
-            <button
-              onClick={save}
-              className="text-blue-600 hover:text-blue-700"
-              title="Зберегти"
-            >
-              <Check size={18} />
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={() => setEditing(true)}
-              className="text-gray-400 hover:text-blue-600"
-              title="Редагувати"
-            >
-              <Pencil size={18} />
-            </button>
-            {onDelete && (
+      {/* 🔸 Кнопки дій — тільки якщо canEdit === true */}
+      {canEdit && (
+        <div className="absolute top-3 right-3 flex gap-2">
+          {editing ? (
+            <>
               <button
-                onClick={handleDelete}
-                className="text-gray-400 hover:text-red-600"
-                title="Видалити"
+                onClick={() => setEditing(false)}
+                className="text-gray-400 hover:text-gray-600 hover:border-gray-600 rounded-full p-1"
+                title="Скасувати"
               >
-                <Trash2 size={18} />
+                <X size={18} />
               </button>
-            )}
-          </>
-        )}
-      </div>
+              <button
+                onClick={save}
+                className="text-blue-600 hover:text-blue-700 hover:border-blue-700 rounded-full p-1"
+                title="Зберегти"
+              >
+                <Check size={18} />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => canEdit && setEditing(true)}
+                className="text-gray-400 hover:text-blue-600 hover:border-blue-600 rounded-full p-1"
+                title="Редагувати"
+              >
+                <Pencil size={18} />
+              </button>
+              {onDelete && (
+                <button
+                  onClick={handleDelete}
+                  className="text-gray-400 hover:text-red-600 hover:border-red-600 rounded-full p-1"
+                  title="Видалити"
+                >
+                  <Trash2 size={18} />
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      )}
 
       {/* ===== РЕЖИМ ПРОСМОТРУ ===== */}
       {!editing ? (
@@ -107,7 +107,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     {value as string}
                   </p>
                 );
-
               case "textarea":
                 return (
                   <p
@@ -117,7 +116,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     {value as string}
                   </p>
                 );
-
               case "list":
                 return (
                   <ul
@@ -129,7 +127,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     ))}
                   </ul>
                 );
-
               case "linkList":
                 return (
                   <ul
@@ -152,7 +149,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     ))}
                   </ul>
                 );
-
               case "image":
                 return (
                   <div key={field.key} className="flex flex-wrap gap-2 mb-2">
@@ -166,7 +162,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     ))}
                   </div>
                 );
-
               default:
                 return null;
             }
@@ -191,7 +186,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     className="mb-3"
                   />
                 );
-
               case "textarea":
                 return (
                   <Textarea
@@ -204,7 +198,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     className="mb-3 h-24"
                   />
                 );
-
               case "list":
                 return (
                   <Textarea
@@ -220,7 +213,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     className="mb-3 h-24"
                   />
                 );
-
               case "linkList":
                 return (
                   <Textarea
@@ -244,14 +236,12 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     className="mb-3 h-24"
                   />
                 );
-
               case "image":
                 return (
                   <div key={field.key} className="mb-4">
                     <label className="block text-gray-700 font-medium mb-2">
                       {field.label}
                     </label>
-
                     <input
                       type="file"
                       multiple
@@ -270,7 +260,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                                  file:font-semibold file:bg-blue-50 
                                  file:text-blue-700 hover:file:bg-blue-100"
                     />
-
                     <div className="flex flex-wrap gap-2 mt-3">
                       {(value as string[] | undefined)?.map((src, idx) => (
                         <img
@@ -283,7 +272,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     </div>
                   </div>
                 );
-
               default:
                 return null;
             }
