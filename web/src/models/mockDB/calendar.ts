@@ -93,7 +93,8 @@ export const calendarDb = {
     ownerId: data.ownerId || id,
   };
 
-  calendars.push(newCalendar);
+    calendars.push(newCalendar);
+    saveCalendars();
   return newCalendar;
 }
 ,
