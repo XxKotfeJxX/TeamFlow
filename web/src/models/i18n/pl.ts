@@ -105,4 +105,58 @@ export default {
     ctaText: "Zacznij pracować z zespołem efektywniej już dziś.",
     join: "Dołącz",
   },
+
+  features: {
+    title: "Funkcje TeamFlow",
+    sections: [
+      {
+        title: "Kalendarz",
+        points: [
+          "Kalendarz osobisty i zespołowy w jednym miejscu.",
+          "Sprawdzanie konfliktów między wydarzeniami.",
+          "Kolory, priorytety, tagi i potwierdzenia udziału.",
+        ],
+      },
+      {
+        title: "Zadania",
+        points: [
+          "Listy zadań na dzień, tydzień lub sprint.",
+          "System punktów i osiągnięć.",
+          "Komentarze, terminy i wspólna praca.",
+        ],
+      },
+      {
+        title: "Komunikacja",
+        points: [
+          "Czaty tekstowe dla zespołów i projektów.",
+          "Wiadomości błyskawiczne, wzmianki i reakcje (w przygotowaniu).",
+          "Bez potrzeby używania zewnętrznych komunikatorów.",
+        ],
+      },
+      {
+        title: "Bezpieczeństwo",
+        points: [
+          "Uwierzytelnianie przez tokeny JWT.",
+          "Haszowanie haseł i szyfrowane połączenia.",
+          "Kontrola dostępu do danych prywatnych.",
+        ],
+      },
+      {
+        title: "Integracje",
+        points: [
+          "GitHub — automatyczne aktualizacje zadań na podstawie commitów.",
+          "Edytory kodu — wspólna praca w czasie rzeczywistym (planowane).",
+          "Google Calendar, Slack — przyszłe integracje.",
+        ],
+      },
+      {
+        title: "Stos technologiczny",
+        points: [
+          "Frontend: React + TypeScript",
+          "Backend: C++",
+          "Baza danych: PostgreSQL 17",
+        ],
+      },
+    ],
+  },
 };

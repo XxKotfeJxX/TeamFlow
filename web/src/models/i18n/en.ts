@@ -104,7 +104,59 @@ export default {
     ctaTitle: "Ready to try TeamFlow?",
     ctaText: "Start collaborating more effectively today.",
     join: "Join now",
-    },
-  
-  
+  },
+
+  features: {
+    title: "TeamFlow Features",
+    sections: [
+      {
+        title: "Calendar",
+        points: [
+          "Personal and team calendars in one place.",
+          "Conflict checking between events.",
+          "Colors, priorities, tags, and participation confirmations.",
+        ],
+      },
+      {
+        title: "Tasks",
+        points: [
+          "Task lists for a day, week, or sprint.",
+          "Point and achievement system.",
+          "Comments, deadlines, and collaboration tools.",
+        ],
+      },
+      {
+        title: "Communication",
+        points: [
+          "Text chats for teams and projects.",
+          "Instant messages, mentions, and reactions (coming soon).",
+          "No need for external messengers.",
+        ],
+      },
+      {
+        title: "Security",
+        points: [
+          "Authentication via JWT tokens.",
+          "Password hashing and encrypted connections.",
+          "Access control for private data.",
+        ],
+      },
+      {
+        title: "Integrations",
+        points: [
+          "GitHub — automatic task updates based on commits.",
+          "Code editors — real-time collaboration (planned).",
+          "Google Calendar, Slack — future integrations.",
+        ],
+      },
+      {
+        title: "Tech Stack",
+        points: [
+          "Frontend: React + TypeScript",
+          "Backend: C++",
+          "Database: PostgreSQL 17",
+        ],
+      },
+    ],
+  },
 };
