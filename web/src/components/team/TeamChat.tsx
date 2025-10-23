@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { chatDb, messageDb, type Message } from "../../models/mockDB/chat";
 import { Paperclip, Send } from "lucide-react";
 import { Input } from "../ui/Input";
+import { userDb } from "../../models/mockDB/users";
+
 
 interface TeamChatProps {
   teamId: string;
@@ -23,7 +25,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [chatId, setChatId] = useState<string | null>(null);
-  const bottomRef = useRef<HTMLDivElement | null>(null);
+    const bottomRef = useRef<HTMLDivElement | null>(null);
 
   // 1️⃣ створення або отримання чату для команди
   useEffect(() => {
@@ -90,13 +92,13 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
 
             {msgs.map((msg) => {
               const isMine = msg.senderId === currentUserId;
+              const sender = !isMine ? userDb.getById(msg.senderId) : null;
 
               const renderMessageContent = (message: Message) => {
                 switch (message.kind) {
                   case "text": {
                     return <span>{message.text}</span>;
                   }
-
                   case "image": {
                     return (
                       <img
@@ -106,7 +108,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
                       />
                     );
                   }
-
                   case "audio": {
                     return (
                       <audio
@@ -116,7 +117,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
                       />
                     );
                   }
-
                   case "video": {
                     return (
                       <video
@@ -126,8 +126,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
                       />
                     );
                   }
-
-                  // 🔹 fallback для майбутніх або невідомих типів
                   default: {
                     const m = message as Partial<{ url: string }>;
                     return m.url ? (
@@ -152,6 +150,26 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
                   key={msg.id}
                   className={`flex ${isMine ? "justify-end" : "justify-start"}`}
                 >
+                  {/* 🔹 Якщо це не моє повідомлення — показуємо аватар і нік */}
+                  {!isMine && sender && (
+                    <div className="flex flex-col items-center mr-2">
+                      {sender.avatarUrl ? (
+                        <img
+                          src={sender.avatarUrl}
+                          alt={sender.username}
+                          className="w-8 h-8 rounded-full object-cover mb-1"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-700 mb-1">
+                          {sender.username.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <span className="text-[10px] text-gray-500 truncate w-10 text-center">
+                        {sender.username}
+                      </span>
+                    </div>
+                  )}
+
                   <div
                     className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow-sm ${
                       isMine
