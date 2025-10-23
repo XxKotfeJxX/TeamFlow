@@ -276,3 +276,54 @@ export const teamProfileDb = {
     return before - teamProfiles.length;
   },
 };
+
+// ===== LocalStorage для профільних блоків =====
+const PROFILES_KEY = "teamProfilesDB";
+
+function saveProfiles() {
+  localStorage.setItem(PROFILES_KEY, JSON.stringify(teamProfiles));
+}
+
+function loadProfiles() {
+  const stored = localStorage.getItem(PROFILES_KEY);
+  if (!stored) return;
+  try {
+    const parsed: TeamProfileBlock[] = JSON.parse(stored);
+    teamProfiles.length = 0;
+    teamProfiles.push(
+      ...parsed.map((b) => ({
+        ...b,
+        createdAt: new Date(b.createdAt),
+        updatedAt: new Date(b.updatedAt),
+      }))
+    );
+  } catch (e) {
+    console.error("Помилка завантаження профільних блоків:", e);
+  }
+}
+
+// завантажуємо при старті
+loadProfiles();
+
+// обгортки CRUD з автозбереженням
+const originalProfileCreate = teamProfileDb.create;
+teamProfileDb.create = (teamId, templateId, data, orderIndex) => {
+  const block = originalProfileCreate(teamId, templateId, data, orderIndex);
+  saveProfiles();
+  return block;
+};
+
+const originalProfileUpdate = teamProfileDb.update;
+teamProfileDb.update = (id, updates) => {
+  const result = originalProfileUpdate(id, updates);
+  if (result) saveProfiles();
+  return result;
+};
+
+const originalProfileDelete = teamProfileDb.delete;
+teamProfileDb.delete = (id) => {
+  const ok = originalProfileDelete(id);
+  if (ok) saveProfiles();
+  return ok;
+};
+

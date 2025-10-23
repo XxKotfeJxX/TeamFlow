@@ -36,8 +36,13 @@ export default function UserTeamsPage() {
   const filtered = useMemo(() => {
     let list = teamsState;
     if (view === "mine") {
-      list = list.filter((t) => t.members.some((m) => m.userId === user.id));
+      list = list.filter(
+        (t) =>
+          Array.isArray(t.members) &&
+          t.members.some((m) => m.userId === user.id)
+      );
     }
+
     if (search.trim()) {
       list = list.filter((t) =>
         t.name.toLowerCase().includes(search.toLowerCase())
@@ -207,7 +212,7 @@ export default function UserTeamsPage() {
                         />
                       ) : (
                         <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-bold">
-                          {team.name.charAt(0).toUpperCase()}
+                          {(team.name && team.name[0]?.toUpperCase()) || "?"}
                         </div>
                       )}
                       <div>
