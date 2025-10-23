@@ -1,27 +1,48 @@
 import React, { useState } from "react";
-import { Pencil, Check, X } from "lucide-react";
+import { Pencil, Check, X, Trash2 } from "lucide-react";
 import type { ProfileTemplate } from "../../models/mockDB/profiletemplates";
 import type { TeamProfileBlock } from "../../models/mockDB/teams";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
+import { teamProfileDb } from "../../models/mockDB/teams";
 
 interface EditableCardProps {
   block: TeamProfileBlock;
   template: ProfileTemplate;
   onSave: (updatedBlock: TeamProfileBlock) => void;
+  onDelete?: () => void;
 }
 
 const EditableCard: React.FC<EditableCardProps> = ({
   block,
   template,
   onSave,
+  onDelete,
 }) => {
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState<Record<string, unknown>>(block.data || {});
 
+  // 🔹 Зберегти зміни в БД + локально
   const save = () => {
-    onSave({ ...block, data });
+    const updatedBlock: TeamProfileBlock = {
+      ...block,
+      data,
+      updatedAt: new Date(),
+    };
+
+    // 🔸 Запис у БД (in-memory + автоматичне збереження у localStorage)
+    teamProfileDb.update(updatedBlock.id, updatedBlock);
+
+    // 🔸 Оновлення в React
+    onSave(updatedBlock);
+
     setEditing(false);
+  };
+
+  // 🔹 Видалити блок
+  const handleDelete = () => {
+    if (!onDelete) return;
+    if (confirm("Видалити цей блок?")) onDelete();
   };
 
   return (
@@ -29,13 +50,46 @@ const EditableCard: React.FC<EditableCardProps> = ({
       className="relative bg-white rounded-2xl shadow-sm p-6 transition"
       style={template.styles as React.CSSProperties}
     >
-      {/* Кнопка редагування */}
-      <button
-        onClick={() => setEditing(!editing)}
-        className="absolute top-3 right-3 text-gray-400 hover:text-blue-600"
-      >
-        <Pencil size={18} />
-      </button>
+      {/* Кнопки дій */}
+      <div className="absolute top-3 right-3 flex gap-2">
+        {editing ? (
+          <>
+            <button
+              onClick={() => setEditing(false)}
+              className="text-gray-400 hover:text-gray-600"
+              title="Скасувати"
+            >
+              <X size={18} />
+            </button>
+            <button
+              onClick={save}
+              className="text-blue-600 hover:text-blue-700"
+              title="Зберегти"
+            >
+              <Check size={18} />
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => setEditing(true)}
+              className="text-gray-400 hover:text-blue-600"
+              title="Редагувати"
+            >
+              <Pencil size={18} />
+            </button>
+            {onDelete && (
+              <button
+                onClick={handleDelete}
+                className="text-gray-400 hover:text-red-600"
+                title="Видалити"
+              >
+                <Trash2 size={18} />
+              </button>
+            )}
+          </>
+        )}
+      </div>
 
       {/* ===== РЕЖИМ ПРОСМОТРУ ===== */}
       {!editing ? (
@@ -234,22 +288,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
                 return null;
             }
           })}
-
-          {/* Кнопки дій */}
-          <div className="flex justify-end mt-3 space-x-2">
-            <button
-              onClick={() => setEditing(false)}
-              className="px-3 py-1 text-sm rounded-lg bg-gray-200 hover:bg-gray-300"
-            >
-              <X size={14} />
-            </button>
-            <button
-              onClick={save}
-              className="px-3 py-1 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-            >
-              <Check size={14} />
-            </button>
-          </div>
         </>
       )}
     </div>
