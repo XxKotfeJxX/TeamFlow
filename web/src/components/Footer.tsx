@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { useTranslation } from "./useTranslations";
 
 const Footer = () => {
   const [language, setLanguage] = useState("uk");
+  const { t } = useTranslation();
+  const tf = t("footer");
 
   useEffect(() => {
     const storedLang = localStorage.getItem("interfaceLang");
@@ -56,17 +59,17 @@ const Footer = () => {
           <ul className="space-y-2">
             <li>
               <a href="/features" className="hover:text-white transition">
-                Функції
+                {tf("features")}
               </a>
             </li>
             <li>
               <a href="/price" className="hover:text-white transition">
-                Ціни
+                {tf("pricing")}
               </a>
             </li>
             <li>
               <a href="/download" className="hover:text-white transition">
-                Завантаження
+                {tf("download")}
               </a>
             </li>
           </ul>
@@ -74,21 +77,21 @@ const Footer = () => {
 
         {/* Компанія */}
         <div>
-          <h4 className="text-white font-semibold mb-4">Компанія</h4>
+          <h4 className="text-white font-semibold mb-4">{tf("company")}</h4>
           <ul className="space-y-2">
             <li>
               <a href="/about" className="hover:text-white transition">
-                Про нас
+                {tf("about")}
               </a>
             </li>
             <li>
               <a href="/blog" className="hover:text-white transition">
-                Блог
+                {tf("blog")}
               </a>
             </li>
             <li>
               <a href="/career" className="hover:text-white transition">
-                Кар’єра
+                {tf("career")}
               </a>
             </li>
           </ul>
@@ -96,21 +99,21 @@ const Footer = () => {
 
         {/* Підтримка */}
         <div>
-          <h4 className="text-white font-semibold mb-4">Підтримка</h4>
+          <h4 className="text-white font-semibold mb-4">{tf("support")}</h4>
           <ul className="space-y-2">
             <li>
               <a href="/support" className="hover:text-white transition">
-                Допомога
+                {tf("help")}
               </a>
             </li>
             <li>
               <a href="/contact" className="hover:text-white transition">
-                Контакти
+                {tf("contact")}
               </a>
             </li>
             <li>
               <a href="/documentation" className="hover:text-white transition">
-                Документація
+                {tf("docs")}
               </a>
             </li>
           </ul>
@@ -119,7 +122,7 @@ const Footer = () => {
         {/* Соцмережі + мова */}
         <div className="flex flex-col gap-4">
           <div>
-            <h4 className="text-white font-semibold mb-2">Слідкуйте за нами</h4>
+            <h4 className="text-white font-semibold mb-2">{tf("followUs")}</h4>
             <div className="flex gap-4 text-lg">
               <a
                 href="https://facebook.com"
@@ -159,7 +162,7 @@ const Footer = () => {
           {/* Вибір мови */}
           <div>
             <label htmlFor="language" className="block mb-1 text-gray-400">
-              Мова сайту
+              { tf("langLabel") }
             </label>
             <select
               id="language"
@@ -177,14 +180,14 @@ const Footer = () => {
 
       {/* Нижній ряд */}
       <div className="w-full border-t border-gray-700 text-center py-4 px-4 text-xs text-gray-500">
-        © {new Date().getFullYear()} TeamFlow. Усі права захищено.
+        © {new Date().getFullYear()} TeamFlow. {tf("rights")}
         <span className="mx-2">·</span>
         <a href="/privacy" className="hover:text-white transition">
-          Політика конфіденційності
+          {tf("privacy")}
         </a>
         <span className="mx-2">·</span>
         <a href="/terms" className="hover:text-white transition">
-          Умови користування
+          {tf("terms")}
         </a>
       </div>
     </footer>
