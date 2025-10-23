@@ -1,6 +1,6 @@
 // src/pages/DayPage.tsx
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   calendars,
   eventDb,
@@ -237,6 +237,21 @@ const DayPage: React.FC = () => {
     null
   );
 
+  const navigate = useNavigate();
+
+  // Функції для перемикання
+  const goToPreviousDay = () => {
+    const prev = new Date(currentDate);
+    prev.setDate(prev.getDate() - 1);
+    navigate(`/calendar/${calendarId}/${prev.toISOString().split("T")[0]}`);
+  };
+
+  const goToNextDay = () => {
+    const next = new Date(currentDate);
+    next.setDate(next.getDate() + 1);
+    navigate(`/calendar/${calendarId}/${next.toISOString().split("T")[0]}`);
+  };
+
   const [overlapMenu, setOverlapMenu] = React.useState<{
     items: (Event | Task)[];
     position: { x: number; y: number };
@@ -292,7 +307,35 @@ const DayPage: React.FC = () => {
     <div>
       <Header />
 
-      <div className="flex border-t border-l border-gray-200 h-full p-4 pt-[var(--header-height,4rem)] pb-12">
+      <div className="relative flex items-center justify-center mt-24">
+        {/* ← Попередній день */}
+        <button
+          onClick={goToPreviousDay}
+          className="absolute left-8 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
+        >
+          ← Попередній день
+        </button>
+
+        {/* Поточна дата */}
+        <h2 className="text-xl font-semibold text-gray-800 text-center w-full">
+          {currentDate.toLocaleDateString("uk-UA", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </h2>
+
+        {/* Наступний день → */}
+        <button
+          onClick={goToNextDay}
+          className="absolute right-8 px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
+        >
+          Наступний день →
+        </button>
+      </div>
+
+      <div className="flex border-t border-l border-gray-200 h-full p-0 my-8 relative">
         {COLUMN_RANGES.map((range, colIndex) => {
           const columnEvents = todaysEvents.filter((e) =>
             eventIntersectsRange(e, currentDate, range)
