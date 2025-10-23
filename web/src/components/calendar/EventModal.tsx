@@ -59,7 +59,6 @@ const EventModal: React.FC<EventModalProps> = ({
 
   // ===== Зберегти нових учасників =====
   const handleSaveParticipants = (selectedIds: string[]) => {
-    // власник завжди у списку
     const fixed = [
       event.ownerId,
       ...selectedIds.filter((id) => id !== event.ownerId),
@@ -72,7 +71,6 @@ const EventModal: React.FC<EventModalProps> = ({
     setShowAddModal(false);
   };
 
-  // ====== Таски з події ======
   const handleTaskClick = (taskId: string) => {
     const task = allTasks.find((t) => t.id === taskId);
     if (task) alert(`Таск: ${task.title}`);
@@ -80,8 +78,16 @@ const EventModal: React.FC<EventModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg w-3/4 max-w-4xl h-3/4 flex overflow-hidden shadow-lg relative">
-        {/* Хрестик */}
+      {/* 🔹 Контейнер модалки */}
+      <div
+        className="
+          bg-white rounded-lg shadow-lg relative flex overflow-hidden
+          w-[90%] h-[90%] max-w-4xl
+          md:w-3/4 md:h-3/4
+          flex-col md:flex-row
+        "
+      >
+        {/* 🔸 Кнопка закриття */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-black hover:border-gray-200 rounded-full p-1"
@@ -89,14 +95,25 @@ const EventModal: React.FC<EventModalProps> = ({
           <X size={24} strokeWidth={2.5} />
         </button>
 
-        {/* Сайдбар */}
-        <div className="w-48 border-r border-gray-300 flex flex-col">
+        {/* 🔹 Вкладки (горизонтально на мобілках, вертикально на ПК) */}
+        <div
+          className="
+            flex border-b md:border-b-0 md:border-r border-gray-300
+            md:flex-col w-full md:w-48 mt-12
+          "
+        >
           {["main", "tasks", "participants", "settings"].map((tab) => (
             <button
               key={tab}
-              className={`p-4 text-left border-b border-gray-300 text-black ${
-                activeTab === tab ? "bg-gray-100" : "hover:bg-gray-50"
-              } rounded-none`}
+              className={`
+                flex-1 md:flex-none p-3 md:p-4 text-center md:text-left
+                border-b border-gray-300 text-gray-700 rounded-none
+                ${
+                  activeTab === tab
+                    ? "bg-gray-100 font-medium"
+                    : "hover:bg-gray-50"
+                }
+              `}
               onClick={() => setActiveTab(tab as typeof activeTab)}
             >
               {tab === "main" && "Основне"}
@@ -107,8 +124,8 @@ const EventModal: React.FC<EventModalProps> = ({
           ))}
         </div>
 
-        {/* Контент */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        {/* 🔹 Контент */}
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto">
           {/* ===== Основна вкладка ===== */}
           {activeTab === "main" && (
             <div>
@@ -149,8 +166,8 @@ const EventModal: React.FC<EventModalProps> = ({
                           task.color + "30";
                       }}
                     >
-                      <strong className="text-gray-500">{task.title}</strong>
-                      <div className="text-sm text-gray-400">
+                      <strong className="text-gray-700">{task.title}</strong>
+                      <div className="text-sm text-gray-500">
                         Термін: {new Date(task.dueDate).toLocaleDateString()}
                       </div>
                     </div>
@@ -168,7 +185,7 @@ const EventModal: React.FC<EventModalProps> = ({
               {isOwner && (
                 <button
                   onClick={() => setShowAddModal(true)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full md:w-auto"
                 >
                   Редагувати учасників
                 </button>
@@ -181,14 +198,20 @@ const EventModal: React.FC<EventModalProps> = ({
                   return (
                     <div
                       key={user.id}
-                      className="flex items-center p-2 border hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center p-2 border rounded-md hover:bg-gray-100 cursor-pointer"
                       onClick={(e) => handleUserClick(user.id, e)}
                     >
-                      <img
-                        src={user.avatarUrl || "/default-avatar.png"}
-                        alt={user.username}
-                        className="w-10 h-10 rounded-full mr-3"
-                      />
+                      {user.avatarUrl ? (
+                        <img
+                          src={user.avatarUrl}
+                          alt={user.username}
+                          className="w-10 h-10 rounded-full mr-3 object-cover"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold mr-3">
+                          {user.username?.charAt(0).toUpperCase() || "?"}
+                        </div>
+                      )}
                       <div className="flex flex-col">
                         <span className="font-semibold text-gray-800">
                           {user.username}
@@ -221,13 +244,15 @@ const EventModal: React.FC<EventModalProps> = ({
                   Налаштування поки що недоступні для особистого календаря
                 </p>
               ) : (
-                <p>Тут можна змінювати налаштування події</p>
+                <p className="text-gray-800">
+                  Тут можна змінювати налаштування події
+                </p>
               )}
             </div>
           )}
         </div>
 
-        {/* Контекстне меню */}
+        {/* 🔹 Контекстне меню */}
         {selectedUser && contextMenuPos && (
           <div
             className="fixed bg-white p-2 rounded shadow-lg z-50 flex flex-col space-y-2"
@@ -260,10 +285,15 @@ const EventModal: React.FC<EventModalProps> = ({
         )}
       </div>
 
-      {/* ===== Модалка редагування учасників ===== */}
+      {/* 🔹 Модалка редагування учасників */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100]">
-          <div className="bg-white rounded-lg p-6 w-[600px] max-h-[80vh] overflow-y-auto shadow-xl relative">
+          <div
+            className="
+              bg-white rounded-lg p-6 w-[90%] md:w-[600px] max-h-[80vh]
+              overflow-y-auto shadow-xl relative
+            "
+          >
             <button
               className="absolute top-3 right-3 text-gray-500 hover:text-black hover:border-gray-200 rounded-full p-1"
               onClick={() => setShowAddModal(false)}
@@ -274,7 +304,7 @@ const EventModal: React.FC<EventModalProps> = ({
               Редагування учасників
             </h2>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {userDb.getAll().map((u) => {
                 const isOwnerUser = u.id === event.ownerId;
                 return (
@@ -292,11 +322,17 @@ const EventModal: React.FC<EventModalProps> = ({
                     }}
                     label={
                       <div className="flex items-center gap-2">
-                        <img
-                          src={u.avatarUrl || "/default-avatar.png"}
-                          alt={u.username}
-                          className="w-8 h-8 rounded-full"
-                        />
+                        {u.avatarUrl ? (
+                          <img
+                            src={u.avatarUrl}
+                            alt={u.username}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                            {u.username?.charAt(0).toUpperCase() || "?"}
+                          </div>
+                        )}
                         <div className="flex flex-col">
                           <span className="font-medium text-gray-800">
                             {u.username}
