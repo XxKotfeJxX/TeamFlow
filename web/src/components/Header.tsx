@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // 📦 icons
 import { userDb } from "../models/mockDB/users";
+import { useTranslation } from "./useTranslations";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -11,7 +12,9 @@ const Header = () => {
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [currentUser, setCurrentUser] = useState<ReturnType<
     typeof userDb.getById
-  > | null>(null);
+    > | null>(null);
+  const { t } = useTranslation();
+  const th = t("header");
 
   // ============================
   // 🔹 Отримуємо користувача
@@ -46,49 +49,50 @@ const Header = () => {
   // ============================
   // 🔹 Меню навігації
   // ============================
-  const navItemsBase = [
-    {
-      label: "Продукт",
-      options: [
-        { name: "Огляд", path: "/overview" },
-        { name: "Функції", path: "/features" },
-        { name: "Ціни", path: "/price" },
-      ],
-    },
-    {
-      label: "Компанія",
-      options: [
-        { name: "Про нас", path: "/about" },
-        { name: "Команда", path: "/my-team" },
-        { name: "Кар’єра", path: "/career" },
-      ],
-    },
-    {
-      label: "Ресурси",
-      options: [
-        { name: "Блог", path: "/blog" },
-        { name: "Підтримка", path: "/support" },
-        { name: "Документація", path: "/documentation" },
-      ],
-    },
-  ];
+ const navItemsBase = [
+   {
+     label: th("product"),
+     options: [
+       { name: th("overview"), path: "/overview" },
+       { name: th("features"), path: "/features" },
+       { name: th("pricing"), path: "/price" },
+     ],
+   },
+   {
+     label: th("company"),
+     options: [
+       { name: th("about"), path: "/about" },
+       { name: th("team"), path: "/my-team" },
+       { name: th("career"), path: "/career" },
+     ],
+   },
+   {
+     label: th("resources"),
+     options: [
+       { name: th("blog"), path: "/blog" },
+       { name: th("support"), path: "/support" },
+       { name: th("docs"), path: "/documentation" },
+     ],
+   },
+ ];
+
 
   const navItems = currentUser
     ? [
         ...navItemsBase,
         {
-          label: "Мій простір",
+          label: th("mySpace"),
           options: [
             {
-              name: "Календар",
+              name: th("calendar"),
               path: `/calendar/${
                 currentUser.id
               }/${new Date().getFullYear()}-${String(
                 new Date().getMonth() + 1
               ).padStart(2, "0")}`,
             },
-            { name: "Завдання", path: `/tasks/user/${currentUser.id}` },
-            { name: "Команди", path: `/teams/user/${currentUser.id}` },
+            { name: th("tasks"), path: `/tasks/user/${currentUser.id}` },
+            { name: th("teams"), path: `/teams/user/${currentUser.id}` },
           ],
         },
       ]
@@ -204,7 +208,7 @@ const Header = () => {
                 className="ml-2 px-3 py-1.5 rounded-md bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-700 transition font-medium"
                 style={{ border: "none" }}
               >
-                Вийти
+                {th("logout")}
               </button>
             </div>
           ) : (
@@ -213,13 +217,13 @@ const Header = () => {
                 className="text-gray-700 hover:text-blue-600 transition p-2 rounded-xl"
                 onClick={() => navigate("/login")}
               >
-                Увійти
+                {th("login")}
               </button>
               <button
                 onClick={() => navigate("/register")}
                 className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition"
               >
-                Зареєструватися
+                {th("register")}
               </button>
             </>
           )}
@@ -249,7 +253,7 @@ const Header = () => {
           >
             {/* Верхня панель */}
             <div className="flex items-center justify-between">
-              <span className="font-bold text-lg text-gray-800">Меню</span>
+              <span className="font-bold text-lg text-gray-800">{ th("menu")}</span>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-2 text-gray-600 hover:text-red-600 transition"
@@ -318,7 +322,7 @@ const Header = () => {
                     className="text-left px-3 py-2 rounded-md bg-gray-100 hover:bg-red-100 hover:text-red-700 font-medium text-gray-600"
                     style={{ border: "none" }}
                   >
-                    Вийти
+                    {th("logout")}
                   </button>
                 </div>
               ) : (
@@ -330,7 +334,7 @@ const Header = () => {
                     }}
                     className="text-left text-gray-700 hover:text-blue-600"
                   >
-                    Увійти
+                    {th("login")}
                   </button>
                   <button
                     onClick={() => {
@@ -339,7 +343,7 @@ const Header = () => {
                     }}
                     className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-left"
                   >
-                    Зареєструватися
+                   {th("register")}
                   </button>
                 </div>
               )}
