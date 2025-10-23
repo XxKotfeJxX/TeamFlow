@@ -73,4 +73,38 @@ export default {
       "Sign up today and start managing your projects like a professional.",
     createAccount: "Create an account",
   },
+
+  overview: {
+    heroTitle: "Teamwork without chaos",
+    heroText:
+      "Calendar, tasks, chats, and calls — all in one place. Work in sync with your team anywhere.",
+    tryFree: "Try for free",
+    demo: "Demo mode",
+
+    whyTitle: "Why TeamFlow?",
+    features: [
+      {
+        title: "Smart calendar",
+        desc: "Plan events without conflicts between personal and team schedules.",
+      },
+      {
+        title: "Motivating tasks",
+        desc: "Complete tasks, earn points, and level up your team.",
+      },
+      {
+        title: "Noise-free communication",
+        desc: "Discuss everything using built-in chats — no external messengers needed.",
+      },
+      {
+        title: "Secure platform",
+        desc: "JWT tokens, encryption, and access control ensure your safety.",
+      },
+    ],
+
+    ctaTitle: "Ready to try TeamFlow?",
+    ctaText: "Start collaborating more effectively today.",
+    join: "Join now",
+    },
+  
+  
 };

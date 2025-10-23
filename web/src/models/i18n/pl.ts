@@ -73,4 +73,36 @@ export default {
       "Zarejestruj się dziś i zacznij zarządzać swoimi projektami jak profesjonalista.",
     createAccount: "Utwórz konto",
   },
+
+  overview: {
+    heroTitle: "Praca zespołowa bez chaosu",
+    heroText:
+      "Kalendarz, zadania, czaty i połączenia — wszystko w jednym miejscu. Pracuj synchronicznie z zespołem gdziekolwiek jesteś.",
+    tryFree: "Wypróbuj za darmo",
+    demo: "Tryb demo",
+
+    whyTitle: "Dlaczego TeamFlow?",
+    features: [
+      {
+        title: "Inteligentny kalendarz",
+        desc: "Planuj wydarzenia bez konfliktów między harmonogramem osobistym a zespołowym.",
+      },
+      {
+        title: "Motywujące zadania",
+        desc: "Wykonuj zadania, zdobywaj punkty i rozwijaj zespół.",
+      },
+      {
+        title: "Komunikacja bez hałasu",
+        desc: "Rozmawiaj w wbudowanych czatach bez potrzeby zewnętrznych komunikatorów.",
+      },
+      {
+        title: "Bezpieczna platforma",
+        desc: "Tokeny JWT, szyfrowanie i kontrola dostępu zapewniają bezpieczeństwo.",
+      },
+    ],
+
+    ctaTitle: "Gotowy wypróbować TeamFlow?",
+    ctaText: "Zacznij pracować z zespołem efektywniej już dziś.",
+    join: "Dołącz",
+  },
 };
