@@ -1,0 +1,21 @@
+export default {
+  footer: {
+    product: "Produkt",
+    features: "Funkcje",
+    pricing: "Ceny",
+    download: "Pobierz",
+    company: "Firma",
+    about: "O nas",
+    blog: "Blog",
+    career: "Kariera",
+    support: "Wsparcie",
+    help: "Pomoc",
+    contact: "Kontakt",
+    docs: "Dokumentacja",
+    followUs: "Śledź nas",
+    langLabel: "Język strony",
+    rights: "Wszelkie prawa zastrzeżone",
+    privacy: "Polityka prywatności",
+    terms: "Warunki korzystania",
+  },
+};

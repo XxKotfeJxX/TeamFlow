@@ -1,0 +1,21 @@
+export default {
+  footer: {
+    product: "Продукт",
+    features: "Функції",
+    pricing: "Ціни",
+    download: "Завантаження",
+    company: "Компанія",
+    about: "Про нас",
+    blog: "Блог",
+    career: "Кар’єра",
+    support: "Підтримка",
+    help: "Допомога",
+    contact: "Контакти",
+    docs: "Документація",
+    followUs: "Слідкуйте за нами",
+    langLabel: "Мова сайту",
+    rights: "Усі права захищено",
+    privacy: "Політика конфіденційності",
+    terms: "Умови користування",
+  },
+};
