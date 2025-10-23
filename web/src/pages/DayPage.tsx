@@ -315,7 +315,7 @@ const DayPage: React.FC = () => {
   "
       >
         {/* Поточна дата */}
-        <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-0">
+        <h2 className="text-lg sm:text-2xl font-semibold text-gray-800 mb-3 sm:mb-0">
           {currentDate.toLocaleDateString("uk-UA", {
             weekday: "long",
             year: "numeric",
@@ -357,7 +357,7 @@ const DayPage: React.FC = () => {
         className="
     flex flex-col sm:flex-row
     border-t border-l border-gray-200
-    h-full p-0 my-12 relative
+    h-full p-0 my-12 relative mt-20
   "
       >
         {COLUMN_RANGES.map((range, colIndex) => {
