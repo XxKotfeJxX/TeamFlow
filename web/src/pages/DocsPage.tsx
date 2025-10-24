@@ -1,4 +1,3 @@
-// src/pages/DocsPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Code } from "lucide-react";
@@ -49,7 +48,6 @@ Authorization: Bearer <token>`,
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні світлові плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -62,7 +60,6 @@ Authorization: Bearer <token>`,
         </motion.div>
 
         <main className="relative z-10 flex-1 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-24">
-          {/* HERO */}
           <motion.section
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,7 +71,6 @@ Authorization: Bearer <token>`,
             </h1>
           </motion.section>
 
-          {/* DOCS LIST */}
           <div className="space-y-10">
             {docsSections.map((section, i) => (
               <motion.div
@@ -97,7 +93,6 @@ Authorization: Bearer <token>`,
             ))}
           </div>
 
-          {/* VERSION */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

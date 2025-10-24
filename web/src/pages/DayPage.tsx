@@ -1,4 +1,3 @@
-// src/pages/DayPage.tsx
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -18,11 +17,10 @@ import CreateItemModal from "../components/calendar/CreateItemModal";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/Button";
 
-// ===== Розбиття дня на 3 секції =====
 const COLUMN_RANGES = [
-  { start: 0, end: 7 }, // [00:00, 08:00)
-  { start: 8, end: 15 }, // [08:00, 16:00)
-  { start: 16, end: 23 }, // [16:00, 24:00)
+  { start: 0, end: 7 },
+  { start: 8, end: 15 },
+  { start: 16, end: 23 },
 ] as const;
 
 const HOUR_HEIGHT = 128;
@@ -33,7 +31,6 @@ function isEvent(item: Event | Task): item is Event {
   return (item as Event).startDate instanceof Date;
 }
 
-// ===== Часові утиліти =====
 const rangeStartMs = (base: Date, startHour: number) =>
   new Date(
     base.getFullYear(),
@@ -56,7 +53,6 @@ const rangeEndMsExclusive = (base: Date, endHour: number) =>
     0
   ).getTime();
 
-// Подія має перетин із колонкою?
 function eventIntersectsRange(
   e: Event,
   day: Date,
@@ -67,7 +63,6 @@ function eventIntersectsRange(
   return e.endDate.getTime() > rs && e.startDate.getTime() < re;
 }
 
-// Обрізані межі події під колонку
 function getClippedEventBounds(
   e: Event,
   day: Date,
@@ -80,7 +75,6 @@ function getClippedEventBounds(
   return { start, end };
 }
 
-// Позиція/висота айтема з урахуванням обрізання в колонці
 function computeDisplayTopAndHeightForColumn(
   item: Event | Task,
   day: Date,
@@ -107,7 +101,6 @@ function computeDisplayTopAndHeightForColumn(
     return { top, height };
   }
 
-  // Task — точка в часі
   const due = new Date(item.dueDate);
   const minutesFromRangeStart =
     due.getHours() * 60 + due.getMinutes() - range.start * 60;
@@ -134,7 +127,6 @@ function computeTopForColumn(
   return (minutesFromRangeStart / 60) * HOUR_HEIGHT - TASK_HEIGHT / 2;
 }
 
-// ===== Пошук перекриттів у межах колонки =====
 type OverlapCluster = { id: string; top: number; items: (Event | Task)[] };
 
 function findOverlapsForColumn(
@@ -187,7 +179,6 @@ function computeVisibleItemsForColumn(
   day: Date,
   globallySelectedEventId: string | null
 ) {
-  // Якщо користувач явно вибрав подію — показуємо лише її (усі частини) у кожній колонці
   if (globallySelectedEventId) {
     const onlySelected = allColumnItems.filter(
       (i) => i.id === globallySelectedEventId
@@ -198,7 +189,6 @@ function computeVisibleItemsForColumn(
     );
   }
 
-  // Інакше: показуємо все, але у кластерах — лише одну (найпріоритетнішу)
   const result: (Event | Task)[] = [];
   const clusteredIds = new Set(
     overlaps.flatMap((o) => o.items.map((i) => i.id))
@@ -234,14 +224,12 @@ const DayPage: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
   const [selectedTask, setSelectedTask] = React.useState<Task | null>(null);
 
-  // Глобально вибрана подія з меню перекриття (показується у всіх секціях)
   const [visibleEventId, setVisibleEventId] = React.useState<string | null>(
     null
   );
 
   const navigate = useNavigate();
 
-  // Функції для перемикання
   const goToPreviousDay = () => {
     const prev = new Date(currentDate);
     prev.setDate(prev.getDate() - 1);
@@ -268,14 +256,12 @@ const DayPage: React.FC = () => {
 
   const currentDate = date ? new Date(date) : new Date();
 
-  // Завантаження з БД
   React.useEffect(() => {
     if (!calendarId) return;
     setEvents(eventDb.getByCalendarId(calendarId));
     setTasks(taskDb.getByCalendarId(calendarId));
   }, [calendarId]);
 
-  // Закриття меню при скролі
   React.useEffect(() => {
     if (!overlapMenu) return;
     const startScrollY = window.scrollY;
@@ -290,7 +276,6 @@ const DayPage: React.FC = () => {
   const calendar = calendars.find((c) => c.id === calendarId);
   if (!calendar) return <div>Календар не знайдено</div>;
 
-  // Події/таски на поточну дату
   const todaysEvents = events.filter(
     (e) =>
       e.startDate.toDateString() === currentDate.toDateString() ||
@@ -310,7 +295,6 @@ const DayPage: React.FC = () => {
       <Header />
 
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -322,9 +306,7 @@ const DayPage: React.FC = () => {
           <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
         </motion.div>
 
-        {/* 🔹 Контент */}
         <main className="relative z-10 max-w-7xl mx-auto px-4 py-24">
-          {/* === Заголовок + навігація === */}
           <div className="text-center relative flex flex-col items-center sm:block mb-10">
             <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
               {currentDate.toLocaleDateString("uk-UA", {
@@ -360,7 +342,6 @@ const DayPage: React.FC = () => {
             </div>
           </div>
 
-          {/* === Основна сітка === */}
           <div className="flex flex-col sm:flex-row border-t border-l border-gray-200 rounded-3xl bg-white/70 backdrop-blur-md shadow-lg my-12 relative overflow-hidden">
             {COLUMN_RANGES.map((range, colIndex) => {
               const columnEvents = todaysEvents.filter((e) =>
@@ -394,7 +375,6 @@ const DayPage: React.FC = () => {
                   key={colIndex}
                   className="flex-1 flex border-l border-gray-200 relative"
                 >
-                  {/* Годинна шкала */}
                   <div className="w-16 flex flex-col border-r border-gray-200 bg-gray-50/40">
                     {Array.from({ length: range.end - range.start + 1 }).map(
                       (_, i) => {
@@ -411,7 +391,6 @@ const DayPage: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Зона подій/тасків */}
                   <div className="flex-1 relative">
                     {Array.from({ length: range.end - range.start + 1 }).map(
                       (_, i) => {
@@ -435,7 +414,6 @@ const DayPage: React.FC = () => {
                       }
                     )}
 
-                    {/* Події / Завдання */}
                     {visibleItems.map((item) => {
                       const { top, height } =
                         computeDisplayTopAndHeightForColumn(
@@ -511,7 +489,6 @@ const DayPage: React.FC = () => {
               );
             })}
 
-            {/* Меню перекриття */}
             {overlapMenu && (
               <OverlapMenu
                 items={overlapMenu.items}
@@ -532,7 +509,6 @@ const DayPage: React.FC = () => {
 
         <Footer />
 
-        {/* Модалки */}
         {createModalInfo && (
           <CreateItemModal
             calendarId={calendar.id}

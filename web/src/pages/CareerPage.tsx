@@ -1,4 +1,3 @@
-// src/pages/CareerPage.tsx
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -31,7 +30,6 @@ export default function CareerPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -43,9 +41,7 @@ export default function CareerPage() {
           <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
         </motion.div>
 
-        {/* Основний контент */}
         <main className="relative z-10 flex-1 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 pt-32 pb-24">
-          {/* Заголовок */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -60,7 +56,6 @@ export default function CareerPage() {
             </p>
           </motion.div>
 
-          {/* Ролі */}
           <div className="grid md:grid-cols-3 gap-10">
             {roles.map((role, i) => (
               <motion.div
@@ -102,7 +97,6 @@ export default function CareerPage() {
             ))}
           </div>
 
-          {/* CTA блок */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

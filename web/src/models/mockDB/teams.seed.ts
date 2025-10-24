@@ -1,4 +1,3 @@
-// web/src/models/mockDB/teams.seed.ts
 import type { Team } from "./teams";
 
 export const seedTeams: Team[] = [

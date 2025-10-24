@@ -1,4 +1,3 @@
-// src/pages/ContactPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Mail, MapPin, Clock } from "lucide-react";
@@ -24,7 +23,6 @@ export default function ContactPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -88,7 +86,6 @@ export default function ContactPage() {
             ))}
           </section>
 
-          {/* FORM */}
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -160,7 +157,6 @@ export default function ContactPage() {
             </form>
           </motion.section>
 
-          {/* MAP */}
           <motion.section
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

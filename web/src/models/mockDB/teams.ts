@@ -1,7 +1,5 @@
-// web/src/models/mockDB/teams.ts
 import { seedTeams } from "./teams.seed";
 
-// ===== TEAM ROLES =====
 export type TeamRole = "admin" | "member";
 
 export interface TeamMember {
@@ -9,24 +7,20 @@ export interface TeamMember {
   role: TeamRole;
 }
 
-// ========== TEAM ==========
 export interface Team {
   id: string;
   name: string;
   description?: string;
   avatarUrl?: string;
-  members: TeamMember[]; // userIds + role
+  members: TeamMember[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-// In-memory таблиця для команд
 export const teams: Team[] = [...seedTeams];
 
-// Helper для генерації ID
 const genId = () => crypto.randomUUID();
 
-// ===== Внутрішні утиліти роботи з учасниками =====
 const upsertMember = (
   team: Team,
   userId: string,
@@ -49,7 +43,6 @@ const removeMemberById = (team: Team, userId: string) => {
 
 const ensureHasAdmin = (team: Team) => {
   if (!team.members.some((m) => m.role === "admin")) {
-    // якщо немає жодного адміна — перетворимо першого учасника на адміна (якщо він є)
     if (team.members[0]) {
       team.members[0].role = "admin";
       team.updatedAt = new Date();
@@ -57,9 +50,7 @@ const ensureHasAdmin = (team: Team) => {
   }
 };
 
-// CRUD для команд + керування учасниками
 export const teamDb = {
-  // data.members тепер очікує TeamMember[]
   create: (data: Omit<Team, "id" | "createdAt" | "updatedAt">): Team => {
     const team: Team = {
       id: genId(),
@@ -79,7 +70,6 @@ export const teamDb = {
     const team = teams.find((t) => t.id === id);
     if (!team) return undefined;
 
-    // Якщо приходять members — переконаємось, що це масив TeamMember
     if (updates.members) {
       team.members = updates.members.map((m) => ({
         userId: m.userId,
@@ -100,7 +90,6 @@ export const teamDb = {
     return true;
   },
 
-  // ===== ОПЕРАЦІЇ З УЧАСНИКАМИ =====
   addMember: (
     teamId: string,
     userId: string,
@@ -140,7 +129,6 @@ export const teamDb = {
   },
 };
 
-// ===== LocalStorage persistence =====
 const STORAGE_KEY = "teamsDB";
 
 function saveTeams() {
@@ -165,10 +153,8 @@ function loadTeams() {
   }
 }
 
-// Автоматичне завантаження при старті
 loadTeams();
 
-// Перезапис збереження у CRUD методах
 const originalCreate = teamDb.create;
 teamDb.create = (data) => {
   const newTeam = originalCreate(data);
@@ -198,31 +184,25 @@ teamDb.addMember = (teamId, userId, role) => {
   return result;
 };
 
-// ========== TEAM PROFILE (ВІЗИТКА) ==========
-
-// Тип шаблону блоку
 export type TeamProfileBlockType =
-  | "text_basic" // текстові блоки
-  | "list" // списки
-  | "links" // посилання
-  | "gallery" // галереї з фото
-  | "custom"; // інше (на майбутнє)
+  | "text_basic" 
+  | "list" 
+  | "links" 
+  | "gallery" 
+  | "custom";
 
-// Один блок візитки
 export interface TeamProfileBlock {
   id: string;
-  teamId: string; // прив’язка до команди
-  templateId: string; // id шаблону (для визначення структури)
-  data: Record<string, unknown>; // будь-який JSON контент (залежно від шаблону)
-  orderIndex: number; // порядок відображення
+  teamId: string;
+  templateId: string; 
+  data: Record<string, unknown>;
+  orderIndex: number; 
   createdAt: Date;
   updatedAt: Date;
 }
 
-// In-memory таблиця для блоків візитки
 export const teamProfiles: TeamProfileBlock[] = [];
 
-// CRUD для блоків візитки
 export const teamProfileDb = {
   create: (
     teamId: string,
@@ -277,7 +257,6 @@ export const teamProfileDb = {
   },
 };
 
-// ===== LocalStorage для профільних блоків =====
 const PROFILES_KEY = "teamProfilesDB";
 
 function saveProfiles() {
@@ -302,10 +281,8 @@ function loadProfiles() {
   }
 }
 
-// завантажуємо при старті
 loadProfiles();
 
-// обгортки CRUD з автозбереженням
 const originalProfileCreate = teamProfileDb.create;
 teamProfileDb.create = (teamId, templateId, data, orderIndex) => {
   const block = originalProfileCreate(teamId, templateId, data, orderIndex);

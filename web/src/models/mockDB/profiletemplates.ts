@@ -1,33 +1,22 @@
-// web/src/models/mockDB/profileTemplates.ts
-
-/**
- * Тип для визначення, які поля містить шаблон
- */
 export interface ProfileTemplateField {
-  key: string; // унікальний ключ у data
-  label: string; // підпис поля
-  type: "text" | "textarea" | "image" | "list" | "linkList"; // тип введення
+  key: string;
+  label: string;
+  type: "text" | "textarea" | "image" | "list" | "linkList";
   required?: boolean;
 }
 
-/**
- * Шаблон профільного блоку (візитки)
- */
 export interface ProfileTemplate {
-  id: string; // UUID або унікальний ключ
-  name: string; // системна назва (наприклад, "text_basic", "gallery")
-  displayName: string; // як показувати в UI ("Текстовий блок", "Галерея")
-  description?: string; // короткий опис
-  icon?: string; // опціонально — іконка для UI
-  fields: ProfileTemplateField[]; // поля, які редагуються
-  styles?: Record<string, unknown>; // стилі для рендеру блоку
+  id: string;
+  name: string;
+  displayName: string;
+  description?: string;
+  icon?: string;
+  fields: ProfileTemplateField[];
+  styles?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
 
-/**
- * Мокові шаблони для візитки команди
- */
 export const profileTemplates: ProfileTemplate[] = [
   {
     id: "tpl-text-basic",
@@ -83,9 +72,6 @@ export const profileTemplates: ProfileTemplate[] = [
   },
 ];
 
-/**
- * In-memory “БД” для шаблонів
- */
 export const profileTemplateDb = {
   getAll: (): ProfileTemplate[] => [...profileTemplates],
   getById: (id: string): ProfileTemplate | undefined =>
