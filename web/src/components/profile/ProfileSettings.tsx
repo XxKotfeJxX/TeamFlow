@@ -1,6 +1,7 @@
 import { Card, CardContent } from "../ui/Card";
 import { Label } from "../ui/Label";
 import { Select, SelectItem, SelectContent } from "../ui/Select";
+import { useTranslation } from "../useTranslations";
 
 interface ProfileSettingsProps {
   interfaceLang: string;
@@ -9,7 +10,7 @@ interface ProfileSettingsProps {
     field: "interfaceLang" | "profileVisibility",
     value: string
   ) => void;
-  disabled?: boolean; // додатково, щоб заблокувати для не-власника
+  disabled?: boolean;
 }
 
 export default function ProfileSettings({
@@ -18,15 +19,18 @@ export default function ProfileSettings({
   onChange,
   disabled = false,
 }: ProfileSettingsProps) {
+  const { t } = useTranslation();
+  const tp = t("profileSettings");
+
   return (
     <Card className="mt-6">
       <CardContent className="p-6 space-y-6">
-        <h2 className="text-xl font-semibold text-gray-800">Налаштування</h2>
+        <h2 className="text-xl font-semibold text-gray-800">{tp("title")}</h2>
 
         <div className="grid gap-4 md:grid-cols-2">
           {/* Мова інтерфейсу */}
           <div className="space-y-2">
-            <Label htmlFor="language">Мова інтерфейсу</Label>
+            <Label htmlFor="language">{tp("interfaceLang")}</Label>
             <Select
               id="language"
               value={interfaceLang}
@@ -41,9 +45,9 @@ export default function ProfileSettings({
             </Select>
           </div>
 
-          {/* Приватність */}
+          {/* Видимість профілю */}
           <div className="space-y-2">
-            <Label htmlFor="visibility">Видимість профілю</Label>
+            <Label htmlFor="visibility">{tp("visibility")}</Label>
             <Select
               id="visibility"
               value={profileVisibility}
@@ -51,17 +55,14 @@ export default function ProfileSettings({
               onChange={(e) => onChange?.("profileVisibility", e.target.value)}
             >
               <SelectContent>
-                <SelectItem value="public">Публічний</SelectItem>
-                <SelectItem value="private">Приватний</SelectItem>
+                <SelectItem value="public">{tp("public")}</SelectItem>
+                <SelectItem value="private">{tp("private")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        <div className="text-muted-foreground text-sm">
-          Інші опції зʼявляться тут згодом, наприклад — темна тема,
-          email-сповіщення тощо.
-        </div>
+        <div className="text-muted-foreground text-sm">{tp("comingSoon")}</div>
       </CardContent>
     </Card>
   );

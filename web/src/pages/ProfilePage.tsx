@@ -9,22 +9,23 @@ import { Button } from "../components/ui/Button";
 import { Pencil, Upload } from "lucide-react";
 import { Textarea } from "../components/ui/Textarea";
 import { Input } from "../components/ui/Input";
+import { useTranslation } from "../components/useTranslations";
 
 export default function ProfilePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
+  const { t } = useTranslation();
+  const tp = t("profilePage");
 
   const user = id ? userDb.getById(id) : undefined;
   if (!user) return <Navigate to="/login" replace />;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [currentUser, setCurrentUser] = useState(user);
 
+  const [currentUser, setCurrentUser] = useState(user);
   const currentUserId = localStorage.getItem("currentUserId");
   const isOwner = currentUserId === user.id;
   const isPrivate = user.profileVisibility === "private";
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editableUser, setEditableUser] = useState({
     username: user.username,
     email: user.email,
@@ -111,21 +112,21 @@ export default function ProfilePage() {
             <div className="flex gap-3 mt-5">
               <Button
                 onClick={goToCalendar}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white hover:border-emerald-800"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white hover:border-emerald-700 "
               >
-                Календар
+                {tp("calendar")}
               </Button>
               <Button
                 onClick={goToTasks}
-                className="bg-blue-600 hover:bg-blue-700 text-white hover:border-blue-800"
+                className="bg-blue-600 hover:bg-blue-700 text-white hover:border-blue-700"
               >
-                Завдання
+                {tp("tasks")}
               </Button>
               <Button
                 onClick={goToTeams}
-                className="bg-purple-600 hover:bg-purple-700 text-white hover:border-purple-800"
+                className="bg-purple-600 hover:bg-purple-700 text-white hover:border-purple-700"
               >
-                Команди
+                {tp("teams")}
               </Button>
             </div>
           ) : null}
@@ -133,7 +134,7 @@ export default function ProfilePage() {
 
         {isPrivate && !isOwner ? (
           <div className="text-center text-gray-500 italic py-16">
-            🔒 Цей профіль приватний. Ви можете бачити лише базову інформацію.
+            🔒 {tp("privateProfile")}
           </div>
         ) : (
           <div className="max-w-4xl mx-auto space-y-8">
@@ -141,13 +142,13 @@ export default function ProfilePage() {
             <section className="bg-white p-6 rounded-2xl shadow-sm border relative">
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-xl font-semibold text-gray-800">
-                  Про користувача
+                  {tp("about")}
                 </h2>
 
                 {isOwner && (
                   <button
                     onClick={() => setEditing(!editing)}
-                    className="text-gray-500 hover:text-blue-600 transition hover:border-none"
+                    className="text-gray-500 hover:text-blue-600 transition hover:bg-gray-100 p-2 rounded-full"
                   >
                     <Pencil size={18} />
                   </button>
@@ -157,7 +158,9 @@ export default function ProfilePage() {
               {editing && isOwner ? (
                 <div className="space-y-3">
                   <div>
-                    <label className="text-sm text-gray-500">Нікнейм</label>
+                    <label className="text-sm text-gray-500">
+                      {tp("nickname")}
+                    </label>
                     <Input
                       className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                       value={editableUser.username}
@@ -171,7 +174,9 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="text-sm text-gray-500">Ел. пошта</label>
+                    <label className="text-sm text-gray-500">
+                      {tp("email")}
+                    </label>
                     <Input
                       className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                       type="email"
@@ -186,7 +191,7 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="text-sm text-gray-500">Біо</label>
+                    <label className="text-sm text-gray-500">{tp("bio")}</label>
                     <Textarea
                       className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
                       rows={3}
@@ -202,7 +207,7 @@ export default function ProfilePage() {
 
                   <div>
                     <label className="text-sm text-gray-500">
-                      Навички (через кому)
+                      {tp("skills")}
                     </label>
                     <Input
                       className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
@@ -218,7 +223,7 @@ export default function ProfilePage() {
 
                   <div>
                     <label className="text-sm text-gray-500">
-                      Мови (через кому)
+                      {tp("languages")}
                     </label>
                     <Input
                       className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
@@ -234,7 +239,7 @@ export default function ProfilePage() {
 
                   <div>
                     <label className="text-sm text-gray-500">
-                      Часовий пояс
+                      {tp("timezone")}
                     </label>
                     <Input
                       className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
@@ -251,39 +256,39 @@ export default function ProfilePage() {
                   <div className="flex justify-end gap-2 pt-2">
                     <Button
                       onClick={() => setEditing(false)}
-                      className="bg-gray-200 text-gray-700 hover:bg-gray-300 hover:border-gray-400"
+                      className="bg-gray-200 text-gray-700 hover:bg-gray-300"
                     >
-                      Скасувати
+                      {tp("cancel")}
                     </Button>
                     <Button
                       onClick={handleSave}
-                      className="bg-blue-600 text-white hover:bg-blue-700 hover:border-blue-800"
+                      className="bg-blue-600 text-white hover:bg-blue-700"
                     >
-                      Зберегти
+                      {tp("save")}
                     </Button>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-2 text-gray-700">
                   <p>
-                    <strong>Нікнейм:</strong> {user.username}
+                    <strong>{tp("nickname")}:</strong> {user.username}
                   </p>
                   <p>
-                    <strong>Ел. пошта:</strong> {user.email}
+                    <strong>{tp("email")}:</strong> {user.email}
                   </p>
                   <p>
-                    <strong>Біо:</strong> {user.bio || "—"}
+                    <strong>{tp("bio")}:</strong> {user.bio || "—"}
                   </p>
                   <p>
-                    <strong>Навички:</strong>{" "}
+                    <strong>{tp("skills")}:</strong>{" "}
                     {user.skills.length ? user.skills.join(", ") : "—"}
                   </p>
                   <p>
-                    <strong>Мови:</strong>{" "}
+                    <strong>{tp("languages")}:</strong>{" "}
                     {user.languages.length ? user.languages.join(", ") : "—"}
                   </p>
                   <p>
-                    <strong>Часовий пояс:</strong> {user.timezone || "—"}
+                    <strong>{tp("timezone")}:</strong> {user.timezone || "—"}
                   </p>
                 </div>
               )}
@@ -308,12 +313,9 @@ export default function ProfilePage() {
                     [field]: value,
                   } as typeof currentUser);
 
-                  // 🧠 якщо користувач змінює мову — зберігаємо в localStorage
                   if (field === "interfaceLang") {
                     localStorage.setItem("interfaceLang", value);
                     document.documentElement.lang = value;
-
-                    // 🔥 кидаємо глобальну подію, щоб Footer міг оновитись
                     window.dispatchEvent(
                       new CustomEvent("interfaceLangChange", { detail: value })
                     );

@@ -689,5 +689,37 @@ export default {
       "With love, the TeamFlow crew.<br/>“We don’t read your data — it tells us stories itself.”",
   },
 
+  profilePage: {
+    calendar: "Calendar",
+    tasks: "Tasks",
+    teams: "Teams",
+    privateProfile: "This profile is private. Only basic info is visible.",
+    about: "About user",
+    nickname: "Nickname",
+    email: "Email",
+    bio: "Bio",
+    skills: "Skills (comma-separated)",
+    languages: "Languages (comma-separated)",
+    timezone: "Timezone",
+    cancel: "Cancel",
+    save: "Save",
+  },
+
+  profileActivity: {
+    title: "Activity",
+    registered: "Registered on:",
+    lastActive: "Last active:",
+  },
+
+  profileSettings: {
+    title: "Settings",
+    interfaceLang: "Interface language",
+    visibility: "Profile visibility",
+    public: "Public",
+    private: "Private",
+    comingSoon:
+      "More options coming soon — for example, dark theme, email notifications, and more.",
+  },
+
   
 };
