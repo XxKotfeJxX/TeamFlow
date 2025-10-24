@@ -98,7 +98,7 @@ export default function AboutPage() {
             className="text-center mt-24"
           >
             <Button
-              onClick={() => (window.location.href = "/career")}
+              onClick={() => (window.location.href = "#/career")}
               size="lg"
               className="rounded-2xl px-8 py-3 text-lg bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-transform hover:scale-105"
             >
