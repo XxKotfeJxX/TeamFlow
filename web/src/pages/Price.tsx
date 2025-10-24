@@ -8,76 +8,19 @@ import { userDb } from "../models/mockDB/users";
 import { useNavigate } from "react-router-dom";
 import ConfirmDowngradeModal from "../components/pricing/ConfirmDowngradeModal";
 import PaymentModal from "../components/pricing/PaymentModal";
+import { useTranslation } from "../components/useTranslations";
+export type PlanType = "Base" | "Lite" | "Pro" | "Enterprise";
 
-interface Feature {
-  name: string;
-  available: boolean;
-}
 
 interface Plan {
   name: PlanType;
   priceMonth?: number;
   priceYear?: number;
-  features: Feature[];
+  features: string[];
   studentDiscount?: boolean;
 }
 
-export type PlanType = "Base" | "Lite" | "Pro" | "Enterprise";
-
-const plans: Plan[] = [
-  {
-    name: "Base",
-    priceMonth: 0,
-    priceYear: 0,
-    features: [
-      { name: "Обмежена кількість дошок", available: true },
-      { name: "Обмежені чати", available: true },
-      { name: "Автоматизація тасків", available: false },
-      { name: "Підтримка команд", available: false },
-    ],
-  },
-  {
-    name: "Lite",
-    priceMonth: 5,
-    priceYear: 50,
-    studentDiscount: true,
-    features: [
-      { name: "Необмежені дошки", available: true },
-      { name: "Чати", available: true },
-      { name: "Автоматизація тасків", available: true },
-      { name: "Підтримка команд", available: false },
-    ],
-  },
-  {
-    name: "Pro",
-    priceMonth: 10,
-    priceYear: 100,
-    studentDiscount: true,
-    features: [
-      { name: "Необмежені дошки", available: true },
-      { name: "Чати", available: true },
-      { name: "Автоматизація тасків", available: true },
-      { name: "Підтримка команд", available: true },
-      { name: "Розширена аналітика", available: true },
-    ],
-  },
-  {
-    name: "Enterprise",
-    priceMonth: 45,
-    priceYear: 450,
-    features: [
-      { name: "Необмежені дошки", available: true },
-      { name: "Чати", available: true },
-      { name: "Автоматизація тасків", available: true },
-      { name: "Підтримка команд", available: true },
-      { name: "Розширена аналітика", available: true },
-      { name: "Декілька акаунтів у підписці", available: true },
-      { name: "Пріоритетна підтримка", available: true },
-    ],
-  },
-];
-
-const planOrder: PlanType[] = ["Base", "Lite", "Pro", "Enterprise"];
+const planOrder = ["Base", "Lite", "Pro", "Enterprise"];
 
 export default function PricePage() {
   const [currentUser, setCurrentUser] = useState<ReturnType<
@@ -88,9 +31,11 @@ export default function PricePage() {
   const [showPayment, setShowPayment] = useState(false);
   const navigate = useNavigate();
 
-  // ==========================
-  // Отримуємо користувача
-  // ==========================
+  // 🔹 Локалізація
+  const { t, lang, translations } = useTranslation();
+  const tp = t("pricing");
+
+  // 🔹 Отримуємо користувача
   useEffect(() => {
     const id = localStorage.getItem("currentUserId");
     if (id) {
@@ -99,9 +44,9 @@ export default function PricePage() {
     }
   }, []);
 
-  // ==========================
-  // Обробка кліку на план
-  // ==========================
+  const plans = translations[lang].pricing.plans as Plan[];
+
+  // 🔹 Обробка кліку на план
   const handleSelectPlan = (plan: Plan) => {
     if (!currentUser) {
       navigate("/login");
@@ -112,11 +57,9 @@ export default function PricePage() {
     const newPlanIndex = planOrder.indexOf(plan.name);
 
     if (newPlanIndex < currentPlanIndex) {
-      // downgrade → підтвердження
       setSelectedPlan(plan);
       setShowConfirm(true);
     } else {
-      // upgrade або такий самий → одразу платіжна форма
       setSelectedPlan(plan);
       setShowPayment(true);
     }
@@ -125,7 +68,6 @@ export default function PricePage() {
   const confirmDowngrade = () => {
     if (currentUser && selectedPlan) {
       setShowConfirm(false);
-
       if (selectedPlan.name === "Base") {
         userDb.update(currentUser.id, { plan: selectedPlan.name });
         setCurrentUser({ ...currentUser, plan: selectedPlan.name });
@@ -137,8 +79,14 @@ export default function PricePage() {
 
   const handlePaymentComplete = () => {
     if (currentUser && selectedPlan) {
-      userDb.update(currentUser.id, { plan: selectedPlan.name });
-      setCurrentUser({ ...currentUser, plan: selectedPlan.name });
+userDb.update(currentUser.id, {
+  plan: selectedPlan.name as PlanType,
+});
+setCurrentUser({
+  ...currentUser,
+  plan: selectedPlan.name as PlanType,
+});
+
     }
     setShowPayment(false);
   };
@@ -148,9 +96,7 @@ export default function PricePage() {
       <Header />
 
       <main className="flex-1 px-4 py-24 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-12">
-          Тарифи TeamFlow
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-12">{tp("title")}</h1>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan) => {
@@ -166,49 +112,61 @@ export default function PricePage() {
                     {plan.name}
                   </h2>
 
+                  {/* 🔹 Ціна */}
                   <div className="mb-4 text-gray-900 text-left">
                     <p className="text-lg font-bold">
                       {plan.priceMonth
-                        ? `$${plan.priceMonth}/міс`
+                        ? `$${plan.priceMonth}${tp("perMonth")}`
                         : plan.priceMonth === 0
-                        ? "Безкоштовно"
+                        ? tp("free")
                         : ""}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
-                      {plan.priceYear ? `або $${plan.priceYear}/рік` : ""}
+                      {plan.priceYear
+                        ? tp("perYear").replace(
+                            "{{price}}",
+                            String(plan.priceYear)
+                          )
+                        : ""}
                     </p>
                     <p className="text-blue-600 text-sm mt-1">
-                      {plan.studentDiscount
-                        ? "Студентам доступна знижка"
-                        : "\u00A0"}
+                      {plan.studentDiscount ? tp("studentDiscount") : "\u00A0"}
                     </p>
                   </div>
 
+                  {/* 🔹 Фічі */}
                   <ul className="mb-4 space-y-1 flex-1">
-                    {plan.features.map((f) => (
+                    {plan.features.map((feature, i) => (
                       <li
-                        key={f.name}
+                        key={i}
                         className="flex items-center gap-2 text-gray-700"
                       >
                         <span className="flex-none w-4">
-                          {f.available ? (
-                            <FaCheck className="text-green-600" />
-                          ) : (
+                          {feature.includes("— недоступ") ||
+                          feature.includes("unavailable") ||
+                          feature.includes("niedostęp") ? (
                             <FaTimes className="text-red-600" />
+                          ) : (
+                            <FaCheck className="text-green-600" />
                           )}
                         </span>
-                        <span>{f.name}</span>
+                        <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
 
+                  {/* 🔹 Кнопка */}
                   <div className="mt-auto text-center">
                     <Button
-                      className="w-full bg-blue-600 text-white hover:bg-blue-700 transition"
+                      className={`w-full ${
+                        isCurrent
+                          ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                          : "bg-blue-600 text-white hover:bg-blue-700"
+                      } transition`}
                       onClick={() => handleSelectPlan(plan)}
                       disabled={isCurrent}
                     >
-                      {isCurrent ? "Ваш поточний тариф" : "Обрати"}
+                      {isCurrent ? tp("currentPlan") : tp("select")}
                     </Button>
                   </div>
                 </CardContent>
@@ -220,7 +178,7 @@ export default function PricePage() {
 
       <Footer />
 
-      {/* Модалки */}
+      {/* 🔹 Модалки */}
       {showConfirm && selectedPlan && (
         <ConfirmDowngradeModal
           plan={selectedPlan.name}

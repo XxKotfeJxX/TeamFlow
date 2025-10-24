@@ -159,4 +159,68 @@ export default {
       },
     ],
   },
+
+  pricing: {
+    title: "TeamFlow Pricing",
+    currentPlan: "Your current plan",
+    select: "Select",
+    free: "Free",
+    perMonth: "/month",
+    perYear: "or ${{price}}/year",
+    studentDiscount: "Student discount available",
+    plans: [
+      {
+        name: "Base",
+        priceMonth: 0,
+        priceYear: 0,
+        features: [
+          "Limited number of boards",
+          "Limited chats",
+          "Task automation — unavailable",
+          "Team support — unavailable",
+        ],
+      },
+      {
+        name: "Lite",
+        priceMonth: 5,
+        priceYear: 50,
+        studentDiscount: true,
+        features: [
+          "Unlimited boards",
+          "Chats",
+          "Task automation",
+          "Team support — unavailable",
+        ],
+      },
+      {
+        name: "Pro",
+        priceMonth: 10,
+        priceYear: 100,
+        studentDiscount: true,
+        features: [
+          "Unlimited boards",
+          "Chats",
+          "Task automation",
+          "Team support",
+          "Advanced analytics",
+        ],
+      },
+      {
+        name: "Enterprise",
+        priceMonth: 45,
+        priceYear: 450,
+        features: [
+          "Unlimited boards",
+          "Chats",
+          "Task automation",
+          "Team support",
+          "Advanced analytics",
+          "Multiple accounts per subscription",
+          "Priority support",
+        ],
+      },
+    ],
+    },
+  
+  
 };

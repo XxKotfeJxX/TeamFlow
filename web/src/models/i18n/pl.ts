@@ -159,4 +159,66 @@ export default {
       },
     ],
   },
+
+  pricing: {
+    title: "Cennik TeamFlow",
+    currentPlan: "Twój obecny plan",
+    select: "Wybierz",
+    free: "Darmowy",
+    perMonth: "/miesiąc",
+    perYear: "lub ${{price}}/rok",
+    studentDiscount: "Dostępna zniżka studencka",
+    plans: [
+      {
+        name: "Base",
+        priceMonth: 0,
+        priceYear: 0,
+        features: [
+          "Ograniczona liczba tablic",
+          "Ograniczone czaty",
+          "Automatyzacja zadań — niedostępna",
+          "Wsparcie zespołów — niedostępne",
+        ],
+      },
+      {
+        name: "Lite",
+        priceMonth: 5,
+        priceYear: 50,
+        studentDiscount: true,
+        features: [
+          "Nieograniczone tablice",
+          "Czaty",
+          "Automatyzacja zadań",
+          "Wsparcie zespołów — niedostępne",
+        ],
+      },
+      {
+        name: "Pro",
+        priceMonth: 10,
+        priceYear: 100,
+        studentDiscount: true,
+        features: [
+          "Nieograniczone tablice",
+          "Czaty",
+          "Automatyzacja zadań",
+          "Wsparcie zespołów",
+          "Zaawansowana analityka",
+        ],
+      },
+      {
+        name: "Enterprise",
+        priceMonth: 45,
+        priceYear: 450,
+        features: [
+          "Nieograniczone tablice",
+          "Czaty",
+          "Automatyzacja zadań",
+          "Wsparcie zespołów",
+          "Zaawansowana analityka",
+          "Wiele kont w subskrypcji",
+          "Priorytetowe wsparcie",
+        ],
+      },
+    ],
+  },
 };
