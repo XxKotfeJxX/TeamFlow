@@ -354,5 +354,150 @@ export default {
       "Zbadaliśmy, jak głębokie skupienie pomaga zespołom pracować szybciej i efektywniej.",
   },
 
+  blogCalendar: {
+    heroTitle: "Jak stworzyliśmy kalendarz z podwójnym poziomem dostępu",
+    heroDate: "25 września 2025 · Zespół TeamFlow",
+    heroAlt: "Kalendarz TeamFlow",
+    diagramAlt: "Schemat poziomów dostępu",
+
+    intro:
+      "W TeamFlow chcieliśmy stworzyć kalendarz, który nie jest tylko listą wydarzeń, ale inteligentnym asystentem zespołu. Główny pomysł — umożliwić zarządzanie <b>osobistymi</b> i <b>zespołowymi</b> wydarzeniami w jednym miejscu, zachowując prywatność.",
+
+    sec1Title: "1. Dwa poziomy widoczności — przejrzyście, ale prywatnie",
+    sec1Text:
+      "Podzieliliśmy wydarzenia na <b>osobiste</b> (widoczne tylko dla użytkownika) i <b>zespołowe</b> (wspólne dla wszystkich). Inni widzą, że jesteś zajęty, ale nie znają szczegółów prywatnych spotkań.",
+    sec1ImgAlt: "Wydarzenia prywatne i zespołowe",
+
+    sec2Title: "2. Automatyczne wykrywanie konfliktów",
+    sec2Text:
+      "Jeśli dodasz wydarzenie, które pokrywa się z innym, system natychmiast powiadomi o konflikcie.",
+
+    sec3Title: "3. Kolory, tagi i filtry",
+    sec3Text:
+      "Dodaliśmy wizualne oznaczenia — kolory i tagi, aby łatwo odróżniać „Pracę”, „Prywatne” i „Czas skupienia”.",
+    sec3ImgAlt: "Kolory i tagi wydarzeń",
+
+    sec4Title: "4. Potwierdzenie uczestnictwa",
+    sec4Text:
+      "Podczas tworzenia wydarzenia zespołowego uczestnicy otrzymują zaproszenia z opcją potwierdzenia lub odrzucenia udziału.",
+    sec4ImgAlt: "Potwierdzenie uczestnictwa",
+
+    sec5Title: "5. Integracja z innymi narzędziami",
+    sec5Text:
+      "Planujemy integrację z GitHub, Google Calendar i Notion, aby wszystkie zobowiązania były w jednym miejscu.",
+
+    quote:
+      "„Kalendarz to nie tylko lista wydarzeń. To lustro twojej uwagi. Kiedy jest dobrze zorganizowany — zespół działa jak zegar.”",
+
+    backButton: "Powrót do bloga",
+  },
+
+  blogFocus: {
+    heroTitle: "Psychologia skupienia: jak nie rozpraszać się w zespole",
+    heroDate: "1 sierpnia 2025 · Zespół TeamFlow",
+    heroAlt: "Skupienie w zespole",
+    intro:
+      "W erze ciągłych powiadomień i czatów prawdziwą supermocą jest skupienie. Zespoły, które potrafią się koncentrować, osiągają więcej mniejszym wysiłkiem. W TeamFlow zbadaliśmy, jak pomóc ludziom wejść w stan głębokiego skupienia nawet w środowisku zespołowym.",
+    introImgAlt: "Skupiony zespół",
+
+    sec1Title: "1. Wejście w „strefę skupienia”",
+    sec1Text:
+      "Stworzyliśmy tryb 'Focus Mode' — 90 minut pełnego zanurzenia bez rozpraszania. System automatycznie informuje zespół, że jesteś skupiony.",
+
+    sec2Title: "2. Poranne rytuały",
+    sec2Text:
+      "Krótki poranny check-in pomaga ustalić priorytety. W TeamFlow możesz zaznaczyć główne cele dnia bezpośrednio w kalendarzu.",
+    sec2ImgAlt: "Poranne rytuały skupienia",
+
+    sec3Title: "3. Mikropauzy między zadaniami",
+    sec3Text:
+      "Aby pozostać skupionym, trzeba też umieć się rozluźnić. TeamFlow sugeruje krótkie przerwy między zadaniami: rozciąganie, oddech, zmiana wizualna.",
+    sec3ImgAlt: "Mikropauzy między zadaniami",
+
+    sec4Title: "4. Wizualna cisza",
+    sec4Text:
+      "Uprościliśmy interfejs — minimalizm w kolorach i strukturze pomaga mózgowi odpocząć. W trybie Focus widoczne są tylko zadania, czas i cel.",
+    sec4ImgAlt: "Interfejs w trybie skupienia",
+
+    sec5Title: "5. Kultura spokoju w zespole",
+    sec5Text:
+      "Skupienie to nie tylko narzędzia, ale też kultura. Praktykujemy 'quiet Fridays' — dni bez spotkań i czatów. Wynik: +27% ukończonych zadań i mniej przerwanych sprintów.",
+
+    quote:
+      "„Prawdziwe skupienie to nie izolacja, ale świadomy wybór bycia obecnym. My tylko pomagamy stworzyć przestrzeń do tego.”",
+
+    backButton: "Powrót do bloga",
+  },
+
+  blogGithub: {
+    heroTitle: "TeamFlow + GitHub: pierwsza integracja już działa",
+    heroDate: "3 września 2025 · Zespół TeamFlow",
+    heroAlt: "Integracja z GitHub",
+    intro:
+      "Uruchomiliśmy pierwszą wersję integracji z GitHub — teraz możesz zobaczyć aktywność repozytorium, status pull requestów i commitów bezpośrednio w TeamFlow.",
+    introImgAlt: "Integracja TeamFlow + GitHub",
+
+    sec1Title: "1. Commity obok zadań",
+    sec1Text:
+      "GitHub API jest zsynchronizowane z zadaniami TeamFlow. Przy każdym zadaniu widać powiązane commity. Po zamknięciu zadania system sprawdza, czy zmiany zostały wypchnięte.",
+    sec1ImgAlt: "Commity w zadaniach TeamFlow",
+
+    sec2Title: "2. Pull Requesty w Twojej przestrzeni",
+    sec2Text:
+      "Panel “Pull Requests” pokazuje wszystkie otwarte PR-y. Możesz komentować, sprawdzać status CI i akceptować zmiany bez wychodzenia z TeamFlow.",
+
+    sec3Title: "3. Powiadomienia bez szumu",
+    sec3Text:
+      "Wszystkie zdarzenia GitHub — commity, recenzje, komentarze — pojawiają się w strumieniu aktywności. Widzisz tylko to, co Cię dotyczy.",
+    sec3ImgAlt: "Powiadomienia GitHub w TeamFlow",
+
+    sec4Title: "4. Architektura integracji",
+    sec4Text:
+      "Korzystamy z GitHub REST API i webhooków. Zapytania przechodzą przez bramę API w C++ z autoryzacją OAuth 2.0 i pamięcią podręczną PostgreSQL.",
+
+    sec5Title: "5. Plany na przyszłość",
+    sec5Text:
+      "Wkrótce wsparcie dla GitLab i Bitbucket. Chcemy, aby TeamFlow było uniwersalnym centrum zarządzania projektami.",
+
+    quote:
+      "„Integracja to nie liczba przycisków, lecz czas, który oszczędzasz na przełączaniu się między narzędziami. GitHub + TeamFlow — właśnie o to chodzi.”",
+
+    backButton: "Powrót do bloga",
+  },
+
+  blogTeamwork: {
+    heroTitle: "5 sposobów, aby uniknąć chaosu w pracy zespołowej",
+    heroDate: "10 października 2025 · Zespół TeamFlow",
+    heroAlt: "Praca zespołowa",
+
+    sec1Title: "1. Jedno źródło prawdy dla zadań",
+    sec1Text:
+      "Chaos zaczyna się, gdy każdy prowadzi własną listę zadań. TeamFlow umożliwia wspólną tablicę z terminami, priorytetami i odpowiedzialnymi osobami. To eliminuje zamieszanie i zwiększa przejrzystość.",
+    sec1ImgAlt: "Lista zadań TeamFlow",
+
+    sec2Title: "2. Przejrzysty kalendarz wydarzeń",
+    sec2Text:
+      "Kalendarz łączy wydarzenia osobiste i zespołowe. System automatycznie wykrywa konflikty i pomaga zarządzać priorytetami za pomocą kolorów i tagów.",
+
+    sec3Title: "3. Asynchroniczna komunikacja bez szumu",
+    sec3Text:
+      "Zamiast niekończących się czatów TeamFlow używa wątków tematycznych, które można zwijać, oznaczać jako „rozwiązane” i łatwo przeglądać ponownie.",
+    sec3ImgAlt: "Komunikacja bez szumu",
+
+    sec4Title: "4. Wizualny postęp i punkty zespołu",
+    sec4Text:
+      "Każde ukończone zadanie dodaje punkty zespołowi. To element grywalizacji, który motywuje do działania. Testujemy system sezonowych wyzwań.",
+
+    sec5Title: "5. Rytuały skupienia",
+    sec5Text:
+      "Tryb ciszy — 90 minut bez powiadomień i połączeń. Skupienie zwiększa efektywność pracy o 40%.",
+    sec5ImgAlt: "Skupienie w pracy",
+
+    quote:
+      "„Chaos można uniknąć tylko wtedy, gdy zespół widzi jeden obraz — zadania, wydarzenia, komunikację i wyniki. TeamFlow właśnie w tym pomaga.”",
+
+    backButton: "Powrót do bloga",
+  },
+
   
 };

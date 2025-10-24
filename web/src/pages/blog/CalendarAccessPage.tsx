@@ -2,9 +2,12 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { Button } from "../../components/ui/Button";
+import { useTranslation } from "../../components/useTranslations";
 
 export default function CalendarAccessPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const tb = t("blogCalendar");
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
@@ -14,60 +17,44 @@ export default function CalendarAccessPage() {
       <section className="relative h-[420px] bg-gradient-to-r from-blue-600 to-teal-500 text-white flex flex-col justify-center items-center text-center px-4">
         <img
           src="/images/calendar.png"
-          alt="Календар TeamFlow"
+          alt={tb("heroAlt")}
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
         <div className="relative z-10 max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
-            Як ми створили календар з подвійним рівнем доступу
+            {tb("heroTitle")}
           </h1>
-          <p className="text-lg opacity-90">25 вересня 2025 · TeamFlow Team</p>
+          <p className="text-lg opacity-90">{tb("heroDate")}</p>
         </div>
       </section>
 
       {/* Content */}
       <main className="flex-1 max-w-4xl mx-auto px-6 py-16 space-y-16 leading-relaxed">
+        {/* Intro */}
         <section>
-          <p className="text-lg text-gray-700 mb-6">
-            У TeamFlow ми прагнули створити календар, який буде не просто
-            списком подій, а інтелектуальним помічником команди. Головна ідея —
-            дати користувачам змогу керувати **особистими** і **командними**
-            подіями в одному місці, не жертвуючи приватністю.
-          </p>
+          <p className="text-lg text-gray-700 mb-6">{tb("intro")}</p>
           <img
             src="/images/calendar-access-diagram.png"
-            alt="Схема рівнів доступу"
+            alt={tb("diagramAlt")}
             className="rounded-xl mt-4 shadow-lg"
           />
         </section>
 
+        {/* Section 1 */}
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
-            1. Два рівні видимості — прозоро, але без вторгнень
-          </h2>
-          <p>
-            Ми розділили події на два рівні: <b>особисті</b> (видимі лише
-            користувачу) і <b>командні</b> (спільні для всіх). При цьому
-            календар дозволяє іншим бачити, що ти зайнятий, але не показує
-            деталі приватної події. Це як «невидимий режим», але з повагою до
-            колег.
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{tb("sec1Title")}</h2>
+          <p dangerouslySetInnerHTML={{ __html: tb("sec1Text") }} />
           <img
             src="/images/private-public-calendar.png"
-            alt="Приватні та командні події"
+            alt={tb("sec1ImgAlt")}
             className="rounded-xl mt-6 shadow-md"
           />
         </section>
 
+        {/* Section 2 */}
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
-            2. Автоматичне виявлення конфліктів
-          </h2>
-          <p>
-            Якщо ти додаєш подію, що перетинається з іншою — система одразу
-            сповістить. Це особливо корисно для великих команд: ніхто не
-            призначить зустріч, коли ти на важливому дзвінку.
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{tb("sec2Title")}</h2>
+          <p>{tb("sec2Text")}</p>
           <div className="aspect-video mt-6 rounded-xl overflow-hidden shadow-md">
             <iframe
               className="w-full h-full"
@@ -78,64 +65,46 @@ export default function CalendarAccessPage() {
           </div>
         </section>
 
+        {/* Section 3 */}
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
-            3. Кольори, теги та фільтри
-          </h2>
-          <p>
-            Для зручності ми додали візуальні маркери — кольори та теги. Тепер
-            ти можеш бачити, де “Work”, де “Personal”, а де “Focus time”.
-            Фільтри дозволяють швидко перемикатися між поглядами, наприклад
-            «Лише командні зустрічі» або «Мої події цього тижня».
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{tb("sec3Title")}</h2>
+          <p>{tb("sec3Text")}</p>
           <img
             src="/images/calendar-tags.png"
-            alt="Кольори та теги подій"
+            alt={tb("sec3ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
         </section>
 
+        {/* Section 4 */}
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
-            4. Підтвердження участі
-          </h2>
-          <p>
-            Коли хтось створює командну подію, усі учасники отримують запрошення
-            у календар. Можна підтвердити участь або відхилити її. Це допомагає
-            синхронізувати графіки без безкінечних чатів у стилі “Тобі зручно в
-            п’ятницю?”
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{tb("sec4Title")}</h2>
+          <p>{tb("sec4Text")}</p>
           <img
             src="/images/calendar-confirmation.png"
-            alt="Підтвердження участі"
+            alt={tb("sec4ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
         </section>
 
+        {/* Section 5 */}
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
-            5. Інтеграція з іншими інструментами
-          </h2>
-          <p>
-            Ми плануємо інтеграцію календаря з GitHub, Google Calendar та
-            Notion. Ідея — щоб усі твої зобов’язання збиралися в одному вікні
-            TeamFlow, без необхідності перемикатись між платформами.
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{tb("sec5Title")}</h2>
+          <p>{tb("sec5Text")}</p>
         </section>
 
+        {/* Quote */}
         <section className="text-lg italic text-gray-600 border-l-4 border-teal-500 pl-4">
-          <p>
-            “Календар — це не просто список подій. Це дзеркало твоєї уваги. І
-            якщо правильно його організувати — команда працює як годинник.”
-          </p>
+          <p>{tb("quote")}</p>
         </section>
 
+        {/* Back button */}
         <div className="flex justify-center mt-12">
           <Button
             onClick={() => navigate("/blog")}
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
-            ← Повернутись до блогу
+            ← {tb("backButton")}
           </Button>
         </div>
       </main>
