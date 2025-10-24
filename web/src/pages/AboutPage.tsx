@@ -1,4 +1,3 @@
-// src/pages/AboutPage.tsx
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -32,7 +31,6 @@ export default function AboutPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -45,7 +43,6 @@ export default function AboutPage() {
         </motion.div>
 
         <main className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-24 flex flex-col items-center">
-          {/* Hero Section */}
           <motion.section
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -58,7 +55,6 @@ export default function AboutPage() {
             <p className="text-lg text-gray-600">{ta("subtitle")}</p>
           </motion.section>
 
-          {/* Text Section */}
           <motion.section
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +67,6 @@ export default function AboutPage() {
             <p dangerouslySetInnerHTML={{ __html: ta("p3") }} />
           </motion.section>
 
-          {/* Highlights */}
           <section className="grid md:grid-cols-3 gap-8 mt-20 w-full">
             {highlights.map((item, i) => (
               <motion.div
@@ -89,7 +84,6 @@ export default function AboutPage() {
             ))}
           </section>
 
-          {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

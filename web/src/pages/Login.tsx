@@ -1,4 +1,3 @@
-// src/pages/LoginPage.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -67,7 +66,6 @@ export default function LoginPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-900">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -79,7 +77,6 @@ export default function LoginPage() {
           <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
         </motion.div>
 
-        {/* 🔹 Основний контент */}
         <main className="relative z-10 flex-1 flex items-center justify-center px-4 py-24 md:py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -94,7 +91,6 @@ export default function LoginPage() {
                 </h1>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  {/* Логін або Email */}
                   <div>
                     <Label htmlFor="login">Логін або Email</Label>
                     <Input
@@ -111,7 +107,6 @@ export default function LoginPage() {
                     )}
                   </div>
 
-                  {/* Пароль */}
                   <div>
                     <Label htmlFor="password">Пароль</Label>
                     <Input
@@ -159,7 +154,6 @@ export default function LoginPage() {
             </Card>
           </motion.div>
 
-          {/* 🔹 Модальне вікно для відновлення паролю */}
           {showReset && (
             <motion.div
               initial={{ opacity: 0 }}

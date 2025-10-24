@@ -1,4 +1,3 @@
-// src/pages/DownloadPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Download, Monitor, Smartphone, Laptop } from "lucide-react";
@@ -36,7 +35,6 @@ export default function DownloadPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -49,7 +47,6 @@ export default function DownloadPage() {
         </motion.div>
 
         <main className="relative z-10 flex-1 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-24">
-          {/* HERO */}
           <motion.section
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -64,7 +61,6 @@ export default function DownloadPage() {
             </p>
           </motion.section>
 
-          {/* PLATFORMS */}
           <section className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-24 items-stretch">
             {platformCards.map((item, i) => (
               <motion.div
@@ -77,7 +73,6 @@ export default function DownloadPage() {
                 <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
                 <p className="text-gray-500 mb-6 flex-1">{item.desc}</p>
 
-                {/* 🔹 Кнопки на одній висоті */}
                 <div className="mt-auto">
                   {!item.isMobile ? (
                     <a
@@ -111,7 +106,6 @@ export default function DownloadPage() {
             ))}
           </section>
 
-          {/* QR SECTION */}
           <motion.section
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -140,7 +134,6 @@ export default function DownloadPage() {
             <p className="text-sm text-gray-400 mt-4">{td("qrNote")}</p>
           </motion.section>
 
-          {/* TECH INFO */}
           <motion.section
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

@@ -3,12 +3,12 @@ import { seedUsers } from "./users.seed";
 export type PlanType = "Base" | "Lite" | "Pro" | "Enterprise";
 
 export interface User {
-  id: string; // унікальний ID
-  username: string; // 🔹 логін
-  fullname?: string; // ім’я та прізвище (опційно)
-  email: string; // 🔹 email
-  password: string; // 🔹 пароль (поки без хешування)
-  avatarUrl?: string; // аватар
+  id: string;
+  username: string;
+  fullname?: string;
+  email: string;
+  password: string; 
+  avatarUrl?: string;
   tags: string[];
   bio?: string;
   skills: string[];
@@ -25,12 +25,7 @@ export interface User {
   plan: PlanType;
 }
 
-// 🔹 Ключ для LocalStorage
 const STORAGE_KEY = "mock_users_db_v1";
-
-// =========================================================
-// 💾 Функції збереження та завантаження користувачів
-// =========================================================
 
 function saveToStorage(data: User[]): void {
   try {
@@ -78,10 +73,6 @@ function loadFromStorage(): User[] {
   }
 }
 
-// =========================================================
-// 🗃️ Ініціалізація бази користувачів
-// =========================================================
-
 let users: User[] = loadFromStorage();
 
 if (users.length === 0) {
@@ -89,14 +80,9 @@ if (users.length === 0) {
   saveToStorage(users);
 }
 
-// =========================================================
-// ⚙️ Сервіс керування користувачами (userDb)
-// =========================================================
-
 const genId = () => crypto.randomUUID();
 
 export const userDb = {
-  // Створення нового користувача
   create: (data: Omit<User, "id" | "createdAt" | "lastActive">): User => {
     const newUser: User = {
       id: genId(),
@@ -110,17 +96,13 @@ export const userDb = {
     return newUser;
   },
 
-  // Отримання користувача за ID
   getById: (id: string): User | undefined => users.find((u) => u.id === id),
 
-  // Отримання користувача за email
   getByEmail: (email: string): User | undefined =>
     users.find((u) => u.email === email),
 
-  // Отримання всіх користувачів
   getAll: (): User[] => [...users],
 
-  // Оновлення користувача
   update: (id: string, updates: Partial<User>): User | undefined => {
     const user = users.find((u) => u.id === id);
     if (!user) return undefined;
@@ -129,7 +111,6 @@ export const userDb = {
     return user;
   },
 
-  // Видалення користувача
   delete: (id: string): boolean => {
     const index = users.findIndex((u) => u.id === id);
     if (index === -1) return false;
@@ -139,5 +120,4 @@ export const userDb = {
   },
 };
 
-// ✅ Додаємо для сумісності зі старими імпортами
 export { users };

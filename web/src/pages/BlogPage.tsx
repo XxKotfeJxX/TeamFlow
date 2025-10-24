@@ -1,4 +1,3 @@
-// src/pages/BlogPage.tsx
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -17,7 +16,6 @@ export default function BlogPage() {
   const { t } = useTranslation();
   const tb = t("blog");
 
-  // 🔹 Визначення мобільного режиму
   useEffect(() => {
     const checkScreen = () => setIsMobile(window.innerWidth < 768);
     checkScreen();
@@ -130,7 +128,6 @@ export default function BlogPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* Градієнтні бліки позаду */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -143,7 +140,6 @@ export default function BlogPage() {
         </motion.div>
 
         <main className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-24">
-          {/* Hero */}
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -153,7 +149,6 @@ export default function BlogPage() {
             {tb("title")}
           </motion.h1>
 
-          {/* Cards / Slider */}
           {isMobile ? (
             <div className="flex flex-col items-center gap-8">
               {blogPosts.map((post) => renderCard(post))}

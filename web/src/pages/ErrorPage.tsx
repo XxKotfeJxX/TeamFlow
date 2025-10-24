@@ -8,18 +8,7 @@ import {
   RefreshCw,
   Bug,
 } from "lucide-react";
-import { Button } from "../components/ui/Button"; // ⬅️ shadcn/ui button (adjust import path to your project)
-
-/**
- * Гарна, адаптивна, креативна сторінка помилки для TeamFlow
- * — Підтримує різні коди помилок (401, 403, 404, 429, 500, 502, 503, 504, fallback)
- * — Темна/світла тема, анімації, доступність
- * — Не вибивається зі стилю: чиста типографіка, округлі кути, м'які тіні
- *
- * Приклад використання:
- * <ErrorPage code={404} />
- * <Route path="*" element={<ErrorPage code={404} />} />
- */
+import { Button } from "../components/ui/Button";
 
 const COPY = {
   401: {
@@ -87,7 +76,6 @@ export default function ErrorPage({
 
   return (
     <div className="relative min-h-[100svh] w-full overflow-hidden bg-gradient-to-b from-background to-muted/30">
-      {/* Градиєнтні бліки позаду */}
       <motion.div
         aria-hidden
         initial={{ opacity: 0 }}
@@ -99,7 +87,6 @@ export default function ErrorPage({
         <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
       </motion.div>
 
-      {/* Контент-карта */}
       <main className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-16 text-center sm:py-20">
         <motion.div
           initial={{ y: 12, opacity: 0 }}
@@ -107,7 +94,6 @@ export default function ErrorPage({
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="w-full"
         >
-          {/* Код помилки */}
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-2xl border bg-card px-4 py-2 text-card-foreground shadow-sm">
             <AlertTriangle className="h-4 w-4 text-orange-500" />
             <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground text-gray-500">
@@ -116,7 +102,6 @@ export default function ErrorPage({
             <span className="font-mono text-sm text-gray-500">{c}</span>
           </div>
 
-          {/* ASCII-обличчя */}
           <motion.div
             role="img"
             aria-label="емоційне обличчя помилки"
@@ -128,7 +113,6 @@ export default function ErrorPage({
             {codeToFace(c)}
           </motion.div>
 
-          {/* Заголовок */}
           <h1 className="mb-3 text-balance text-3xl font-bold tracking-tight sm:text-4xl text-gray-700">
             {variant.title}
           </h1>
@@ -136,7 +120,6 @@ export default function ErrorPage({
             {variant.hint}
           </p>
 
-          {/* Креативна ілюстрація (SVG) */}
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
@@ -162,7 +145,6 @@ export default function ErrorPage({
                   />
                 </linearGradient>
               </defs>
-              {/* Екран з помилкою */}
               <rect
                 x="40"
                 y="20"
@@ -213,14 +195,12 @@ export default function ErrorPage({
                 <circle cx="306" cy="38" r="4" />
                 <circle cx="292" cy="38" r="4" />
               </g>
-              {/* Маленькі зірки */}
               <g opacity="0.3">
                 <circle cx="80" cy="30" r="2" />
                 <circle cx="110" cy="18" r="1.5" />
                 <circle cx="360" cy="60" r="1.5" />
                 <circle cx="300" cy="190" r="1.2" />
               </g>
-              {/* Логотип-жучок */}
               <g transform="translate(260 130)">
                 <circle r="18" />
                 <line
@@ -251,7 +231,6 @@ export default function ErrorPage({
             </svg>
           </motion.div>
 
-          {/* Дії */}
           <div className="mx-auto flex w-full max-w-md flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             {showBack && (
               <Button
@@ -286,7 +265,6 @@ export default function ErrorPage({
             </Button>
           </div>
 
-          {/* Посилання підтримки */}
           <p className="mt-6 text-sm text-muted-foreground text-gray-500">
             Потрібна допомога? Напишіть нам у{" "}
             <Link

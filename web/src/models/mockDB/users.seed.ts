@@ -1,4 +1,3 @@
-// db/users.seed.ts
 import type { User } from "./users";
 
 const now = new Date();
