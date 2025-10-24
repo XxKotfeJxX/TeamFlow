@@ -243,4 +243,12 @@ export default {
     redirectButton: "Go to PayPal",
     close: "Close",
   },
+
+  confirm: {
+    title: "Confirmation",
+    message:
+      "Your current plan includes more features. Are you sure you want to switch to <b>{plan}</b>?",
+    yes: "Yes",
+    no: "No",
+  },
 };
