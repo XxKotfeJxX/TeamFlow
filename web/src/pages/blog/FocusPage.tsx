@@ -35,7 +35,7 @@ export default function FocusPage() {
         <section>
           <p className="text-lg text-gray-700 mb-6">{tb("intro")}</p>
           <img
-            src="/images/focus-team.jpg"
+            src="images/focus-team.jpg"
             alt={tb("introImgAlt")}
             className="rounded-xl mt-4 shadow-lg"
           />
@@ -47,7 +47,7 @@ export default function FocusPage() {
           <p>{tb("sec1Text")}</p>
           <VideoEmbed
             videoId="xm3YgoEiEDc"
-            previewImage="/images/team-working.png"
+            previewImage="images/team-working.png"
             title="TeamFlow Focus Mode Demo"
           />
         </section>
@@ -57,7 +57,7 @@ export default function FocusPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec2Title")}</h2>
           <p>{tb("sec2Text")}</p>
           <img
-            src="/images/morning-checkin.png"
+            src="images/morning-checkin.png"
             alt={tb("sec2ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
@@ -68,7 +68,7 @@ export default function FocusPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec3Title")}</h2>
           <p>{tb("sec3Text")}</p>
           <img
-            src="/images/microbreaks.png"
+            src="images/microbreaks.png"
             alt={tb("sec3ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
@@ -79,7 +79,7 @@ export default function FocusPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec4Title")}</h2>
           <p>{tb("sec4Text")}</p>
           <img
-            src="/images/focus-ui.png"
+            src="images/focus-ui.png"
             alt={tb("sec4ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />

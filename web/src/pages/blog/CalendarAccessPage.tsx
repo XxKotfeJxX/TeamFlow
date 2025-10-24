@@ -16,7 +16,7 @@ export default function CalendarAccessPage() {
       {/* Hero */}
       <section className="relative h-[420px] bg-gradient-to-r from-blue-600 to-teal-500 text-white flex flex-col justify-center items-center text-center px-4">
         <img
-          src="/images/calendar.png"
+          src="images/calendar.png"
           alt={tb("heroAlt")}
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
@@ -34,7 +34,7 @@ export default function CalendarAccessPage() {
         <section>
           <p className="text-lg text-gray-700 mb-6">{tb("intro")}</p>
           <img
-            src="/images/calendar-access-diagram.png"
+            src="images/calendar-access-diagram.png"
             alt={tb("diagramAlt")}
             className="rounded-xl mt-4 shadow-lg"
           />
@@ -45,7 +45,7 @@ export default function CalendarAccessPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec1Title")}</h2>
           <p dangerouslySetInnerHTML={{ __html: tb("sec1Text") }} />
           <img
-            src="/images/private-public-calendar.png"
+            src="images/private-public-calendar.png"
             alt={tb("sec1ImgAlt")}
             className="rounded-xl mt-6 shadow-md"
           />
@@ -70,7 +70,7 @@ export default function CalendarAccessPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec3Title")}</h2>
           <p>{tb("sec3Text")}</p>
           <img
-            src="/images/calendar-tags.png"
+            src="images/calendar-tags.png"
             alt={tb("sec3ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
@@ -81,7 +81,7 @@ export default function CalendarAccessPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec4Title")}</h2>
           <p>{tb("sec4Text")}</p>
           <img
-            src="/images/calendar-confirmation.png"
+            src="images/calendar-confirmation.png"
             alt={tb("sec4ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />

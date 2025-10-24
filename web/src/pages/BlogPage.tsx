@@ -29,7 +29,7 @@ export default function BlogPage() {
       title: tb("post1Title"),
       date: tb("post1Date"),
       excerpt: tb("post1Excerpt"),
-      image: "/images/Dashboard.png",
+      image: "images/Dashboard.png",
       path: "/blog/teamwork",
     },
     {
@@ -37,7 +37,7 @@ export default function BlogPage() {
       title: tb("post2Title"),
       date: tb("post2Date"),
       excerpt: tb("post2Excerpt"),
-      image: "/images/calendar.png",
+      image: "images/calendar.png",
       path: "/blog/calendar-access",
     },
     {
@@ -45,7 +45,7 @@ export default function BlogPage() {
       title: tb("post3Title"),
       date: tb("post3Date"),
       excerpt: tb("post3Excerpt"),
-      image: "/images/github.jpg",
+      image: "images/github.jpg",
       path: "/blog/github-integration",
     },
     {
@@ -53,7 +53,7 @@ export default function BlogPage() {
       title: tb("post4Title"),
       date: tb("post4Date"),
       excerpt: tb("post4Excerpt"),
-      image: "/images/focus.jpg",
+      image: "images/focus.jpg",
       path: "/blog/focus",
     },
   ];

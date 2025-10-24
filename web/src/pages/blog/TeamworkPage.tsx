@@ -16,7 +16,7 @@ export default function TeamworkPage() {
       {/* Hero */}
       <section className="relative h-[420px] bg-gradient-to-r from-indigo-600 to-blue-500 text-white flex flex-col justify-center items-center text-center px-4">
         <img
-          src="/images/Dashboard.png"
+          src="images/Dashboard.png"
           alt={tb("heroAlt")}
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
@@ -35,7 +35,7 @@ export default function TeamworkPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec1Title")}</h2>
           <p>{tb("sec1Text")}</p>
           <img
-            src="/images/tasks-example.png"
+            src="images/tasks-example.png"
             alt={tb("sec1ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
@@ -60,7 +60,7 @@ export default function TeamworkPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec3Title")}</h2>
           <p>{tb("sec3Text")}</p>
           <img
-            src="/images/chat-clean.png"
+            src="images/chat-clean.png"
             alt={tb("sec3ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />
@@ -77,7 +77,7 @@ export default function TeamworkPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec5Title")}</h2>
           <p>{tb("sec5Text")}</p>
           <img
-            src="/images/focus.jpg"
+            src="images/focus.jpg"
             alt={tb("sec5ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />

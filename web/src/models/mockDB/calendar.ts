@@ -39,7 +39,7 @@ export interface Task {
   dueDate: Date;
   priority: { team: number; personal: number };
   recurring?: { isRecurring: boolean; periodDays: number };
-  assignedUsers?: string[];
+  assignedUsers: string[];
   type: "personal" | "team" | "event";
   status: "notStarted" | "inProgress" | "completed";
   tags: string[];

@@ -127,7 +127,7 @@ const Header = () => {
           onClick={() => navigate("/")}
         >
           <img
-            src="/images/TeamFlow_logo.png"
+            src="images/TeamFlow_logo.png"
             alt="TeamFlow Logo"
             style={{ height: "70px", width: "auto" }}
             className="hover:opacity-80 transition"

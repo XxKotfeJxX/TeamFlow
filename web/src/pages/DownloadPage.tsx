@@ -98,7 +98,7 @@ export default function DownloadPage() {
             className="inline-block"
           >
             <img
-              src="/images/qr-placeholder.png"
+              src="images/qr-placeholder.png"
               alt={td("qrAlt")}
               className="w-48 h-48 rounded-xl border border-gray-200 shadow-lg hover:scale-105 transition"
             />

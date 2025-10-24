@@ -16,7 +16,7 @@ export default function GithubIntegrationPage() {
       {/* Hero */}
       <section className="relative h-[420px] bg-gradient-to-r from-gray-800 to-gray-700 text-white flex flex-col justify-center items-center text-center px-4">
         <img
-          src="/images/github.jpg"
+          src="images/github.jpg"
           alt={tb("heroAlt")}
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
@@ -34,7 +34,7 @@ export default function GithubIntegrationPage() {
         <section>
           <p className="text-lg text-gray-700 mb-6">{tb("intro")}</p>
           <img
-            src="/images/github-preview.jpg"
+            src="images/github-preview.jpg"
             alt={tb("introImgAlt")}
             className="rounded-xl mt-4 shadow-lg"
           />
@@ -45,7 +45,7 @@ export default function GithubIntegrationPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec1Title")}</h2>
           <p>{tb("sec1Text")}</p>
           <img
-            src="/images/github-commits.jpg"
+            src="images/github-commits.jpg"
             alt={tb("sec1ImgAlt")}
             className="rounded-xl mt-6 shadow-md"
           />
@@ -70,7 +70,7 @@ export default function GithubIntegrationPage() {
           <h2 className="text-2xl font-semibold mb-4">{tb("sec3Title")}</h2>
           <p>{tb("sec3Text")}</p>
           <img
-            src="/images/github-notifications.jpg"
+            src="images/github-notifications.jpg"
             alt={tb("sec3ImgAlt")}
             className="rounded-xl mt-6 shadow-lg"
           />

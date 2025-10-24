@@ -20,9 +20,9 @@ export default function Home() {
 
   // 🔹 картинки для фіч
   const featureImages = {
-    0: "/images/kanban-board.png",
-    1: "/images/calendar.png",
-    2: "/images/chat.png",
+    0: "images/kanban-board.png",
+    1: "images/calendar.png",
+    2: "images/chat.png",
   };
 
   // 🔹 Перевірка на авторизацію
@@ -95,7 +95,7 @@ export default function Home() {
             className="flex-1"
           >
             <img
-              src="/images/Dashboard.png"
+              src="images/Dashboard.png"
               alt="TeamFlow preview"
               className="w-full rounded-2xl shadow-xl"
             />
