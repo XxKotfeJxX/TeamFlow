@@ -1,4 +1,3 @@
-// src/pages/UserTeamsPage.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
@@ -86,7 +85,6 @@ export default function UserTeamsPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -99,7 +97,6 @@ export default function UserTeamsPage() {
         </motion.div>
 
         <main className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-24">
-          {/* Заголовок */}
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,7 +106,6 @@ export default function UserTeamsPage() {
             {tp("pageTitle")} {user.fullname || user.username}
           </motion.h1>
 
-          {/* Меню вкладок */}
           <div className="flex justify-center gap-4 mb-10">
             {[
               { id: "all", label: tp("allTeams") },
@@ -130,7 +126,6 @@ export default function UserTeamsPage() {
             ))}
           </div>
 
-          {/* Пошук */}
           {view !== "create" && (
             <div className="mb-10 text-center">
               <Input
@@ -143,7 +138,6 @@ export default function UserTeamsPage() {
             </div>
           )}
 
-          {/* Створення команди */}
           {view === "create" ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -175,7 +169,6 @@ export default function UserTeamsPage() {
                   className="w-full rounded-xl border border-gray-300 p-3 min-h-[100px]"
                 />
 
-                {/* Аватар */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
                     {tp("avatar")}
@@ -219,7 +212,6 @@ export default function UserTeamsPage() {
             </motion.div>
           ) : (
             <>
-              {/* Список команд */}
               {filtered.length === 0 ? (
                 <p className="text-center text-gray-500 mt-10">
                   {tp("noTeams")}

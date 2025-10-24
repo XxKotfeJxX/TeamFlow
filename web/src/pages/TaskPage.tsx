@@ -1,4 +1,3 @@
-// src/pages/TasksPage.tsx
 import React, { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -17,21 +16,18 @@ const TasksPage: React.FC = () => {
   const [tasksState, setTasksState] = useState<Task[]>([]);
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
 
-  // === Визначаємо власника ===
   const owner = useMemo(() => {
     if (ownerType === "team") return teamDb.getById(ownerId!);
     if (ownerType === "user") return users.find((u) => u.id === ownerId!);
     return undefined;
   }, [ownerType, ownerId]);
 
-  // === Знаходимо календар ===
   const calendar = useMemo(() => {
     return calendars.find(
       (c) => c.ownerType === ownerType && c.ownerId === ownerId
     );
   }, [ownerType, ownerId]);
 
-  // === Отримуємо завдання календаря ===
   const tasks = useMemo(() => {
     if (!calendar) return [];
     return taskDb.getByCalendarId(calendar.id);
@@ -46,7 +42,6 @@ const TasksPage: React.FC = () => {
     });
   }, [tasks, filter]);
 
-  // === Якщо не знайшли власника або календар ===
   if (!owner || !calendar) {
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-gray-50">
@@ -79,12 +74,10 @@ const TasksPage: React.FC = () => {
   };
   const handleCancelDelete = () => setDeleteTarget(null);
 
-  // === Основний контент ===
   return (
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-900">
-        {/* 🔹 Градієнтні плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -97,7 +90,6 @@ const TasksPage: React.FC = () => {
         </motion.div>
 
         <main className="relative z-10 flex-1 container mx-auto px-6 md:px-12 lg:px-24 py-20">
-          {/* Header */}
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -107,7 +99,6 @@ const TasksPage: React.FC = () => {
             Завдання для {ownerLabel}
           </motion.h1>
 
-          {/* FILTERS */}
           <div className="flex justify-center gap-3 mb-10">
             {(["all", "active", "done"] as const).map((f) => (
               <button
@@ -124,7 +115,6 @@ const TasksPage: React.FC = () => {
             ))}
           </div>
 
-          {/* TASK LIST */}
           <div className="grid gap-4 max-w-3xl mx-auto">
             {filtered.map((task: Task) => (
               <motion.div
@@ -191,7 +181,6 @@ const TasksPage: React.FC = () => {
 
       <Footer />
 
-      {/* ===== MODAL ===== */}
       {deleteTarget && (
         <motion.div
           initial={{ opacity: 0 }}

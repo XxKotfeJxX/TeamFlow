@@ -1,4 +1,3 @@
-// src/pages/TermsOfService.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
@@ -17,7 +16,6 @@ export default function TermsOfService() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800 leading-relaxed">
-        {/* 🔹 Градієнтні плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -30,7 +28,6 @@ export default function TermsOfService() {
         </motion.div>
 
         <main className="relative z-10 flex-1 max-w-5xl mx-auto px-6 md:px-12 lg:px-24 py-24">
-          {/* TITLE */}
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -49,7 +46,6 @@ export default function TermsOfService() {
             {tt("updated")}
           </motion.p>
 
-          {/* CONTENT SECTIONS */}
           <div className="space-y-12">
             {sections.map((s, i) => {
               const title = tt(s.titleKey as keyof typeof tt);
@@ -92,7 +88,6 @@ export default function TermsOfService() {
             })}
           </div>
 
-          {/* FOOTER */}
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

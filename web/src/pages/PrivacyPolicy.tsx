@@ -1,4 +1,3 @@
-// src/pages/PrivacyPolicy.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
@@ -17,7 +16,6 @@ export default function PrivacyPolicy() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800 leading-relaxed">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -29,7 +27,6 @@ export default function PrivacyPolicy() {
           <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
         </motion.div>
 
-        {/* 🔹 Основний контент */}
         <main className="relative z-10 flex-1 max-w-4xl mx-auto px-6 md:px-12 lg:px-24 pb-20 pt-32">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
@@ -49,7 +46,6 @@ export default function PrivacyPolicy() {
             {tp("updated")}
           </motion.p>
 
-          {/* 🔹 Контейнер з ефектом скла */}
           <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-100 p-10 md:p-12 space-y-10">
             {sections.map((s, i) => {
               const title = tp(s.titleKey as keyof typeof tp);

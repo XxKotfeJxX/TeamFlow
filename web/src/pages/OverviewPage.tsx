@@ -1,4 +1,3 @@
-// src/pages/OverviewPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../components/ui/Button";
@@ -33,7 +32,6 @@ export default function OverviewPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні світлові плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -46,7 +44,6 @@ export default function OverviewPage() {
         </motion.div>
 
         <main className="relative z-10 flex-1">
-          {/* HERO */}
           <motion.section
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,7 +76,6 @@ export default function OverviewPage() {
             </div>
           </motion.section>
 
-          {/* FEATURES */}
           <section className="py-24">
             <motion.h2
               initial={{ opacity: 0, y: -10 }}
@@ -119,7 +115,6 @@ export default function OverviewPage() {
             </div>
           </section>
 
-          {/* CTA */}
           <motion.section
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
