@@ -331,5 +331,30 @@ export default {
     a7: "Go to the <b>“Pricing”</b> tab and select the desired plan. Payment is processed securely through our system.",
   },
 
+  blog: {
+    title: "Blog",
+    readMore: "Read more",
+
+    post1Title: "5 Ways to Avoid Chaos in Teamwork",
+    post1Date: "October 10, 2025",
+    post1Excerpt:
+      "How to structure tasks, communication, and planning so your team works as one unit.",
+
+    post2Title: "How We Built a Dual-Access Calendar",
+    post2Date: "September 25, 2025",
+    post2Excerpt:
+      "We share our experience developing a system where personal events don’t conflict with team ones.",
+
+    post3Title: "TeamFlow + GitHub: First Integration Is Live",
+    post3Date: "September 3, 2025",
+    post3Excerpt:
+      "Now you can view commits and pull request statuses directly inside your workspace.",
+
+    post4Title: "The Psychology of Focus: Staying on Track in a Team",
+    post4Date: "August 1, 2025",
+    post4Excerpt:
+      "We explored how deep focus helps teams work faster and with higher quality.",
+  },
+
   
 };

@@ -329,5 +329,30 @@ export default {
     a7: "Przejdź do zakładki <b>„Cennik”</b> i wybierz odpowiedni plan. Płatność odbywa się bezpiecznie przez nasz system.",
   },
 
+  blog: {
+    title: "Blog",
+    readMore: "Czytaj dalej",
+
+    post1Title: "5 sposobów, aby uniknąć chaosu w pracy zespołowej",
+    post1Date: "10 października 2025",
+    post1Excerpt:
+      "Jak uporządkować zadania, komunikację i planowanie, aby zespół działał jak jeden organizm.",
+
+    post2Title: "Jak stworzyliśmy kalendarz z podwójnym poziomem dostępu",
+    post2Date: "25 września 2025",
+    post2Excerpt:
+      "Dzielimy się doświadczeniem tworzenia systemu, w którym wydarzenia osobiste nie kolidują z zespołowymi.",
+
+    post3Title: "TeamFlow + GitHub: pierwsza integracja już działa",
+    post3Date: "3 września 2025",
+    post3Excerpt:
+      "Teraz możesz zobaczyć status commitów i pull requestów bezpośrednio w przestrzeni zespołu.",
+
+    post4Title: "Psychologia skupienia: jak nie rozpraszać się w zespole",
+    post4Date: "1 sierpnia 2025",
+    post4Excerpt:
+      "Zbadaliśmy, jak głębokie skupienie pomaga zespołom pracować szybciej i efektywniej.",
+  },
+
   
 };

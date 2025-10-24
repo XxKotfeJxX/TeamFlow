@@ -7,57 +7,56 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/slick-custom.css";
 import { useEffect, useState } from "react";
-
-const blogPosts = [
-  {
-    id: 1,
-    title: "5 способів уникнути хаосу в командній роботі",
-    date: "10 жовтня 2025",
-    excerpt:
-      "Як структурувати завдання, комунікацію і планування, щоб команда працювала як єдиний механізм.",
-    image: "/images/Dashboard.png",
-    path: "/blog/teamwork",
-  },
-  {
-    id: 2,
-    title: "Як ми створили календар з подвійним рівнем доступу",
-    date: "25 вересня 2025",
-    excerpt:
-      "Ділимося досвідом розробки системи, де особисті події не конфліктують із командними.",
-    image: "/images/calendar.png",
-    path: "/blog/calendar-access",
-  },
-  {
-    id: 3,
-    title: "TeamFlow + GitHub: перша інтеграція вже працює",
-    date: "3 вересня 2025",
-    excerpt:
-      "Тепер ти можеш бачити статус комітів і pull requests прямо у своєму командному просторі.",
-    image: "/images/github.jpg",
-    path: "/blog/github-integration",
-  },
-  {
-    id: 4,
-    title: "Психологія фокусування: як не відволікатись у команді",
-    date: "1 серпня 2025",
-    excerpt:
-      "Ми дослідили, як глибокий фокус допомагає командам працювати швидше та якісніше.",
-    image: "/images/focus.jpg",
-    path: "/blog/focus",
-  },
-];
+import { useTranslation } from "../components/useTranslations";
 
 export default function BlogPage() {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
+  const { t } = useTranslation();
+  const tb = t("blog");
 
-  // 🔹 Автоматично визначаємо мобільний режим
+  // 🔹 Автоматичне визначення мобільного режиму
   useEffect(() => {
     const checkScreen = () => setIsMobile(window.innerWidth < 768);
     checkScreen();
     window.addEventListener("resize", checkScreen);
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
+
+  const blogPosts = [
+    {
+      id: 1,
+      title: tb("post1Title"),
+      date: tb("post1Date"),
+      excerpt: tb("post1Excerpt"),
+      image: "/images/Dashboard.png",
+      path: "/blog/teamwork",
+    },
+    {
+      id: 2,
+      title: tb("post2Title"),
+      date: tb("post2Date"),
+      excerpt: tb("post2Excerpt"),
+      image: "/images/calendar.png",
+      path: "/blog/calendar-access",
+    },
+    {
+      id: 3,
+      title: tb("post3Title"),
+      date: tb("post3Date"),
+      excerpt: tb("post3Excerpt"),
+      image: "/images/github.jpg",
+      path: "/blog/github-integration",
+    },
+    {
+      id: 4,
+      title: tb("post4Title"),
+      date: tb("post4Date"),
+      excerpt: tb("post4Excerpt"),
+      image: "/images/focus.jpg",
+      path: "/blog/focus",
+    },
+  ];
 
   const sliderSettings = {
     dots: true,
@@ -120,7 +119,7 @@ export default function BlogPage() {
             className="w-full bg-blue-600 hover:bg-blue-700 text-white"
             onClick={() => navigate(post.path)}
           >
-            Читати далі
+            {tb("readMore")}
           </Button>
         </div>
       </div>
@@ -133,10 +132,9 @@ export default function BlogPage() {
 
       <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
         <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center pt-12">
-          Блог
+          {tb("title")}
         </h1>
 
-        {/* 🔹 Для мобільних – просто список, для більших екранів – слайдер */}
         {isMobile ? (
           <div className="flex flex-col gap-6 items-center">
             {blogPosts.map((post) => renderCard(post))}
