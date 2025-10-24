@@ -113,9 +113,13 @@ export default function PricePage() {
             {tp("title")}
           </motion.h1>
 
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          {/* GRID */}
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 items-stretch">
             {plans.map((plan, i) => {
               const isCurrent = currentUser?.plan === plan.name;
+
+              // 🧹 у Base-плані не показуємо 0$
+              const isFree = !plan.priceMonth && !plan.priceYear;
 
               return (
                 <motion.div
@@ -124,35 +128,38 @@ export default function PricePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  whileHover={{ scale: 1.03 }}
+                  className="h-full"
                 >
-                  <Card className="border border-gray-100 bg-white/70 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg transition-all flex flex-col">
+                  <Card className="h-full flex flex-col bg-white/70 backdrop-blur-md border border-gray-100 shadow-md hover:shadow-lg transition-transform hover:-translate-y-1 rounded-2xl">
                     <CardContent className="flex flex-col flex-1 p-8">
+                      {/* Назва */}
                       <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
                         {plan.name}
                       </h2>
 
                       {/* 🔹 Ціна */}
-                      <div className="mb-6 text-center">
-                        {plan.priceMonth ? (
-                          <p className="text-3xl font-semibold text-gray-900">
-                            ${plan.priceMonth}
-                            <span className="text-base text-gray-600 ml-1">
-                              {tp("perMonth")}
-                            </span>
-                          </p>
-                        ) : (
+                      <div className="mb-6 text-center min-h-[72px] flex flex-col justify-center">
+                        {isFree ? (
                           <p className="text-2xl font-semibold text-blue-600">
                             {tp("free")}
                           </p>
-                        )}
-                        {plan.priceYear && (
-                          <p className="text-sm text-gray-600 mt-1">
-                            {tp("perYear").replace(
-                              "{{price}}",
-                              String(plan.priceYear)
+                        ) : (
+                          <>
+                            <p className="text-3xl font-semibold text-gray-900">
+                              ${plan.priceMonth}
+                              <span className="text-base text-gray-600 ml-1">
+                                {tp("perMonth")}
+                              </span>
+                            </p>
+                            {plan.priceYear && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                {tp("perYear").replace(
+                                  "{{price}}",
+                                  String(plan.priceYear)
+                                )}
+                              </p>
                             )}
-                          </p>
+                          </>
                         )}
                         {plan.studentDiscount && (
                           <p className="text-blue-600 text-sm mt-2">
@@ -162,7 +169,7 @@ export default function PricePage() {
                       </div>
 
                       {/* 🔹 Фічі */}
-                      <ul className="space-y-2 flex-1 mb-6">
+                      <ul className="space-y-2 flex-1 mb-6 text-left">
                         {plan.features.map((feature, j) => {
                           const unavailable =
                             feature.includes("— недоступ") ||
@@ -174,9 +181,9 @@ export default function PricePage() {
                               className="flex items-start gap-2 text-gray-700 text-sm"
                             >
                               {unavailable ? (
-                                <FaTimes className="text-red-500 mt-1" />
+                                <FaTimes className="text-red-500 mt-1 flex-shrink-0" />
                               ) : (
-                                <FaCheck className="text-green-600 mt-1" />
+                                <FaCheck className="text-green-600 mt-1 flex-shrink-0" />
                               )}
                               <span>{feature}</span>
                             </li>
@@ -185,17 +192,19 @@ export default function PricePage() {
                       </ul>
 
                       {/* 🔹 Кнопка */}
-                      <Button
-                        className={`w-full rounded-xl py-3 font-medium transition ${
-                          isCurrent
-                            ? "bg-gray-300 text-gray-700 cursor-not-allowed"
-                            : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md"
-                        }`}
-                        onClick={() => handleSelectPlan(plan)}
-                        disabled={isCurrent}
-                      >
-                        {isCurrent ? tp("currentPlan") : tp("select")}
-                      </Button>
+                      <div className="mt-auto">
+                        <Button
+                          className={`w-full rounded-xl py-3 font-medium transition ${
+                            isCurrent
+                              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                              : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md"
+                          }`}
+                          onClick={() => handleSelectPlan(plan)}
+                          disabled={isCurrent}
+                        >
+                          {isCurrent ? tp("currentPlan") : tp("select")}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
