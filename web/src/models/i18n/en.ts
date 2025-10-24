@@ -398,6 +398,10 @@ export default {
       "“A calendar isn’t just a list of events. It’s a mirror of your attention. When organized right, a team runs like clockwork.”",
 
     backButton: "Back to blog",
+    ctaTitle: "Plan without chaos",
+    ctaText:
+      "Try TeamFlow and discover how easy it is to manage personal and team events seamlessly.",
+    ctaButton: "Try for free",
   },
 
   blogFocus: {
@@ -435,6 +439,11 @@ export default {
       "“True focus isn’t isolation — it’s a conscious choice to be present. We simply help create the space for it.”",
 
     backButton: "Back to blog",
+
+    ctaTitle: "Stay focused, stay balanced",
+    ctaText:
+      "Try TeamFlow Focus Mode — a calm environment for deep work and smart breaks.",
+    ctaButton: "Try it free",
   },
 
   blogGithub: {
@@ -471,6 +480,10 @@ export default {
       "“Integration isn’t about more buttons — it’s about less switching. GitHub + TeamFlow is exactly that.”",
 
     backButton: "Back to blog",
+    ctaTitle: "Stay focused, stay balanced",
+    ctaText:
+      "Try TeamFlow Focus Mode — a calm environment for deep work and smart breaks.",
+    ctaButton: "Try it free",
   },
 
   blogTeamwork: {
@@ -505,6 +518,10 @@ export default {
       "“Chaos disappears when the whole team sees one picture — tasks, events, communication, and results. TeamFlow makes it happen.”",
 
     backButton: "Back to blog",
+    ctaTitle: "Plan without chaos",
+    ctaText:
+      "Try TeamFlow and discover how easy it is to manage personal and team events seamlessly.",
+    ctaButton: "Try for free",
   },
 
   download: {

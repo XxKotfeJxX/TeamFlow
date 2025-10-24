@@ -396,6 +396,11 @@ export default {
       "„Kalendarz to nie tylko lista wydarzeń. To lustro twojej uwagi. Kiedy jest dobrze zorganizowany — zespół działa jak zegar.”",
 
     backButton: "Powrót do bloga",
+
+    ctaTitle: "Planuj bez chaosu",
+    ctaText:
+      "Wypróbuj TeamFlow i przekonaj się, jak łatwo można zarządzać wydarzeniami osobistymi i zespołowymi.",
+    ctaButton: "Wypróbuj za darmo",
   },
 
   blogFocus: {
@@ -433,6 +438,11 @@ export default {
       "„Prawdziwe skupienie to nie izolacja, ale świadomy wybór bycia obecnym. My tylko pomagamy stworzyć przestrzeń do tego.”",
 
     backButton: "Powrót do bloga",
+
+    ctaTitle: "Pozostań skupiony i zrównoważony",
+    ctaText:
+      "Wypróbuj Tryb Skupienia TeamFlow — spokojne środowisko dla głębokiej pracy i mądrych przerw.",
+    ctaButton: "Wypróbuj za darmo",
   },
 
   blogGithub: {
@@ -469,6 +479,10 @@ export default {
       "„Integracja to nie liczba przycisków, lecz czas, który oszczędzasz na przełączaniu się między narzędziami. GitHub + TeamFlow — właśnie o to chodzi.”",
 
     backButton: "Powrót do bloga",
+    ctaTitle: "Pozostań skupiony i zrównoważony",
+    ctaText:
+      "Wypróbuj Tryb Skupienia TeamFlow — spokojne środowisko dla głębokiej pracy i mądrych przerw.",
+    ctaButton: "Wypróbuj za darmo",
   },
 
   blogTeamwork: {
@@ -503,6 +517,10 @@ export default {
       "„Chaos można uniknąć tylko wtedy, gdy zespół widzi jeden obraz — zadania, wydarzenia, komunikację i wyniki. TeamFlow właśnie w tym pomaga.”",
 
     backButton: "Powrót do bloga",
+    ctaTitle: "Unikaj chaosu w pracy zespołowej",
+    ctaText:
+      "Wypróbuj TeamFlow i zobacz, jak uporządkowana współpraca może zwiększyć produktywność Twojego zespołu.",
+    ctaButton: "Wypróbuj za darmo",
   },
 
   download: {
