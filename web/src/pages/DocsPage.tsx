@@ -1,58 +1,59 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Code } from "lucide-react";
+import { useTranslation } from "../components/useTranslations";
 
-const docsSections = [
-  {
-    title: "🔑 Аутентифікація",
-    description: "JWT токени, логін, реєстрація, оновлення токенів.",
-    example: `POST /api/auth/login
+export default function DocsPage() {
+  const { t } = useTranslation();
+  const td = t("docs");
+
+  const docsSections = [
+    {
+      title: td("authTitle"),
+      description: td("authDesc"),
+      example: `POST /api/auth/login
 {
   "email": "user@mail.com",
   "password": "******"
 }`,
-  },
-  {
-    title: "📅 Календар API",
-    description:
-      "Створення, редагування і видалення подій у командному календарі.",
-    example: `GET /api/calendars/:id/events
+    },
+    {
+      title: td("calendarTitle"),
+      description: td("calendarDesc"),
+      example: `GET /api/calendars/:id/events
 Authorization: Bearer <token>`,
-  },
-  {
-    title: "✅ Завдання",
-    description: "Робота із задачами, дедлайнами і командними балами.",
-    example: `POST /api/tasks
+    },
+    {
+      title: td("tasksTitle"),
+      description: td("tasksDesc"),
+      example: `POST /api/tasks
 {
   "title": "Design mockups",
   "dueDate": "2025-10-21T18:00"
 }`,
-  },
-  {
-    title: "💬 Повідомлення",
-    description: "Текстові чати з можливістю згадування користувачів.",
-    example: `POST /api/messages
+    },
+    {
+      title: td("messagesTitle"),
+      description: td("messagesDesc"),
+      example: `POST /api/messages
 {
   "teamId": "team-1",
   "text": "@Maria please review my PR"
 }`,
-  },
-];
+    },
+  ];
 
-export default function DocsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold mb-10 text-center">
-          Документація API
-        </h1>
+        <h1 className="text-4xl font-bold mb-10 text-center">{td("title")}</h1>
 
         <div className="space-y-10">
-          {docsSections.map((section) => (
+          {docsSections.map((section, i) => (
             <div
-              key={section.title}
+              key={i}
               className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition"
             >
               <div className="flex items-center gap-3 mb-2">
@@ -69,7 +70,7 @@ export default function DocsPage() {
 
         <div className="text-center mt-12 text-gray-600">
           <p>
-            Версія API: <b>v1.0</b>
+            {td("version")}: <b>v1.0</b>
           </p>
         </div>
       </main>

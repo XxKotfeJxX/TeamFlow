@@ -283,5 +283,22 @@ export default {
     applyButton: "Wyślij CV",
   },
 
+  docs: {
+    title: "Dokumentacja API",
+    version: "Wersja API",
 
+    authTitle: "🔑 Uwierzytelnianie",
+    authDesc: "Tokeny JWT, logowanie, rejestracja i odświeżanie tokenów.",
+
+    calendarTitle: "📅 API Kalendarza",
+    calendarDesc: "Tworzenie, edycja i usuwanie wydarzeń w kalendarzu zespołu.",
+
+    tasksTitle: "✅ Zadania",
+    tasksDesc: "Praca z zadaniami, terminami i punktami zespołowymi.",
+
+    messagesTitle: "💬 Wiadomości",
+    messagesDesc: "Czaty tekstowe z możliwością wspominania użytkowników.",
+  },
+
+  
 };

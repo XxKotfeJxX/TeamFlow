@@ -285,5 +285,22 @@ export default {
     applyButton: "Send Resume",
   },
 
+  docs: {
+    title: "API Documentation",
+    version: "API Version",
+
+    authTitle: "🔑 Authentication",
+    authDesc: "JWT tokens, login, registration, and token refresh.",
+
+    calendarTitle: "📅 Calendar API",
+    calendarDesc: "Create, update, and delete events in team calendars.",
+
+    tasksTitle: "✅ Tasks",
+    tasksDesc: "Manage tasks, deadlines, and team rewards.",
+
+    messagesTitle: "💬 Messages",
+    messagesDesc: "Text chats with user mentions and real-time updates.",
+  },
+
   
 };
