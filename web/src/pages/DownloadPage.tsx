@@ -1,10 +1,13 @@
-// src/pages/DownloadPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Download, Monitor, Smartphone, Laptop } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "../components/useTranslations";
 
 export default function DownloadPage() {
+  const { t } = useTranslation();
+  const td = t("download");
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
@@ -13,15 +16,14 @@ export default function DownloadPage() {
         {/* HERO */}
         <section className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Завантаж TeamFlow
+            {td("title")}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Отримай доступ до командного простору будь-де. Працюй офлайн,
-            синхронізуй дані миттєво, залишайся на зв’язку навіть без браузера.
+            {td("subtitle")}
           </p>
         </section>
 
-        {/* ПЛАТФОРМИ */}
+        {/* PLATFORMS */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {/* Windows */}
           <motion.div
@@ -30,15 +32,12 @@ export default function DownloadPage() {
           >
             <Monitor className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">Windows</h2>
-            <p className="text-gray-500 mb-4">
-              Сумісна з Windows 10 і новішими. Підтримка автооновлень і
-              офлайн-режиму.
-            </p>
+            <p className="text-gray-500 mb-4">{td("windowsDesc")}</p>
             <a
               href="/downloads/TeamFlow_Setup.exe"
               className="bg-indigo-600 text-white hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium flex items-center"
             >
-              <Download className="mr-2 h-5 w-5" /> Завантажити .exe
+              <Download className="mr-2 h-5 w-5" /> {td("downloadExe")}
             </a>
           </motion.div>
 
@@ -49,15 +48,12 @@ export default function DownloadPage() {
           >
             <Laptop className="h-10 w-10 text-indigo-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">macOS</h2>
-            <p className="text-gray-500 mb-10">
-              Підтримка Apple Silicon (M1, M2, M3). Оптимізовано для Sonoma та
-              Ventura.
-            </p>
+            <p className="text-gray-500 mb-10">{td("macDesc")}</p>
             <a
               href="/downloads/TeamFlow_Mac.dmg"
               className="bg-indigo-600 text-white hover:bg-indigo-700 px-6 py-3 rounded-lg font-medium flex items-center"
             >
-              <Download className="mr-2 h-5 w-5" /> Завантажити .dmg
+              <Download className="mr-2 h-5 w-5" /> {td("downloadDmg")}
             </a>
           </motion.div>
 
@@ -67,11 +63,8 @@ export default function DownloadPage() {
             className="bg-white shadow-lg rounded-2xl p-8 flex flex-col items-center text-center border border-gray-200 hover:shadow-xl transition"
           >
             <Smartphone className="h-10 w-10 text-indigo-600 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Мобільні пристрої</h2>
-            <p className="text-gray-500 mb-4">
-              Завантаж додаток на свій смартфон, щоб бути з командою на зв’язку
-              будь-де.
-            </p>
+            <h2 className="text-xl font-semibold mb-2">{td("mobileTitle")}</h2>
+            <p className="text-gray-500 mb-4">{td("mobileDesc")}</p>
             <div className="flex gap-2 pt-4">
               <a
                 href="https://apps.apple.com/"
@@ -95,11 +88,8 @@ export default function DownloadPage() {
 
         {/* QR */}
         <section className="text-center mb-20">
-          <h2 className="text-2xl font-semibold mb-4">Швидке встановлення</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Відскануй QR-код, щоб миттєво завантажити мобільну версію або
-            відкрий посилання вручну.
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{td("qrTitle")}</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8">{td("qrText")}</p>
 
           <a
             href="https://teamflow.app/download"
@@ -109,25 +99,23 @@ export default function DownloadPage() {
           >
             <img
               src="/images/qr-placeholder.png"
-              alt="QR Code"
+              alt={td("qrAlt")}
               className="w-48 h-48 rounded-xl border border-gray-200 shadow-lg hover:scale-105 transition"
             />
           </a>
 
-          <p className="text-sm text-gray-400 mt-4">
-            Натисни або відскануй — результат однаковий.
-          </p>
+          <p className="text-sm text-gray-400 mt-4">{td("qrNote")}</p>
         </section>
 
         {/* TECH INFO */}
         <section className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            Технічні вимоги
+            {td("techTitle")}
           </h2>
           <ul className="list-disc list-inside space-y-2 text-gray-600">
-            <li>Windows 10+ / macOS 13+ / Android 10+ / iOS 15+</li>
-            <li>Не менше 200 МБ вільного місця</li>
-            <li>Стабільне інтернет-з’єднання для синхронізації</li>
+            <li>{td("req1")}</li>
+            <li>{td("req2")}</li>
+            <li>{td("req3")}</li>
           </ul>
         </section>
       </main>

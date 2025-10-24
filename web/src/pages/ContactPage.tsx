@@ -1,4 +1,3 @@
-// src/pages/ContactPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Mail, MapPin, Clock } from "lucide-react";
@@ -7,14 +6,16 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Input } from "../components/ui/Input";
 import { Textarea } from "../components/ui/Textarea";
+import { useTranslation } from "../components/useTranslations";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
+  const { t } = useTranslation();
+  const tc = t("contact");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSent(true);
-    // тимчасово імітуємо відправку (можна замінити на API)
     setTimeout(() => setSent(false), 4000);
   };
 
@@ -30,7 +31,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            Зв’яжіться з нами
+            {tc("title")}
           </motion.h1>
           <motion.p
             className="text-lg text-gray-600 max-w-2xl mx-auto"
@@ -38,8 +39,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Маєш питання, ідеї чи пропозиції? Наша команда читає кожне
-            повідомлення і відповідає якомога швидше.
+            {tc("subtitle")}
           </motion.p>
         </section>
 
@@ -50,8 +50,8 @@ export default function ContactPage() {
             className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-3"
           >
             <Mail className="h-8 w-8 text-indigo-600 mx-auto" />
-            <h3 className="font-semibold text-lg">Електронна пошта</h3>
-            <p className="text-gray-500">support@teamflow.app</p>
+            <h3 className="font-semibold text-lg">{tc("emailTitle")}</h3>
+            <p className="text-gray-500">{tc("emailValue")}</p>
           </motion.div>
 
           <motion.div
@@ -59,8 +59,8 @@ export default function ContactPage() {
             className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-3"
           >
             <MapPin className="h-8 w-8 text-indigo-600 mx-auto" />
-            <h3 className="font-semibold text-lg">Офіс</h3>
-            <p className="text-gray-500">Київ, Україна / Віддалено 🌍</p>
+            <h3 className="font-semibold text-lg">{tc("officeTitle")}</h3>
+            <p className="text-gray-500">{tc("officeValue")}</p>
           </motion.div>
 
           <motion.div
@@ -68,15 +68,15 @@ export default function ContactPage() {
             className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-3"
           >
             <Clock className="h-8 w-8 text-indigo-600 mx-auto" />
-            <h3 className="font-semibold text-lg">Графік роботи</h3>
-            <p className="text-gray-500">Пн–Пт, 09:00–18:00 (UTC+3)</p>
+            <h3 className="font-semibold text-lg">{tc("hoursTitle")}</h3>
+            <p className="text-gray-500">{tc("hoursValue")}</p>
           </motion.div>
         </section>
 
-        {/* FEEDBACK FORM */}
+        {/* FORM */}
         <section className="bg-white shadow-sm border border-gray-100 rounded-2xl p-10">
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            Напиши нам повідомлення
+            {tc("formTitle")}
           </h2>
 
           <form
@@ -87,38 +87,38 @@ export default function ContactPage() {
           >
             <div>
               <label className="block mb-1 font-medium text-gray-700">
-                Ім’я
+                {tc("nameLabel")}
               </label>
               <Input
                 type="text"
                 name="name"
-                placeholder="Твоє ім’я"
+                placeholder={tc("namePlaceholder")}
                 className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3"
               />
             </div>
 
             <div>
               <label className="block mb-1 font-medium text-gray-700">
-                Електронна пошта *
+                {tc("emailLabel")}
               </label>
               <Input
                 type="email"
                 name="email"
                 required
-                placeholder="example@gmail.com"
+                placeholder={tc("emailPlaceholder")}
                 className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3"
               />
             </div>
 
             <div>
               <label className="block mb-1 font-medium text-gray-700">
-                Повідомлення *
+                {tc("messageLabel")}
               </label>
               <Textarea
                 name="message"
                 required
                 rows={5}
-                placeholder="Напиши тут своє запитання або коментар..."
+                placeholder={tc("messagePlaceholder")}
                 className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 p-3"
               ></Textarea>
             </div>
@@ -129,13 +129,11 @@ export default function ContactPage() {
                 size="lg"
                 className="px-8 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
               >
-                Надіслати
+                {tc("sendButton")}
               </Button>
 
               {sent && (
-                <p className="text-green-600 mt-3 text-sm">
-                  ✅ Повідомлення відправлено! Ми зв’яжемося найближчим часом.
-                </p>
+                <p className="text-green-600 mt-3 text-sm">{tc("sentMsg")}</p>
               )}
             </div>
           </form>
@@ -144,7 +142,7 @@ export default function ContactPage() {
         {/* MAP */}
         <section>
           <h2 className="text-2xl font-semibold mb-6 text-center">
-            Ми на мапі
+            {tc("mapTitle")}
           </h2>
           <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
             <iframe

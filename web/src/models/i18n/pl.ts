@@ -499,5 +499,56 @@ export default {
     backButton: "Powrót do bloga",
   },
 
-  
+  download: {
+    title: "Pobierz TeamFlow",
+    subtitle:
+      "Uzyskaj dostęp do przestrzeni zespołowej w dowolnym miejscu. Pracuj offline, synchronizuj dane natychmiast, bądź w kontakcie bez przeglądarki.",
+
+    windowsDesc:
+      "Kompatybilna z Windows 10 i nowszymi. Obsługuje automatyczne aktualizacje i tryb offline.",
+    macDesc:
+      "Obsługuje Apple Silicon (M1, M2, M3). Zoptymalizowana dla macOS Sonoma i Ventura.",
+    mobileTitle: "Urządzenia mobilne",
+    mobileDesc:
+      "Pobierz aplikację na swój telefon, aby być w kontakcie z zespołem wszędzie.",
+
+    downloadExe: "Pobierz .exe",
+    downloadDmg: "Pobierz .dmg",
+
+    qrTitle: "Szybka instalacja",
+    qrText:
+      "Zeskanuj kod QR, aby natychmiast pobrać wersję mobilną lub otwórz link ręcznie.",
+    qrAlt: "Kod QR TeamFlow",
+    qrNote: "Kliknij lub zeskanuj — efekt ten sam.",
+
+    techTitle: "Wymagania techniczne",
+    req1: "Windows 10+ / macOS 13+ / Android 10+ / iOS 15+",
+    req2: "Co najmniej 200 MB wolnego miejsca",
+    req3: "Stabilne połączenie internetowe do synchronizacji",
+  },
+
+  contact: {
+    title: "Skontaktuj się z nami",
+    subtitle:
+      "Masz pytanie, pomysł lub sugestię? Nasz zespół czyta każdą wiadomość i odpowiada tak szybko, jak to możliwe.",
+
+    emailTitle: "E-mail",
+    emailValue: "support@teamflow.app",
+    officeTitle: "Biuro",
+    officeValue: "Kijów, Ukraina / Zdalnie 🌍",
+    hoursTitle: "Godziny pracy",
+    hoursValue: "Pn–Pt, 09:00–18:00 (UTC+3)",
+
+    formTitle: "Napisz do nas wiadomość",
+    nameLabel: "Imię",
+    namePlaceholder: "Twoje imię",
+    emailLabel: "E-mail *",
+    emailPlaceholder: "example@gmail.com",
+    messageLabel: "Wiadomość *",
+    messagePlaceholder: "Napisz tutaj swoje pytanie lub komentarz...",
+    sendButton: "Wyślij",
+    sentMsg: "✅ Wiadomość wysłana! Skontaktujemy się wkrótce.",
+
+    mapTitle: "Znajdź nas na mapie",
+  },
 };

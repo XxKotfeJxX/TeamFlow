@@ -501,5 +501,58 @@ export default {
     backButton: "Back to blog",
   },
 
+  download: {
+    title: "Download TeamFlow",
+    subtitle:
+      "Access your team space anywhere. Work offline, sync instantly, and stay connected — even without a browser.",
+
+    windowsDesc:
+      "Compatible with Windows 10 and newer. Includes auto-updates and offline mode.",
+    macDesc:
+      "Supports Apple Silicon (M1, M2, M3). Optimized for macOS Sonoma and Ventura.",
+    mobileTitle: "Mobile Devices",
+    mobileDesc:
+      "Download the app on your phone to stay connected with your team anywhere.",
+
+    downloadExe: "Download .exe",
+    downloadDmg: "Download .dmg",
+
+    qrTitle: "Quick Install",
+    qrText:
+      "Scan the QR code to download the mobile version instantly or open the link manually.",
+    qrAlt: "TeamFlow QR code",
+    qrNote: "Tap or scan — same result.",
+
+    techTitle: "Technical Requirements",
+    req1: "Windows 10+ / macOS 13+ / Android 10+ / iOS 15+",
+    req2: "At least 200 MB of free storage",
+    req3: "Stable internet connection for sync",
+  },
+
+  contact: {
+    title: "Contact Us",
+    subtitle:
+      "Got a question, idea, or suggestion? Our team reads every message and replies as soon as possible.",
+
+    emailTitle: "Email",
+    emailValue: "support@teamflow.app",
+    officeTitle: "Office",
+    officeValue: "Kyiv, Ukraine / Remote 🌍",
+    hoursTitle: "Working Hours",
+    hoursValue: "Mon–Fri, 09:00–18:00 (UTC+3)",
+
+    formTitle: "Send Us a Message",
+    nameLabel: "Name",
+    namePlaceholder: "Your name",
+    emailLabel: "Email *",
+    emailPlaceholder: "example@gmail.com",
+    messageLabel: "Message *",
+    messagePlaceholder: "Write your question or feedback here...",
+    sendButton: "Send",
+    sentMsg: "✅ Message sent! We’ll get back to you soon.",
+
+    mapTitle: "We’re on the map",
+  },
+
   
 };
