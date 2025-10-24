@@ -302,5 +302,34 @@ export default {
     messagesDesc: "Text chats with user mentions and real-time updates.",
   },
 
+  support: {
+    title: "TeamFlow Support",
+    intro:
+      "Here you’ll find answers to common questions. If you need help — our team is always here for you 💙",
+    noAnswer: "Didn’t find your answer?",
+    contactButton: "Contact support",
+
+    q1: "How to create a new team?",
+    a1: "Go to your profile, click <b>“Create Team”</b>, and enter its name. Then invite members via email.",
+
+    q2: "How to invite a user?",
+    a2: "In the <b>“Team”</b> tab, select “Invite” and enter the user’s email. They’ll receive an email invitation.",
+
+    q3: "How to change the timezone in the calendar?",
+    a3: "Go to <b>“Profile Settings”</b> → “Timezone” and choose your region. Events will sync automatically.",
+
+    q4: "How to change or reset my password?",
+    a4: "On the login form, click <b>“Forgot password”</b>, enter your email, and we’ll send a recovery link.",
+
+    q5: "Why didn’t I receive a team invitation?",
+    a5: "Check your <b>Spam</b> folder or ask the sender to resend it. If the issue remains — contact us.",
+
+    q6: "Can I use TeamFlow for free?",
+    a6: "Yes, the <b>Base</b> plan is completely free and includes calendar, tasks, chats, and team creation.",
+
+    q7: "How to upgrade to Pro or Enterprise?",
+    a7: "Go to the <b>“Pricing”</b> tab and select the desired plan. Payment is processed securely through our system.",
+  },
+
   
 };

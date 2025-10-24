@@ -300,5 +300,34 @@ export default {
     messagesDesc: "Czaty tekstowe z możliwością wspominania użytkowników.",
   },
 
+  support: {
+    title: "Wsparcie TeamFlow",
+    intro:
+      "Tutaj znajdziesz odpowiedzi na najczęstsze pytania. Jeśli potrzebujesz pomocy — nasz zespół jest zawsze gotowy 💙",
+    noAnswer: "Nie znalazłeś odpowiedzi?",
+    contactButton: "Napisz do wsparcia",
+
+    q1: "Jak utworzyć nowy zespół?",
+    a1: "Przejdź do swojego profilu, kliknij <b>„Utwórz zespół”</b> i wpisz jego nazwę. Następnie zaproś członków przez email.",
+
+    q2: "Jak zaprosić użytkownika?",
+    a2: "W zakładce <b>„Zespół”</b> wybierz opcję „Zaproś” i podaj email. Użytkownik otrzyma zaproszenie na pocztę.",
+
+    q3: "Jak zmienić strefę czasową w kalendarzu?",
+    a3: "Przejdź do <b>„Ustawienia profilu”</b> → „Strefa czasowa” i wybierz swój region. Wydarzenia zsynchronizują się automatycznie.",
+
+    q4: "Jak zmienić lub zresetować hasło?",
+    a4: "Na ekranie logowania kliknij <b>„Zapomniałem hasła”</b>, wpisz swój email, a wyślemy link do odzyskania dostępu.",
+
+    q5: "Dlaczego nie otrzymałem zaproszenia do zespołu?",
+    a5: "Sprawdź folder <b>„Spam”</b> lub poproś o ponowne wysłanie zaproszenia. Jeśli problem nadal występuje — napisz do nas.",
+
+    q6: "Czy mogę korzystać z TeamFlow za darmo?",
+    a6: "Tak, plan <b>Base</b> jest darmowy i zawiera podstawowe funkcje: kalendarz, zadania, czaty i tworzenie zespołów.",
+
+    q7: "Jak uaktualnić plan do Pro lub Enterprise?",
+    a7: "Przejdź do zakładki <b>„Cennik”</b> i wybierz odpowiedni plan. Płatność odbywa się bezpiecznie przez nasz system.",
+  },
+
   
 };
