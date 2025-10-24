@@ -1,1 +1,11 @@
-<meta http-equiv="refresh" content="0; url=/TeamFlow/" />
+<script>
+  const redirect = sessionStorage.redirect;
+  delete sessionStorage.redirect;
+  if (redirect && redirect !== location.href) {
+    history.replaceState(null, null, redirect);
+  }
+</script>
+<script>
+  sessionStorage.redirect = location.href;
+  window.location.replace("/TeamFlow/");
+</script>
