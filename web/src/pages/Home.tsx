@@ -1,4 +1,3 @@
-// src/pages/Home.tsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button";
@@ -15,18 +14,15 @@ export default function Home() {
     typeof userDb.getById
   > | null>(null);
 
-  // ✅ переклад
   const { t, lang, translations } = useTranslation();
   const th = t("home");
 
-  // 🔹 картинки для фіч
   const featureImages = {
     0: "images/kanban-board.png",
     1: "images/calendar.png",
     2: "images/chat.png",
   };
 
-  // 🔹 Перевірка на авторизацію
   useEffect(() => {
     const localId = localStorage.getItem("currentUserId");
     if (localId) {
@@ -51,7 +47,6 @@ export default function Home() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
-        {/* Градієнтні бліки позаду */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -64,7 +59,6 @@ export default function Home() {
         </motion.div>
 
         <main className="relative z-10 max-w-7xl mx-auto flex flex-col items-center justify-start overflow-x-hidden">
-          {/* Hero Section */}
           <section className="relative z-10 w-full pt-32 pb-20 px-6 md:px-12 lg:px-24 flex flex-col lg:flex-row items-center gap-10">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -116,7 +110,6 @@ export default function Home() {
             </motion.div>
           </section>
 
-          {/* Features Section */}
           <section className="w-full py-20 px-6 md:px-12 lg:px-24 flex flex-col gap-24">
             {translations[lang].home.features.map((f, i) => (
               <motion.div
@@ -146,7 +139,6 @@ export default function Home() {
             ))}
           </section>
 
-          {/* CTA Section */}
           <section className="relative w-full overflow-hidden bg-gradient-to-r from-blue-600 to-violet-600 text-white py-20 px-6 md:px-12 lg:px-24 text-center rounded-t-[2rem]">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
