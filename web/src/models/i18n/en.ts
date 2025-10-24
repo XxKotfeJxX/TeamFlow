@@ -283,6 +283,10 @@ export default {
     qaTitle: "QA Engineer",
     qaDesc: "Automated testing of client and server modules.",
     applyButton: "Send Resume",
+    ctaTitle: "Join Our Team!",
+    ctaSubtitle:
+      "We value initiative, creativity, and passion for technology. Your work will help make teamwork smoother for thousands of users.",
+    ctaButton: "Apply Now",
   },
 
   docs: {
@@ -742,9 +746,9 @@ export default {
 
   myTeam: {
     title: "Our Team",
-      name: "Andrii Andrusyevych",
-      role: "Fullstack Developer",
-      bio: `I’m the creator and developer of TeamFlow — a platform for efficient team collaboration. 
+    name: "Andrii Andrusyevych",
+    role: "Fullstack Developer",
+    bio: `I’m the creator and developer of TeamFlow — a platform for efficient team collaboration. 
 My goal is to merge calendar, task management, chat, and video calling 
 into one ecosystem where teams can work seamlessly and transparently.
 
@@ -752,15 +756,15 @@ On the backend, I use C++ for maximum performance,
 and on the frontend — React with TypeScript to build a clean, animated UI. 
 I also design the PostgreSQL 17 database, implement JWT authentication, 
 and develop real-time modules for chat and calendar synchronization.`,
-    
+
     stackTitle: "My Tech Stack",
-      cpp: "Core backend logic and API architecture.",
-      react: "Frontend UI, animations, and routing logic.",
-      postgres: "Complex relational structures and query optimization.",
-      jwt: "Secure authentication and session management.",
-      webrtc: "Real-time video and audio communication.",
-      tailwind: "Modern, flexible design without bloat.",
-    
+    cpp: "Core backend logic and API architecture.",
+    react: "Frontend UI, animations, and routing logic.",
+    postgres: "Complex relational structures and query optimization.",
+    jwt: "Secure authentication and session management.",
+    webrtc: "Real-time video and audio communication.",
+    tailwind: "Modern, flexible design without bloat.",
+
     aboutProjectTitle: "About TeamFlow",
     aboutProject: `TeamFlow is a personal project evolving into a new-generation 
 teamwork platform. It unites calendar, task management, chat, 
