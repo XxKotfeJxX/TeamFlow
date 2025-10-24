@@ -1,15 +1,33 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { Button } from "../../components/ui/Button";
 import { VideoEmbed } from "../../components/ui/VideoEmbed";
 import { useTranslation } from "../../components/useTranslations";
 import { motion } from "framer-motion";
+import { userDb } from "../../models/mockDB/users";
+
 
 export default function FocusPage() {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState<ReturnType<
+      typeof userDb.getById
+      > | null>(null);
   const { t } = useTranslation();
   const tb = t("blogFocus");
+  useEffect(() => {
+    const localId = localStorage.getItem("currentUserId");
+    if (localId) {
+      const user = userDb.getById(localId);
+      if (user) setCurrentUser(user);
+    }
+  }, []);
+
+  const handleJoin = () => {
+    if (currentUser) navigate(`/profile/${currentUser.id}`);
+    else navigate("/register");
+  };
 
   return (
     <>
@@ -159,7 +177,7 @@ export default function FocusPage() {
                 size="lg"
                 variant={null}
                 className="rounded-2xl px-8 py-3 text-lg bg-white text-violet-700 font-semibold hover:bg-gray-100 shadow-md hover:shadow-lg transition"
-                onClick={() => navigate("/register")}
+                onClick={() => handleJoin()}
               >
                 {tb("ctaButton")}
               </Button>
