@@ -1,4 +1,3 @@
-// src/pages/WeekPage.tsx
 import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -14,8 +13,8 @@ import {
   type Task,
 } from "../models/mockDB/calendar";
 
-const DAYS_VISIBLE = 3; // 3 дні на екран
-const TOTAL_DAYS = 7; // показуємо тиждень
+const DAYS_VISIBLE = 3;
+const TOTAL_DAYS = 7;
 
 const WeekPage: React.FC = () => {
   const { calendarId, weekStart } = useParams<{
@@ -32,8 +31,7 @@ const WeekPage: React.FC = () => {
 
   const initialDate = weekStart ? new Date(weekStart) : new Date();
 
-  // === Знаходимо понеділок ===
-  const dayOfWeek = initialDate.getDay(); // 0 = неділя
+  const dayOfWeek = initialDate.getDay();
   const diffToMonday = (dayOfWeek + 6) % 7;
   const monday = new Date(initialDate);
   monday.setDate(initialDate.getDate() - diffToMonday);
@@ -62,7 +60,6 @@ const WeekPage: React.FC = () => {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -75,7 +72,6 @@ const WeekPage: React.FC = () => {
         </motion.div>
 
         <main className="relative z-10 flex flex-col flex-1 px-6 md:px-12 lg:px-24 py-24 text-gray-800">
-          {/* Назва тижня */}
           <motion.h2
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,7 +84,6 @@ const WeekPage: React.FC = () => {
             })}
           </motion.h2>
 
-          {/* Карусель тижня */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -114,15 +109,13 @@ const WeekPage: React.FC = () => {
                   className="snap-center flex-shrink-0"
                   style={{ width: `${100 / DAYS_VISIBLE}%` }}
                 >
-                  
-                    <DayModule
-                      date={day}
-                      items={items}
-                      onItemClick={() => {
-                        window.location.href = `/calendar/${calendarId}/day/${dateStr}`;
-                      }}
-                    />
-                  
+                  <DayModule
+                    date={day}
+                    items={items}
+                    onItemClick={() => {
+                      window.location.href = `/calendar/${calendarId}/day/${dateStr}`;
+                    }}
+                  />
                 </motion.div>
               );
             })}

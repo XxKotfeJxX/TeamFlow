@@ -1,4 +1,3 @@
-// src/pages/blog/FocusPage.tsx
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -16,7 +15,6 @@ export default function FocusPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-violet-50 to-gray-50 text-gray-800">
-        {/* Градієнтні бліки позаду */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -29,7 +27,6 @@ export default function FocusPage() {
         </motion.div>
 
         <main className="relative z-10 max-w-6xl mx-auto flex flex-col items-center justify-start overflow-x-hidden">
-          {/* Hero Section */}
           <section className="relative z-10 w-full pt-32 pb-20 px-6 md:px-12 lg:px-24 flex flex-col items-center text-center gap-10">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -49,7 +46,6 @@ export default function FocusPage() {
             </motion.div>
           </section>
 
-          {/* Content Sections */}
           <section className="w-full py-16 px-6 md:px-12 lg:px-24 space-y-20 leading-relaxed">
             {[
               {
@@ -126,7 +122,6 @@ export default function FocusPage() {
               </motion.div>
             ))}
 
-            {/* Quote */}
             <motion.section
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -137,7 +132,6 @@ export default function FocusPage() {
               <p>{tb("quote")}</p>
             </motion.section>
 
-            {/* Back button */}
             <div className="flex justify-center mt-12">
               <Button
                 onClick={() => navigate("/blog")}
@@ -148,7 +142,6 @@ export default function FocusPage() {
             </div>
           </section>
 
-          {/* CTA Section */}
           <section className="relative w-full overflow-hidden bg-gradient-to-r from-violet-600 to-indigo-600 text-white py-20 px-6 md:px-12 lg:px-24 text-center rounded-t-[2rem]">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
