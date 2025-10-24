@@ -1,11 +1,16 @@
-<script>
-  const redirect = sessionStorage.redirect;
-  delete sessionStorage.redirect;
-  if (redirect && redirect !== location.href) {
-    history.replaceState(null, null, redirect);
-  }
-</script>
-<script>
-  sessionStorage.redirect = location.href;
-  window.location.replace("/TeamFlow/");
-</script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      // Зберігаємо поточний шлях
+      sessionStorage.redirect = location.pathname + location.search + location.hash;
+      // Перенаправляємо на головну сторінку
+      window.location.replace("/TeamFlow/");
+    </script>
+  </head>
+  <body>
+    Redirecting...
+  </body>
+</html>

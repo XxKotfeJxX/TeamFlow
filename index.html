@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TeamFlow</title>
-  <link rel="icon" href="/TeamFlow/images/TeamFlow_fav.png?v=2" type="image/png" sizes="32x32" />
-  <base href="/TeamFlow/">
-  <script type="module" crossorigin src="/TeamFlow/assets/index-Ct4mNo7c.js"></script>
-  <link rel="stylesheet" crossorigin href="/TeamFlow/assets/index-DzikYWLn.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TeamFlow</title>
+
+    <!-- Іконка -->
+    <link
+      rel="icon"
+      href="/TeamFlow/images/TeamFlow_fav.png?v=2"
+      type="image/png"
+      sizes="32x32"
+    />
+
+    <!-- ВАЖЛИВО: base для GitHub Pages -->
+    <base href="/TeamFlow/" />
+
+    <!-- Скрипт для відновлення маршруту після редіректу -->
+    <script type="text/javascript">
+      const redirect = sessionStorage.redirect;
+      if (redirect) {
+        delete sessionStorage.redirect;
+        history.replaceState(null, null, redirect);
+      }
+    </script>
+    <script type="module" crossorigin src="/TeamFlow/assets/index-Ct4mNo7c.js"></script>
+    <link rel="stylesheet" crossorigin href="/TeamFlow/assets/index-DzikYWLn.css">
+  </head>
 
   <body>
     <div id="root"></div>
