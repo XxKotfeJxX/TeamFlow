@@ -129,6 +129,7 @@ export default function OverviewPage() {
               {to("ctaText")}
             </p>
             <Button
+              variant={null}
               size="lg"
               className="rounded-2xl px-8 py-3 text-lg bg-white text-blue-700 font-semibold hover:bg-gray-100 shadow-md hover:shadow-lg transition"
               onClick={handleJoin}

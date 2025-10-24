@@ -166,6 +166,7 @@ export default function GithubIntegrationPage() {
               </p>
               <Button
                 size="lg"
+                variant={null}
                 className="rounded-2xl px-8 py-3 text-lg bg-white text-gray-900 font-semibold hover:bg-gray-100 shadow-md hover:shadow-lg transition"
                 onClick={() => navigate("/register")}
               >
