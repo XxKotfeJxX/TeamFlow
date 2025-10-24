@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // 📦 icons
+import { Menu, X } from "lucide-react";
 import { userDb } from "../models/mockDB/users";
 import { useTranslation } from "./useTranslations";
 import logo from "../../public/images/TeamFlow_logo.png";
@@ -13,13 +13,10 @@ const Header = () => {
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [currentUser, setCurrentUser] = useState<ReturnType<
     typeof userDb.getById
-    > | null>(null);
+  > | null>(null);
   const { t } = useTranslation();
   const th = t("header");
 
-  // ============================
-  // 🔹 Отримуємо користувача
-  // ============================
   useEffect(() => {
     const localId = localStorage.getItem("currentUserId");
 
@@ -38,45 +35,38 @@ const Header = () => {
     }
   }, [location.pathname]);
 
-  // ============================
-  // 🔹 Вихід
-  // ============================
   const handleLogout = () => {
     localStorage.removeItem("currentUserId");
     setCurrentUser(null);
     navigate("/login");
   };
 
-  // ============================
-  // 🔹 Меню навігації
-  // ============================
- const navItemsBase = [
-   {
-     label: th("product"),
-     options: [
-       { name: th("overview"), path: "/overview" },
-       { name: th("features"), path: "/features" },
-       { name: th("pricing"), path: "/price" },
-     ],
-   },
-   {
-     label: th("company"),
-     options: [
-       { name: th("about"), path: "/about" },
-       { name: th("team"), path: "/my-team" },
-       { name: th("career"), path: "/career" },
-     ],
-   },
-   {
-     label: th("resources"),
-     options: [
-       { name: th("blog"), path: "/blog" },
-       { name: th("support"), path: "/support" },
-       { name: th("docs"), path: "/documentation" },
-     ],
-   },
- ];
-
+  const navItemsBase = [
+    {
+      label: th("product"),
+      options: [
+        { name: th("overview"), path: "/overview" },
+        { name: th("features"), path: "/features" },
+        { name: th("pricing"), path: "/price" },
+      ],
+    },
+    {
+      label: th("company"),
+      options: [
+        { name: th("about"), path: "/about" },
+        { name: th("team"), path: "/my-team" },
+        { name: th("career"), path: "/career" },
+      ],
+    },
+    {
+      label: th("resources"),
+      options: [
+        { name: th("blog"), path: "/blog" },
+        { name: th("support"), path: "/support" },
+        { name: th("docs"), path: "/documentation" },
+      ],
+    },
+  ];
 
   const navItems = currentUser
     ? [
@@ -99,9 +89,6 @@ const Header = () => {
       ]
     : navItemsBase;
 
-  // ============================
-  // 🔹 Ховери для desktop
-  // ============================
   const handleMouseEnter = (idx: number) => {
     if (closeTimeout.current) {
       clearTimeout(closeTimeout.current);
@@ -116,13 +103,9 @@ const Header = () => {
     }, 200);
   };
 
-  // ============================
-  // 🔹 Рендер
-  // ============================
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-20">
-        {/* Лого */}
         <div
           className="font-bold text-xl text-gray-800 cursor-pointer flex items-center gap-2"
           onClick={() => navigate("/")}
@@ -135,7 +118,6 @@ const Header = () => {
           />
         </div>
 
-        {/* Навігація для Desktop */}
         <nav className="hidden md:flex gap-6 text-md text-gray-700">
           {navItems.map((item, idx) => (
             <div
@@ -176,7 +158,6 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Праворуч — користувач або кнопки */}
         <div className="hidden md:flex items-center gap-3 text-sm">
           {currentUser ? (
             <div className="flex items-center gap-3">
@@ -230,7 +211,6 @@ const Header = () => {
           )}
         </div>
 
-        {/* Мобільне меню */}
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setMobileOpen(true)}
@@ -242,7 +222,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Випливаюче меню (мобільна версія) */}
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-40 z-50 flex"
@@ -252,7 +231,6 @@ const Header = () => {
             className="bg-white w-3/4 max-w-xs h-full shadow-xl p-5 flex flex-col gap-6 animate-slide-in"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Верхня панель */}
             <div className="flex items-center justify-between">
               <span className="font-bold text-lg text-gray-800">
                 {th("menu")}
@@ -266,7 +244,6 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Навігація */}
             <nav className="flex flex-col gap-3 text-gray-800 text-base">
               {navItems.map((item, idx) => (
                 <div key={idx}>
@@ -303,7 +280,6 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* Авторизація / Профіль */}
             <div className="mt-auto border-t pt-4 text-md">
               {currentUser ? (
                 <div className="flex flex-col gap-3">
@@ -353,7 +329,6 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Анімація зліва */}
           <style>
             {`
               @keyframes slide-in {

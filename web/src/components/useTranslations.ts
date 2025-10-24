@@ -24,5 +24,5 @@ export function useTranslation() {
     (key: TranslationKeys<T>): string =>
       String(translations[lang][section][key] ?? "");
 
-  return { t, lang, translations }; // ✅ тепер доступно і translations
+  return { t, lang, translations };
 }

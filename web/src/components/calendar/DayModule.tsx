@@ -10,7 +10,7 @@ interface DayModuleProps {
 const HOURS_IN_DAY = 24;
 const HOUR_HEIGHT = 128;
 const TASK_HEIGHT = 64;
-const TIME_COLUMN_WIDTH = 64; // ширина колонки з часом
+const TIME_COLUMN_WIDTH = 64;
 const hours = Array.from({ length: HOURS_IN_DAY }, (_, i) => i);
 
 const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
@@ -30,7 +30,6 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
       month: "short",
     });
 
-  // Визначаємо top для елемента
   const computeTop = (item: Event | Task) => {
     const isEvent = "startDate" in item;
     const d = isEvent ? item.startDate : new Date(item.dueDate);
@@ -38,7 +37,6 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
     return (minutes / 60) * HOUR_HEIGHT - (isEvent ? 0 : TASK_HEIGHT / 2);
   };
 
-  // Визначаємо висоту та top з центруванням для коротких подій
   const computeDisplayTopAndHeight = (item: Event | Task) => {
     const isEvent = "startDate" in item;
     const actualHeight = isEvent
@@ -58,7 +56,6 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
     return { top, height: displayHeight };
   };
 
-  // Вирішуємо накладки по пріоритету
   const computeVisibleItems = (items: (Event | Task)[]) => {
     const clusters: { items: (Event | Task)[] }[] = [];
 
@@ -107,18 +104,15 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
 
   return (
     <div className="flex-shrink-0 w-full bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden my-8 mx-2 flex flex-col">
-      {/* Заголовок дня */}
       <div className="h-16 border-b border-gray-300 flex items-center justify-center font-medium bg-gray-100 text-gray-700 text-lg">
         {formatDate(date)}
       </div>
 
-      {/* Контент — весь день клікабельний, скролиться */}
       <div
         ref={containerRef}
         className="relative h-[600px] overflow-y-auto"
         onClick={navigateToDay}
       >
-        {/* Часова шкала */}
         <div className="relative z-10 pointer-events-none">
           {hours.map((hour) => (
             <div
@@ -130,7 +124,6 @@ const DayModule: React.FC<DayModuleProps> = ({ date, items }) => {
           ))}
         </div>
 
-        {/* Події та таски */}
         <div className="absolute inset-0 z-20 px-4 pointer-events-auto">
           {visibleItems.map((item) => {
             const { top, height } = computeDisplayTopAndHeight(item);

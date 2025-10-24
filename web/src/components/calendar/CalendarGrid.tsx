@@ -44,7 +44,6 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
     weeks.push(week);
   }
 
-  // 🟦 DESKTOP
   if (!isMobile) {
     return (
       <div className="grid grid-cols-[40px_repeat(7,_1fr)] gap-1">
@@ -94,8 +93,6 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
     );
   }
 
-  
-  // 🟩 MOBILE
   return (
     <div className="grid grid-cols-7 gap-[2px] text-sm select-none">
       {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"].map((d) => (

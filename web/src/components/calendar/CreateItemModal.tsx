@@ -138,7 +138,6 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      {/* 🔹 Контейнер модалки */}
       <div
         className="
           bg-white rounded-lg shadow-lg relative flex overflow-hidden
@@ -147,7 +146,6 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           flex-col md:flex-row
         "
       >
-        {/* кнопка закриття */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-black z-50 hover:border-gray-300 rounded-full p-1 transition-colors"
@@ -155,7 +153,6 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           <X size={24} strokeWidth={2.5} />
         </button>
 
-        {/* 🔹 вкладки (горизонтально на мобілках, вертикально на пк) */}
         <div
           className="
     flex border-b md:border-b-0 md:border-r border-gray-300
@@ -180,7 +177,6 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           ))}
         </div>
 
-        {/* 🔹 контент */}
         <div className="flex-1 p-4 md:p-6 overflow-y-auto">
           {activeTab === "main" && (
             <div className="space-y-4">
