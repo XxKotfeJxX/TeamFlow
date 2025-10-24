@@ -33,7 +33,7 @@ export function Textarea({
           style={{
             height: fadeHeight,
             background: `linear-gradient(to bottom, rgba(255,255,255,0), ${fadeColor})`,
-            zIndex: 20, // поверх контенту, але під border
+            zIndex: 20,
           }}
         />
       )}

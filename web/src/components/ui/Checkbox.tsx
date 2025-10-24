@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { cn } from "../../utils/utils";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: ReactNode; // <- змінили string на ReactNode
+  label?: ReactNode; 
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(

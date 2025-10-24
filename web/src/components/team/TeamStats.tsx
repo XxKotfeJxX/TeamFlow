@@ -21,7 +21,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
     return d;
   }, [period]);
 
-  // === 1️⃣ Отримуємо задачі та події ===
   const teamTasks = useMemo(
     () =>
       taskDb
@@ -50,7 +49,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
     [teamEvents, startDate]
   );
 
-  // === 2️⃣ Активність учасників ===
   const memberActivity = useMemo(() => {
     const map: Record<string, number> = {};
     for (const task of completedTasks) {
@@ -67,7 +65,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
       .sort((a, b) => b.count - a.count);
   }, [completedTasks, teamMembers]);
 
-  // === 3️⃣ Унікальні користувачі, що були активні ===
   const activeUserIds = useMemo(() => {
     const ids = new Set<string>();
     filteredTasks.forEach((t) => t.assignedUsers.forEach((u) => ids.add(u)));
@@ -75,7 +72,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
     return ids;
   }, [filteredTasks, filteredEvents]);
 
-  // === 4️⃣ Відображення ===
   const periodLabel =
     period === "week"
       ? "за останні 7 днів"
@@ -85,7 +81,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
 
   return (
     <div className="space-y-6">
-      {/* === Перемикач періоду === */}
       <div className="flex gap-2 mb-4">
         {(["week", "month", "all"] as Period[]).map((p) => (
           <button
@@ -104,7 +99,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
         ))}
       </div>
 
-      {/* === Загальна активність === */}
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <h3 className="text-xl font-semibold mb-3">Загальна активність</h3>
         <p className="text-gray-600">
@@ -116,7 +110,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
         </p>
       </div>
 
-      {/* === Топ активних учасників === */}
       <div className="bg-white rounded-2xl shadow-sm p-6">
         <h3 className="text-xl font-semibold mb-3">Топ активних учасників</h3>
         {memberActivity.length > 0 ? (

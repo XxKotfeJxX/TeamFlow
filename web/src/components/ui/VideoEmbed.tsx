@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 interface VideoEmbedProps {
-  videoId: string; // YouTube video ID
-  previewImage: string; // шлях до кастомного превʼю
+  videoId: string;
+  previewImage: string;
   title?: string;
 }
 

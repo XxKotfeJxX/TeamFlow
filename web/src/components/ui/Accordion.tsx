@@ -22,9 +22,6 @@ interface AccordionContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-// ----------------------------------------------------------------
-// Основний Accordion
-// ----------------------------------------------------------------
 export function Accordion({
   type = "single",
   collapsible = true,
@@ -48,9 +45,6 @@ export function Accordion({
   );
 }
 
-// ----------------------------------------------------------------
-// Контекст для керування станом
-// ----------------------------------------------------------------
 interface AccordionContextValue {
   openItem: string | null;
   setOpenItem: (val: string | null) => void;
@@ -68,9 +62,6 @@ function useAccordionContext() {
   return ctx;
 }
 
-// ----------------------------------------------------------------
-// Item
-// ----------------------------------------------------------------
 interface AccordionItemProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string;
   children: React.ReactNode;
@@ -96,10 +87,6 @@ export function AccordionItem({
   );
 }
 
-
-// ----------------------------------------------------------------
-// Trigger
-// ----------------------------------------------------------------
 export function AccordionTrigger({
   children,
   className,
@@ -107,11 +94,9 @@ export function AccordionTrigger({
 }: AccordionTriggerProps) {
   const ctx = useAccordionContext();
 
-  // 🧩 Замість parent ref – зберігаємо item через контекст або DOM dataset
   const [itemValue, setItemValue] = React.useState<string | null>(null);
   const ref = React.useRef<HTMLButtonElement>(null);
 
-  // шукаємо data-accordion-item у батьківському div
   React.useEffect(() => {
     const parent = ref.current?.closest("[data-accordion-item]");
     if (parent && parent instanceof HTMLElement) {
@@ -153,9 +138,6 @@ export function AccordionTrigger({
   );
 }
 
-// ----------------------------------------------------------------
-// Content
-// ----------------------------------------------------------------
 export function AccordionContent({
   children,
   className,

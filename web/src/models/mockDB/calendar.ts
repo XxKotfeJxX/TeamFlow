@@ -1,17 +1,14 @@
-// web/src/models/mockDB/calendar.ts
 import { seedCalendars, seedEvents, seedTasks } from "./calendar.seed";
 
 export type OwnerType = "user" | "team";
 
-// ===== CALENDAR =====
 export interface Calendar {
   id: string;
   name: string;
   ownerType: OwnerType;
-  ownerId: string; // userId або teamId
+  ownerId: string;
 }
 
-// ===== EVENT =====
 export interface Event {
   id: string;
   title: string;
@@ -20,16 +17,15 @@ export interface Event {
   endDate: Date;
   color: string;
   priority: { team: number; personal: number };
-  participants: string[]; // userIds
+  participants: string[];
   calendarId: string;
-  ownerId: string; // userId
+  ownerId: string;
   recurring: { isRecurring: boolean; periodDays: number };
   status: "active" | "completed";
   tags: string[];
   taskIds?: string[];
 }
 
-// ===== TASK =====
 export interface Task {
   id: string;
   calendarId: string;
@@ -47,17 +43,12 @@ export interface Task {
   updatedAt: Date;
 }
 
-// ===== In-memory бази (початкові seed-и) =====
 export const calendars: Calendar[] = [...seedCalendars];
 export const events: Event[] = [...seedEvents];
 export const tasks: Task[] = [...seedTasks];
 
-// ===== Утиліта для ID =====
 const genId = () => crypto.randomUUID();
 
-// =======================================================
-// 🔹 CALENDAR DB — збереження у LocalStorage
-// =======================================================
 const CALENDAR_STORAGE_KEY = "calendarDB";
 
 function saveCalendars() {
@@ -75,7 +66,6 @@ function loadCalendars() {
       console.error("Помилка читання calendarDB:", e);
     }
   } else {
-    // якщо в localStorage нічого нема — ініціалізуємо seed-и
     saveCalendars();
   }
 }
@@ -117,9 +107,6 @@ export const calendarDb = {
   },
 };
 
-// =======================================================
-// 🔹 EVENT DB — збереження у LocalStorage
-// =======================================================
 const EVENT_STORAGE_KEY = "eventDB";
 
 function saveEvents() {
@@ -185,9 +172,6 @@ export const eventDb = {
   },
 };
 
-// =======================================================
-// 🔹 TASK DB — збереження у LocalStorage (вже було)
-// =======================================================
 const TASK_STORAGE_KEY = "tasksDB";
 
 function saveTasks() {

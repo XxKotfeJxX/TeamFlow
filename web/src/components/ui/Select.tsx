@@ -1,7 +1,6 @@
 import type { ReactNode, HTMLAttributes, SelectHTMLAttributes } from "react";
 import { cn } from "../../utils/utils";
 
-// Натівний select
 export function Select({
   className,
   ...props
@@ -17,7 +16,6 @@ export function Select({
   );
 }
 
-// Елемент опції
 export function SelectItem({
   value,
   children,
@@ -32,7 +30,6 @@ export function SelectItem({
   );
 }
 
-// Триггер (візуальна оболонка для кастомного select)
 export function SelectTrigger({
   children,
   className,
@@ -51,7 +48,6 @@ export function SelectTrigger({
   );
 }
 
-// Значення select
 interface SelectValueProps {
   value?: string;
   placeholder?: string;
@@ -60,7 +56,6 @@ export function SelectValue({ value, placeholder }: SelectValueProps) {
   return <span className={cn("text-gray-500")}>{value || placeholder}</span>;
 }
 
-// Контент опцій (може бути просто фрагмент)
 export function SelectContent({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }

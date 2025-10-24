@@ -1,6 +1,5 @@
 import type { Calendar, Event, Task } from "./calendar";
 
-// ===== CALENDARS =====
 export const seedCalendars: Calendar[] = [
   {
     id: "c1",
@@ -119,7 +118,6 @@ export const seedCalendars: Calendar[] = [
   },
 ];
 
-// ===== EVENTS =====
 export const seedEvents: Event[] = [
   {
     id: "e1",
@@ -274,9 +272,7 @@ export const seedEvents: Event[] = [
   },
 ];
 
-// ===== TASKS =====
 export const seedTasks: Task[] = [
-  // --- Особисті таски ---
   {
     id: "ta1",
     title: "Зробити прототип дизайну",
@@ -518,7 +514,6 @@ export const seedTasks: Task[] = [
     updatedAt: new Date("2025-09-13T22:00:00"),
   },
 
-  // --- Командні таски ---
   {
     id: "ta16",
     title: "Зробити демо для клієнта",

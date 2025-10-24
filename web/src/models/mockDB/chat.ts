@@ -1,22 +1,13 @@
-// web/src/models/mockDB/chats.ts
-// Mock DB для чатів із повною підтримкою LocalStorage, CRUD і різних типів повідомлень
-// Стиль і підхід узгоджені з users.ts та teams.ts
-
-// =============================
-// Типи
-// =============================
 export type ChatType = "direct" | "group" | "team";
 
 export interface Chat {
   id: string;
   type: ChatType;
-  // Для direct/group: опціональний title/avatar, для team: береться з команди
   title?: string;
   avatarUrl?: string;
-  teamId?: string; // якщо type === "team"
-  participantIds: string[]; // userId[]
-  // читання/непрочитане
-  lastReadAtBy: Record<string, Date>; // { [userId]: Date }
+  teamId?: string;
+  participantIds: string[];
+  lastReadAtBy: Record<string, Date>;
 
   createdAt: Date;
   updatedAt: Date;
@@ -32,30 +23,26 @@ interface BaseMessage {
   kind: MessageKind;
   createdAt: Date;
   updatedAt: Date;
-  // статуси доставки (спрощено)
   status: "sent" | "delivered" | "read";
-  // відповіді/реплаї
   replyToId?: string;
-  // реакції: { emoji: [userId, ...] }
   reactions?: Record<string, string[]>;
-  // soft-delete
   deletedAt?: Date;
 }
 
 export interface TextMessage extends BaseMessage {
   kind: "text";
-  text: string; // контент тексту
+  text: string;
 }
 
 export interface MediaMeta {
-  url: string; // посилання на ресурс (може бути data: URL або http(s))
+  url: string;
   mimeType?: string;
   sizeBytes?: number;
-  durationSec?: number; // для аудіо/відео
-  width?: number; // для фото/відео
-  height?: number; // для фото/відео
-  thumbnailUrl?: string; // превʼюшка (опц.)
-  alt?: string; // опис зображення (опц.)
+  durationSec?: number;
+  width?: number;
+  height?: number;
+  thumbnailUrl?: string;
+  alt?: string;
 }
 
 export interface ImageMessage extends BaseMessage, MediaMeta {
@@ -72,22 +59,15 @@ export interface VideoMessage extends BaseMessage, MediaMeta {
 
 export type Message = TextMessage | ImageMessage | AudioMessage | VideoMessage;
 
-// Зручний вхідний тип для створення повідомлення
 export type MessageInput =
   | { kind: "text"; text: string }
   | ({ kind: "image" | "audio" | "video" } & MediaMeta);
 
-// =============================
-// Ініціалізація in-memory сховищ
-// =============================
 const genId = () => crypto.randomUUID();
 
 let chats: Chat[] = [];
 let messages: Message[] = [];
 
-// =============================
-// LocalStorage persistence
-// =============================
 const CHATS_KEY = "mock_chats_db_v1";
 const MESSAGES_KEY = "mock_chat_messages_db_v1";
 
@@ -127,7 +107,6 @@ function loadChats() {
     const raw = localStorage.getItem(CHATS_KEY);
     if (!raw) return;
 
-    // контрольований тип після JSON.parse
     const parsed = JSON.parse(raw) as Record<string, unknown>[];
 
     chats = parsed.map((cRaw): Chat => {
@@ -162,7 +141,6 @@ function loadMessages() {
     const raw = localStorage.getItem(MESSAGES_KEY);
     if (!raw) return;
 
-    // Один контрольований any при парсингу
     const parsed = JSON.parse(raw) as { [key: string]: unknown }[];
 
     messages = parsed.map((m) => ({
@@ -176,14 +154,9 @@ function loadMessages() {
   }
 }
 
-
-// Автозавантаження при старті
 loadChats();
 loadMessages();
 
-// =============================
-// Допоміжні утиліти
-// =============================
 function touchChat(chatId: string, at = new Date()) {
   const chat = chats.find((c) => c.id === chatId);
   if (chat) {
@@ -196,11 +169,7 @@ function ensureParticipantsUnique(ids: string[]): string[] {
   return Array.from(new Set(ids.filter(Boolean)));
 }
 
-// =============================
-// CRUD для чатів
-// =============================
 export const chatDb = {
-  // Створити direct чат між двома юзерами (або повернути існуючий)
   createDirect: (userA: string, userB: string): Chat => {
     const pair = ensureParticipantsUnique([userA, userB]).sort();
     const existing = chats.find(
@@ -224,7 +193,6 @@ export const chatDb = {
     return chat;
   },
 
-  // Створити груповий чат
   createGroup: (
     participantIds: string[],
     title?: string,
@@ -246,7 +214,6 @@ export const chatDb = {
     return chat;
   },
 
-  // Створити чат для команди
   createTeam: (teamId: string, participantIds: string[] = []): Chat => {
     const now = new Date();
     const existing = chats.find(
@@ -312,14 +279,12 @@ export const chatDb = {
     const i = chats.findIndex((c) => c.id === id);
     if (i === -1) return false;
     chats.splice(i, 1);
-    // Також видаляємо всі повідомлення цього чату
     messages = messages.filter((m) => m.chatId !== id);
     saveChats();
     saveMessages();
     return true;
   },
 
-  // Керування учасниками (зручно для group/team)
   addParticipant: (chatId: string, userId: string): Chat | undefined => {
     const chat = chats.find((c) => c.id === chatId);
     if (!chat) return undefined;
@@ -347,11 +312,7 @@ export const chatDb = {
   },
 };
 
-// =============================
-// Операції з повідомленнями
-// =============================
 export const messageDb = {
-  // Список повідомлень чату (із можливістю пагінації за часом)
   listByChat: (
     chatId: string,
     opts?: { limit?: number; before?: Date; after?: Date }
@@ -371,8 +332,6 @@ export const messageDb = {
 
   getById: (id: string): Message | undefined =>
     messages.find((m) => m.id === id),
-
-  // Універсальний sender: приймає MessageInput для різних типів даних
   send: (chatId: string, senderId: string, input: MessageInput): Message => {
     const now = new Date();
       const base: Omit<BaseMessage, "replyToId" | "reactions"> = {
@@ -413,7 +372,6 @@ export const messageDb = {
     return msg;
   },
 
-  // Редагувати повідомлення (наприклад, текст або метадані медіа)
   update: (id: string, updates: Partial<Message>): Message | undefined => {
     const m = messages.find((x) => x.id === id);
     if (!m) return undefined;
@@ -423,7 +381,6 @@ export const messageDb = {
     return m;
   },
 
-  // Додати/зняти реакцію (emoji) від користувача
   toggleReaction: (
     id: string,
     emoji: string,
@@ -442,7 +399,6 @@ export const messageDb = {
     return m;
   },
 
-  // Soft-delete (повідомлення залишається для історії)
   softDelete: (id: string): boolean => {
     const m = messages.find((x) => x.id === id);
     if (!m) return false;
@@ -451,7 +407,6 @@ export const messageDb = {
     return true;
   },
 
-  // Hard-delete (повністю з видаленням із БД)
   hardDelete: (id: string): boolean => {
     const i = messages.findIndex((x) => x.id === id);
     if (i === -1) return false;
@@ -460,7 +415,6 @@ export const messageDb = {
     return true;
   },
 
-  // Масове видалення за chatId (напр. при видаленні чату)
   deleteByChat: (chatId: string): number => {
     const before = messages.length;
     messages = messages.filter((m) => m.chatId !== chatId);
@@ -469,9 +423,6 @@ export const messageDb = {
   },
 };
 
-// =============================
-// Невеликі сид-дані (необовʼязково)
-// =============================
 (function ensureSeed() {
   if (chats.length > 0 || messages.length > 0) return;
   const now = new Date();
@@ -502,53 +453,3 @@ export const messageDb = {
   saveChats();
   saveMessages();
 })();
-
-// =============================
-// Приклади використання (для довідки)
-// =============================
-/*
-import { chatDb, messageDb } from "../models/mockDB/chats";
-
-// 1) Створити/отримати чат команди
-const teamChat = chatDb.createTeam(teamId, teamMemberIds);
-
-// 2) Відправити текст
-messageDb.send(teamChat.id, currentUserId, { kind: "text", text: "Привіт 👋" });
-
-// 3) Відправити фото
-messageDb.send(teamChat.id, currentUserId, {
-  kind: "image",
-  url: dataUrlOrHttpLink,
-  mimeType: "image/png",
-  width: 1280,
-  height: 720,
-  thumbnailUrl: thumbUrl,
-  alt: "Скрін дизайну",
-});
-
-// 4) Аудіо
-messageDb.send(teamChat.id, currentUserId, {
-  kind: "audio",
-  url: blobUrl,
-  mimeType: "audio/webm",
-  durationSec: 12.4,
-  sizeBytes: 420000,
-});
-
-// 5) Відео
-messageDb.send(teamChat.id, currentUserId, {
-  kind: "video",
-  url: blobUrl,
-  mimeType: "video/webm",
-  durationSec: 3.2,
-  width: 720,
-  height: 1280,
-  thumbnailUrl: posterUrl,
-});
-
-// 6) Реакції
-messageDb.toggleReaction(messageId, "👍", currentUserId);
-
-// 7) Soft-delete
-messageDb.softDelete(messageId);
-*/

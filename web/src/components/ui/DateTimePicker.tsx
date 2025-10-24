@@ -84,7 +84,7 @@ function CustomTimePicker({
 
   const handlePointerDown = (e: React.MouseEvent) => {
     setDragging(true);
-    handlePointerMove(e); // оновимо одразу при натисканні
+    handlePointerMove(e);
   };
 
   const handlePointerMove = (e: React.MouseEvent) => {
@@ -100,8 +100,7 @@ function CustomTimePicker({
 
     if (mode === "hour") {
       const distance = Math.sqrt(dx * dx + dy * dy);
-      // визначаємо коло
-      const isInner = distance < 60; // внутрішнє коло радіус 45, зовнішнє 70, поріг можна підкорегувати
+      const isInner = distance < 60;
       const hour = Math.round(angle / 30) % 12;
       const hour12 = isInner ? hour + 12 : hour;
       setSelectedHour(hour12);
@@ -116,7 +115,6 @@ function CustomTimePicker({
   const handlePointerUp = () => setDragging(false);
 
   const getHourCoords = (hour: number) => {
-    // зовнішнє коло 0-11
     if (hour <= 11) {
       const angle = (hour * 30 * Math.PI) / 180;
       return {
@@ -133,7 +131,7 @@ function CustomTimePicker({
   };
 
   const getMinuteCoords = (minute: number) => {
-    const angle = (minute * 6 * Math.PI) / 180; // 6° на хвилину
+    const angle = (minute * 6 * Math.PI) / 180;
     return {
       x: 90 + 70 * Math.sin(angle),
       y: 90 - 70 * Math.cos(angle),
@@ -155,8 +153,8 @@ function CustomTimePicker({
       ({ x: circleX, y: circleY } = getMinuteCoords(selectedMinute));
     }
 
-    const circleRadius = 16; // радіус кружечка (w-8 h-8)
-    const digitRadius = 6; // приблизний радіус цифри
+    const circleRadius = 16;
+    const digitRadius = 6;
     const dx = digitX - circleX;
     const dy = digitY - circleY;
 
@@ -185,7 +183,6 @@ function CustomTimePicker({
 
   return (
     <div className="relative flex items-center border rounded-lg bg-white min-w-[130px] px-2 py-1">
-      {/* Поле для ручного вводу */}
       <input
         type="text"
         value={manual}
@@ -201,13 +198,11 @@ function CustomTimePicker({
         onClick={() => setOpen(true)}
       />
 
-      {/* Модалка вибору часу */}
       {open && (
         <div
           ref={modalRef}
           className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4"
         >
-          {/* Кнопки зверху */}
           <div className="flex justify-center gap-2 mb-4">
             <button
               className={`px-3 py-1 rounded ${
@@ -231,7 +226,6 @@ function CustomTimePicker({
             </button>
           </div>
 
-          {/* Циферблат */}
           <div
             className="relative w-[180px] h-[180px] rounded-full mx-auto"
             style={{ userSelect: "none" }}
@@ -245,7 +239,6 @@ function CustomTimePicker({
           >
             {mode === "hour" && (
               <>
-                {/* Зовнішнє коло 0-11 */}
                 {Array.from({ length: 12 }).map((_, i) => {
                   const angle = (i * 30 * Math.PI) / 180;
                   const x = 90 + 70 * Math.sin(angle);
@@ -270,7 +263,6 @@ function CustomTimePicker({
                     </div>
                   );
                 })}
-                {/* Внутрішнє коло 12-23 */}
                 {Array.from({ length: 12 }).map((_, i) => {
                   const angle = (i * 30 * Math.PI) / 180;
                   const x = 90 + 45 * Math.sin(angle);
@@ -296,26 +288,22 @@ function CustomTimePicker({
                 })}
                 {selectedHour !== null &&
                   (() => {
-                    // Розміри       // w-3 h-3 → радіус 1.5px
-                    const circleSize = 32; // w-8 h-8 → 32px
+                    const circleSize = 32;
                     const circleRadius = circleSize / 2;
                     const center = 93.5;
 
-                    // Центр кружечка
                     const rawCircle = getHourCoords(selectedHour);
 
                     return (
                       <>
-                        {/* Точка */}
                         <div
                           className="absolute w-3 h-3 bg-blue-500 rounded-full"
                           style={{
-                            left: `${90 - 1.5}px`, // центр циферблату - радіус точки
+                            left: `${90 - 1.5}px`,
                             top: `${90 - 1.5}px`,
                           }}
                         />
 
-                        {/* Лінія від центру до кружечка */}
                         <div
                           className="absolute bg-blue-500"
                           style={{
@@ -334,7 +322,6 @@ function CustomTimePicker({
                           }}
                         />
 
-                        {/* Кружечок */}
                         <div
                           className="absolute w-8 h-8 bg-blue-500 rounded-full"
                           style={{
@@ -362,17 +349,14 @@ function CustomTimePicker({
                   const dx = clickX - centerX;
                   const dy = clickY - centerY;
 
-                  // кут у градусах
                   let angle = Math.atan2(dy, dx) * (180 / Math.PI);
                   angle = (angle + 90 + 360) % 360;
 
-                  // переводимо кут у хвилини
                   const minutes = Math.round(angle / 6) % 60;
                   setSelectedMinute(minutes);
                   updateTime(null, minutes);
                 }}
               >
-                {/* 5-хвилинні мітки */}
                 {Array.from({ length: 12 }).map((_, i) => {
                   const minute = i * 5;
                   const angle = (i * 30 * Math.PI) / 180;
@@ -398,12 +382,10 @@ function CustomTimePicker({
                 })}
                 {selectedMinute !== null &&
                   (() => {
-                    // обчислюємо координати для кружечка
                     const minuteCoords = getMinuteCoords(selectedMinute);
 
                     return (
                       <>
-                        {/* Центр */}
                         <div
                           className="absolute w-3 h-3 bg-blue-500 rounded-full"
                           style={{
@@ -412,7 +394,6 @@ function CustomTimePicker({
                           }}
                         />
 
-                        {/* Лінія від центру до вибраної хвилини */}
                         <div
                           className="absolute bg-blue-500"
                           style={{
@@ -431,7 +412,6 @@ function CustomTimePicker({
                           }}
                         />
 
-                        {/* Кружечок на вибраній хвилині */}
                         <div
                           className="absolute w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"
                           style={{
@@ -468,7 +448,7 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
   useEffect(() => {
     if (value !== externalValue) {
       setExternalValue(value);
-      setManual(value); // оновлюємо manual лише тоді, коли value змінюється зовні
+      setManual(value);
     }
   }, [value, externalValue]);
 
@@ -511,9 +491,8 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
 
   const handleManualDate = () => {
     const today = new Date();
-    const val = manual.replace(/[^\d]/g, ""); // лишаємо лише цифри
+    const val = manual.replace(/[^\d]/g, "");
 
-    // --- День ---
     let day = "01";
     if (val.length >= 2) {
       day = val.slice(0, 2);
@@ -521,7 +500,6 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
       if (Number(day) > 31) day = "31";
     }
 
-    // --- Місяць ---
     let month = "01";
     if (val.length >= 4) {
       month = val.slice(2, 4);
@@ -529,16 +507,13 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
       if (Number(month) > 12) month = "12";
     }
 
-    // --- Рік ---
-    const yearInput = val.slice(4); // все після 4 цифр
+    const yearInput = val.slice(4);
     let year = String(today.getFullYear());
 
     if (yearInput.length > 0) {
       const getClosestYear = (input: string, currentYear: number): number => {
-        // якщо ввід більше 4 символів — відразу повертаємо поточний рік
         if (input.length > 4) return currentYear;
 
-        // якщо 4 або більше цифр (але input.length <= 4) — беремо перші 4
         if (input.length === 4) {
           const num = Number(input);
           return num === 0 || num > 3999 ? currentYear : num;
@@ -548,14 +523,12 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
         const free = 4 - block.length;
         const patterns: string[] = [];
 
-        // створюємо всі варіанти розташування блоку
         for (let i = 0; i <= free; i++) {
           patterns.push("x".repeat(i) + block + "x".repeat(free - i));
         }
 
         const candidates: number[] = [];
 
-        // підставляємо цифри 0–9 у кожен "x"
         for (const pattern of patterns) {
           const count = (pattern.match(/x/g) || []).length;
           const max = 10 ** count;
@@ -565,13 +538,12 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
             let str = pattern;
             for (const d of digits) str = str.replace("x", d);
             const yearNum = Number(str);
-            if (yearNum > 0 && yearNum <= 3999) candidates.push(yearNum); // 0000 не беремо
+            if (yearNum > 0 && yearNum <= 3999) candidates.push(yearNum);
           }
         }
 
         if (candidates.length === 0) return currentYear;
 
-        // вибираємо рік найближчий до поточного
         return candidates.reduce((a, b) =>
           Math.abs(a - currentYear) < Math.abs(b - currentYear) ? a : b
         );
@@ -587,7 +559,6 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
     setManual(newVal);
     onChange(newVal);
 
-    // --- Форматування з крапками ---
     const formatted = `${day.padStart(2, "0")}.${month.padStart(
       2,
       "0"
@@ -631,7 +602,6 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
     updateManual(undefined, undefined, year);
   };
 
-  // закриття модалки при кліку поза нею
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -644,8 +614,8 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
 
   const renderDays = () => {
     const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
-    const firstDay = new Date(selectedYear, selectedMonth - 1, 1).getDay(); // 0-неділя
-    const blanks = Array((firstDay + 6) % 7).fill(null); // понеділок = 0
+    const firstDay = new Date(selectedYear, selectedMonth - 1, 1).getDay();
+    const blanks = Array((firstDay + 6) % 7).fill(null);
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
     return [...blanks, ...days].map((d, idx) =>
@@ -713,23 +683,19 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
         type="text"
         value={manual}
         onChange={(e) => {
-          let v = e.target.value.replace(/[^\d.]/g, ""); // залишаємо тільки цифри та крапки
+          let v = e.target.value.replace(/[^\d.]/g, "");
 
-          // знайти всі крапки
           const dots = [...v.matchAll(/\./g)].map((m) => m.index!);
 
-          // обмежуємо максимум дві крапки (щоб дата була у форматі DD.MM.YYYY)
           if (dots.length > 2) {
             const thirdDot = dots[2];
-            v = v.slice(0, thirdDot); // усе після третьої зрізаємо
+            v = v.slice(0, thirdDot);
           }
 
-          // вставляємо першу крапку після двох цифр, якщо її ще нема
           if (!v.includes(".") && v.length > 2) {
             v = v.slice(0, 2) + "." + v.slice(2);
           }
 
-          // вставляємо другу крапку через ще два символи після першої
           const firstDotIndex = v.indexOf(".");
           if (firstDotIndex !== -1) {
             const afterFirst = v.slice(firstDotIndex + 1);
@@ -760,7 +726,6 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
           ref={modalRef}
           className="absolute z-50 top-full left-0 mt-2 bg-white border rounded-lg shadow-lg p-4"
         >
-          {/* Кнопки вкладок */}
           <div className="flex gap-2 mb-4">
             <button
               className={`px-3 py-1 rounded ${
@@ -788,7 +753,6 @@ function CustomDatePicker({ value, onChange }: CustomDatePickerProps) {
             </button>
           </div>
 
-          {/* Контент вкладки */}
           {mode === "day" && (
             <div className="grid grid-cols-7 gap-1">{renderDays()}</div>
           )}
