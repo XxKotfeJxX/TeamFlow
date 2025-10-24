@@ -10,6 +10,7 @@ import { Pencil, Upload } from "lucide-react";
 import { Textarea } from "../components/ui/Textarea";
 import { Input } from "../components/ui/Input";
 import { useTranslation } from "../components/useTranslations";
+import { motion } from "framer-motion";
 
 export default function ProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -73,260 +74,285 @@ export default function ProfilePage() {
   const goToTasks = () => navigate(`/tasks/user/${user.id}`);
   const goToTeams = () => navigate(`/teams/user/${user.id}`);
 
-  return (
-    <>
-      <Header />
-      <main className="max-w-7xl mx-auto px-4 py-8 pt-20 bg-[#f9fafb] min-h-screen rounded-lg shadow-sm border-t border-gray-200">
-        <div className="flex flex-col items-center mb-8">
-          {/* Фото */}
-          <div className="relative">
-            {editableUser.avatarUrl ? (
-              <img
-                src={editableUser.avatarUrl}
-                alt={editableUser.username}
-                className="w-24 h-24 rounded-full object-cover shadow-md border-2 border-white"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-3xl font-bold text-white shadow-md">
-                {editableUser.username.charAt(0).toUpperCase()}
-              </div>
-            )}
-            {editing && isOwner && (
-              <label className="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow cursor-pointer hover:bg-gray-100 text-gray-600">
-                <Upload size={16} />
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-              </label>
-            )}
-          </div>
+ return (
+   <>
+     <Header />
 
-          <h1 className="text-3xl font-bold mt-4 text-gray-800">
-            {editableUser.username}
-          </h1>
-          <p className="text-gray-500">{editableUser.email}</p>
-          {!isPrivate || isOwner ? (
-            <div className="flex gap-3 mt-5">
-              <Button
-                onClick={goToCalendar}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white hover:border-emerald-700 "
-              >
-                {tp("calendar")}
-              </Button>
-              <Button
-                onClick={goToTasks}
-                className="bg-blue-600 hover:bg-blue-700 text-white hover:border-blue-700"
-              >
-                {tp("tasks")}
-              </Button>
-              <Button
-                onClick={goToTeams}
-                className="bg-purple-600 hover:bg-purple-700 text-white hover:border-purple-700"
-              >
-                {tp("teams")}
-              </Button>
-            </div>
-          ) : null}
-        </div>
+     <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
+       {/* Градієнтні бліки позаду */}
+       <motion.div
+         aria-hidden
+         initial={{ opacity: 0 }}
+         animate={{ opacity: 1 }}
+         transition={{ duration: 0.8 }}
+         className="pointer-events-none absolute inset-0"
+       >
+         <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+         <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
+       </motion.div>
 
-        {isPrivate && !isOwner ? (
-          <div className="text-center text-gray-500 italic py-16">
-            🔒 {tp("privateProfile")}
-          </div>
-        ) : (
-          <div className="max-w-4xl mx-auto space-y-8">
-            {/* ===== ABOUT ===== */}
-            <section className="bg-white p-6 rounded-2xl shadow-sm border relative">
-              <div className="flex justify-between items-center mb-3">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  {tp("about")}
-                </h2>
+       <main className="relative z-10 max-w-5xl mx-auto px-6 py-24 flex flex-col items-center">
+         <div className="w-full bg-white/70 backdrop-blur-md rounded-3xl shadow-lg border border-gray-100 p-8 md:p-10">
+           <div className="flex flex-col items-center mb-8">
+             {/* Фото */}
+             <div className="relative">
+               {editableUser.avatarUrl ? (
+                 <img
+                   src={editableUser.avatarUrl}
+                   alt={editableUser.username}
+                   className="w-28 h-28 rounded-full object-cover shadow-md border-4 border-white"
+                 />
+               ) : (
+                 <div className="w-28 h-28 rounded-full bg-blue-600 flex items-center justify-center text-4xl font-bold text-white shadow-md">
+                   {editableUser.username.charAt(0).toUpperCase()}
+                 </div>
+               )}
+               {editing && isOwner && (
+                 <label className="absolute bottom-0 right-0 bg-white p-1.5 rounded-full shadow cursor-pointer hover:bg-gray-100 text-gray-600">
+                   <Upload size={18} />
+                   <input
+                     type="file"
+                     accept="image/*"
+                     className="hidden"
+                     onChange={handleFileChange}
+                   />
+                 </label>
+               )}
+             </div>
 
-                {isOwner && (
-                  <button
-                    onClick={() => setEditing(!editing)}
-                    className="text-gray-500 hover:text-blue-600 transition hover:bg-gray-100 p-2 rounded-full"
-                  >
-                    <Pencil size={18} />
-                  </button>
-                )}
-              </div>
+             <h1 className="text-3xl md:text-4xl font-bold mt-5 text-gray-800 tracking-tight">
+               {editableUser.username}
+             </h1>
+             <p className="text-gray-500">{editableUser.email}</p>
 
-              {editing && isOwner ? (
-                <div className="space-y-3">
-                  <div>
-                    <label className="text-sm text-gray-500">
-                      {tp("nickname")}
-                    </label>
-                    <Input
-                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                      value={editableUser.username}
-                      onChange={(e) =>
-                        setEditableUser({
-                          ...editableUser,
-                          username: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+             {!isPrivate || isOwner ? (
+               <div className="flex flex-wrap justify-center gap-3 mt-6">
+                 <Button
+                   onClick={goToCalendar}
+                   className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
+                 >
+                   {tp("calendar")}
+                 </Button>
+                 <Button
+                   onClick={goToTasks}
+                   className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
+                 >
+                   {tp("tasks")}
+                 </Button>
+                 <Button
+                   onClick={goToTeams}
+                   className="bg-purple-600 hover:bg-purple-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
+                 >
+                   {tp("teams")}
+                 </Button>
+               </div>
+             ) : null}
+           </div>
 
-                  <div>
-                    <label className="text-sm text-gray-500">
-                      {tp("email")}
-                    </label>
-                    <Input
-                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                      type="email"
-                      value={editableUser.email}
-                      onChange={(e) =>
-                        setEditableUser({
-                          ...editableUser,
-                          email: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+           {isPrivate && !isOwner ? (
+             <div className="text-center text-gray-500 italic py-16">
+               🔒 {tp("privateProfile")}
+             </div>
+           ) : (
+             <div className="space-y-8">
+               {/* ===== ABOUT ===== */}
+               <section className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-sm border relative hover:shadow-md transition">
+                 <div className="flex justify-between items-center mb-3">
+                   <h2 className="text-2xl font-semibold text-gray-800">
+                     {tp("about")}
+                   </h2>
+                   {isOwner && (
+                     <button
+                       onClick={() => setEditing(!editing)}
+                       className="text-gray-500 hover:text-blue-600 transition hover:bg-gray-100 p-2 rounded-full"
+                     >
+                       <Pencil size={18} />
+                     </button>
+                   )}
+                 </div>
 
-                  <div>
-                    <label className="text-sm text-gray-500">{tp("bio")}</label>
-                    <Textarea
-                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                      rows={3}
-                      value={editableUser.bio}
-                      onChange={(e) =>
-                        setEditableUser({
-                          ...editableUser,
-                          bio: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                 {editing && isOwner ? (
+                   <div className="space-y-4">
+                     <div>
+                       <label className="text-sm text-gray-500">
+                         {tp("nickname")}
+                       </label>
+                       <Input
+                         className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                         value={editableUser.username}
+                         onChange={(e) =>
+                           setEditableUser({
+                             ...editableUser,
+                             username: e.target.value,
+                           })
+                         }
+                       />
+                     </div>
 
-                  <div>
-                    <label className="text-sm text-gray-500">
-                      {tp("skills")}
-                    </label>
-                    <Input
-                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                      value={editableUser.skills}
-                      onChange={(e) =>
-                        setEditableUser({
-                          ...editableUser,
-                          skills: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                     <div>
+                       <label className="text-sm text-gray-500">
+                         {tp("email")}
+                       </label>
+                       <Input
+                         className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                         type="email"
+                         value={editableUser.email}
+                         onChange={(e) =>
+                           setEditableUser({
+                             ...editableUser,
+                             email: e.target.value,
+                           })
+                         }
+                       />
+                     </div>
 
-                  <div>
-                    <label className="text-sm text-gray-500">
-                      {tp("languages")}
-                    </label>
-                    <Input
-                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                      value={editableUser.languages}
-                      onChange={(e) =>
-                        setEditableUser({
-                          ...editableUser,
-                          languages: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                     <div>
+                       <label className="text-sm text-gray-500">
+                         {tp("bio")}
+                       </label>
+                       <Textarea
+                         className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                         rows={3}
+                         value={editableUser.bio}
+                         onChange={(e) =>
+                           setEditableUser({
+                             ...editableUser,
+                             bio: e.target.value,
+                           })
+                         }
+                       />
+                     </div>
 
-                  <div>
-                    <label className="text-sm text-gray-500">
-                      {tp("timezone")}
-                    </label>
-                    <Input
-                      className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
-                      value={editableUser.timezone}
-                      onChange={(e) =>
-                        setEditableUser({
-                          ...editableUser,
-                          timezone: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                     <div className="grid md:grid-cols-2 gap-4">
+                       <div>
+                         <label className="text-sm text-gray-500">
+                           {tp("skills")}
+                         </label>
+                         <Input
+                           className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                           value={editableUser.skills}
+                           onChange={(e) =>
+                             setEditableUser({
+                               ...editableUser,
+                               skills: e.target.value,
+                             })
+                           }
+                         />
+                       </div>
 
-                  <div className="flex justify-end gap-2 pt-2">
-                    <Button
-                      onClick={() => setEditing(false)}
-                      className="bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    >
-                      {tp("cancel")}
-                    </Button>
-                    <Button
-                      onClick={handleSave}
-                      className="bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                      {tp("save")}
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-2 text-gray-700">
-                  <p>
-                    <strong>{tp("nickname")}:</strong> {user.username}
-                  </p>
-                  <p>
-                    <strong>{tp("email")}:</strong> {user.email}
-                  </p>
-                  <p>
-                    <strong>{tp("bio")}:</strong> {user.bio || "—"}
-                  </p>
-                  <p>
-                    <strong>{tp("skills")}:</strong>{" "}
-                    {user.skills.length ? user.skills.join(", ") : "—"}
-                  </p>
-                  <p>
-                    <strong>{tp("languages")}:</strong>{" "}
-                    {user.languages.length ? user.languages.join(", ") : "—"}
-                  </p>
-                  <p>
-                    <strong>{tp("timezone")}:</strong> {user.timezone || "—"}
-                  </p>
-                </div>
-              )}
-            </section>
+                       <div>
+                         <label className="text-sm text-gray-500">
+                           {tp("languages")}
+                         </label>
+                         <Input
+                           className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                           value={editableUser.languages}
+                           onChange={(e) =>
+                             setEditableUser({
+                               ...editableUser,
+                               languages: e.target.value,
+                             })
+                           }
+                         />
+                       </div>
 
-            <section>
-              <ProfileActivity
-                createdAt={user.createdAt.toISOString()}
-                lastActiveAt={user.lastActive.toISOString()}
-              />
-            </section>
+                       <div className="md:col-span-2">
+                         <label className="text-sm text-gray-500">
+                           {tp("timezone")}
+                         </label>
+                         <Input
+                           className="w-full p-2 border rounded-md bg-white focus:ring-2 focus:ring-blue-500"
+                           value={editableUser.timezone}
+                           onChange={(e) =>
+                             setEditableUser({
+                               ...editableUser,
+                               timezone: e.target.value,
+                             })
+                           }
+                         />
+                       </div>
+                     </div>
 
-            <ProfileSettings
-              interfaceLang={currentUser.interfaceLang}
-              profileVisibility={currentUser.profileVisibility}
-              disabled={!isOwner}
-              onChange={(field, value) => {
-                if (isOwner) {
-                  userDb.update(currentUser.id, { [field]: value });
-                  setCurrentUser({
-                    ...currentUser,
-                    [field]: value,
-                  } as typeof currentUser);
+                     <div className="flex justify-end gap-3 pt-3">
+                       <Button
+                         onClick={() => setEditing(false)}
+                         className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-2xl"
+                       >
+                         {tp("cancel")}
+                       </Button>
+                       <Button
+                         onClick={handleSave}
+                         className="bg-blue-600 text-white hover:bg-blue-700 rounded-2xl"
+                       >
+                         {tp("save")}
+                       </Button>
+                     </div>
+                   </div>
+                 ) : (
+                   <div className="space-y-2 text-gray-700">
+                     <p>
+                       <strong>{tp("nickname")}:</strong> {user.username}
+                     </p>
+                     <p>
+                       <strong>{tp("email")}:</strong> {user.email}
+                     </p>
+                     <p>
+                       <strong>{tp("bio")}:</strong> {user.bio || "—"}
+                     </p>
+                     <p>
+                       <strong>{tp("skills")}:</strong>{" "}
+                       {user.skills.length ? user.skills.join(", ") : "—"}
+                     </p>
+                     <p>
+                       <strong>{tp("languages")}:</strong>{" "}
+                       {user.languages.length ? user.languages.join(", ") : "—"}
+                     </p>
+                     <p>
+                       <strong>{tp("timezone")}:</strong> {user.timezone || "—"}
+                     </p>
+                   </div>
+                 )}
+               </section>
 
-                  if (field === "interfaceLang") {
-                    localStorage.setItem("interfaceLang", value);
-                    document.documentElement.lang = value;
-                    window.dispatchEvent(
-                      new CustomEvent("interfaceLangChange", { detail: value })
-                    );
-                  }
-                }
-              }}
-            />
-          </div>
-        )}
-      </main>
-      <Footer />
-    </>
-  );
+               <section>
+                 <ProfileActivity
+                   createdAt={user.createdAt.toISOString()}
+                   lastActiveAt={user.lastActive.toISOString()}
+                 />
+               </section>
+
+               <ProfileSettings
+                 interfaceLang={currentUser.interfaceLang}
+                 profileVisibility={currentUser.profileVisibility}
+                 disabled={!isOwner}
+                 onChange={(field, value) => {
+                   if (isOwner) {
+                     userDb.update(currentUser.id, { [field]: value });
+                     setCurrentUser({
+                       ...currentUser,
+                       [field]: value,
+                     } as typeof currentUser);
+
+                     if (field === "interfaceLang") {
+                       localStorage.setItem("interfaceLang", value);
+                       document.documentElement.lang = value;
+                       window.dispatchEvent(
+                         new CustomEvent("interfaceLangChange", {
+                           detail: value,
+                         })
+                       );
+                     }
+                   }
+                 }}
+               />
+             </div>
+           )}
+         </div>
+       </main>
+     </div>
+
+     <Footer />
+   </>
+ );
+
 }
