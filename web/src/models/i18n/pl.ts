@@ -739,4 +739,30 @@ export default {
     teamCreated: "Zespół został utworzony",
     calendarPrefix: "Kalendarz zespołu",
   },
+
+  myTeam: {
+    title: "Nasz zespół",
+      name: "Andrii Andrusyevych",
+      role: "Fullstack Developer",
+      bio: `Jestem twórcą i programistą platformy TeamFlow — systemu do skutecznej pracy zespołowej. 
+Moim celem jest połączenie kalendarza, zadań, czatu i wideorozmów 
+w jednym ekosystemie, w którym zespoły mogą działać szybko i przejrzyście.
+
+Na backendzie używam C++ dla maksymalnej wydajności, 
+a na frontendzie React z TypeScriptem, aby tworzyć nowoczesny interfejs. 
+Projektuję również bazę danych PostgreSQL 17, wdrażam autentykację JWT 
+i opracowuję moduły czatu i kalendarza w czasie rzeczywistym.`,
+    stackTitle: "Mój stos technologiczny",
+      cpp: "Główna logika backendu i architektura API.",
+      react: "Interfejs użytkownika, animacje, logika routingu.",
+      postgres: "Złożone struktury relacyjne i optymalizacja zapytań.",
+      jwt: "Bezpieczna autentykacja i zarządzanie sesjami.",
+      webrtc: "Komunikacja wideo i audio w czasie rzeczywistym.",
+      tailwind: "Nowoczesny i elastyczny design bez nadmiaru.",
+    aboutProjectTitle: "O TeamFlow",
+    aboutProject: `TeamFlow to projekt rozwijający się w kierunku platformy 
+nowej generacji do pracy zespołowej. Łączy kalendarz, zadania, czat, 
+system punktowy i profile użytkowników w jednym miejscu. 
+Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyjemną.`,
+  },
 };
