@@ -304,7 +304,7 @@ const Header = () => {
             </nav>
 
             {/* Авторизація / Профіль */}
-            <div className="mt-auto border-t pt-4">
+            <div className="mt-auto border-t pt-4 text-md">
               {currentUser ? (
                 <div className="flex flex-col gap-3">
                   <button
