@@ -15,6 +15,8 @@ import TaskModal from "../components/calendar/TaskModal";
 import { FaPlusCircle } from "react-icons/fa";
 import OverlapMenu from "../components/calendar/OverlapMenu";
 import CreateItemModal from "../components/calendar/CreateItemModal";
+import { motion } from "framer-motion";
+import { Button } from "../components/ui/Button";
 
 // ===== Розбиття дня на 3 секції =====
 const COLUMN_RANGES = [
@@ -304,232 +306,234 @@ const DayPage: React.FC = () => {
     setCreateModalInfo({ type: null, time });
 
   return (
-    <div>
+    <>
       <Header />
 
-      <div
-        className="
-    mt-24 text-center relative 
-    flex flex-col items-center
-    sm:block
-  "
-      >
-        {/* Поточна дата */}
-        <h2 className="text-lg sm:text-2xl font-semibold text-gray-800 mb-3 sm:mb-0">
-          {currentDate.toLocaleDateString("uk-UA", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </h2>
-
-        {/* Кнопки навігації */}
-        <div
-          className="
-      flex justify-center gap-4
-      sm:block
-    "
+      <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
+        {/* 🔹 Градієнтні бліки */}
+        <motion.div
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="pointer-events-none absolute inset-0"
         >
-          <button
-            onClick={goToPreviousDay}
-            className="
-        px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white
-        sm:absolute sm:left-8
-      "
-          >
-            ← Попередній день
-          </button>
+          <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
+        </motion.div>
 
-          <button
-            onClick={goToNextDay}
-            className="
-        px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white
-        sm:absolute sm:right-8
-      "
-          >
-            Наступний день →
-          </button>
-        </div>
-      </div>
+        {/* 🔹 Контент */}
+        <main className="relative z-10 max-w-7xl mx-auto px-4 py-24">
+          {/* === Заголовок + навігація === */}
+          <div className="text-center relative flex flex-col items-center sm:block mb-10">
+            <h2 className="text-xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
+              {currentDate.toLocaleDateString("uk-UA", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </h2>
 
-      <div
-        className="
-    flex flex-col sm:flex-row
-    border-t border-l border-gray-200
-    h-full p-0 my-12 relative mt-20
-  "
-      >
-        {COLUMN_RANGES.map((range, colIndex) => {
-          const columnEvents = todaysEvents.filter((e) =>
-            eventIntersectsRange(e, currentDate, range)
-          );
-          const columnTasks = todaysTasks.filter((t) => {
-            const h = new Date(t.dueDate).getHours();
-            return h >= range.start && h <= range.end;
-          });
+            <div className="flex justify-center gap-4 sm:block">
+              <Button
+                onClick={goToPreviousDay}
+                className="
+                px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl
+                shadow-sm hover:shadow-md transition
+                sm:absolute sm:left-8
+              "
+              >
+                ← Попередній день
+              </Button>
 
-          const allColumnItems: (Event | Task)[] = [
-            ...columnEvents,
-            ...columnTasks,
-          ];
-          const overlaps = findOverlapsForColumn(
-            allColumnItems,
-            currentDate,
-            range
-          );
-
-          const visibleItems = computeVisibleItemsForColumn(
-            allColumnItems,
-            overlaps,
-            range,
-            currentDate,
-            visibleEventId
-          );
-
-          return (
-            <div
-              key={colIndex}
-              className="flex-1 flex border-l border-gray-200 relative"
-            >
-              {/* Ліва шкала */}
-              <div className="w-16 flex flex-col border-r border-gray-200">
-                {Array.from({ length: range.end - range.start + 1 }).map(
-                  (_, i) => {
-                    const hour = range.start + i;
-                    return (
-                      <div
-                        key={hour}
-                        className="h-32 border-b border-gray-100 text-[14px] text-right pr-2 text-gray-700"
-                      >
-                        {hour}:00
-                      </div>
-                    );
-                  }
-                )}
-              </div>
-
-              {/* Основна зона */}
-              <div className="flex-1 relative">
-                {Array.from({ length: range.end - range.start + 1 }).map(
-                  (_, i) => {
-                    const hour = range.start + i;
-                    return (
-                      <div
-                        key={hour}
-                        className="h-32 border-b border-gray-200"
-                        onClick={() =>
-                          handleEmptySlotClick(
-                            new Date(
-                              currentDate.getFullYear(),
-                              currentDate.getMonth(),
-                              currentDate.getDate(),
-                              hour
-                            )
-                          )
-                        }
-                      />
-                    );
-                  }
-                )}
-
-                {/* айтеми */}
-                {visibleItems.map((item) => {
-                  const { top, height } = computeDisplayTopAndHeightForColumn(
-                    item,
-                    currentDate,
-                    range
-                  );
-
-                  const hasConflicts = overlaps.some((o) =>
-                    o.items.some((i) => i.id === item.id)
-                  );
-
-                  const color = item.color ?? "";
-                  const description = item.description ?? "";
-
-                  return (
-                    <div
-                      key={item.id}
-                      className="absolute left-1 right-1 rounded-lg p-1 cursor-pointer border overflow-hidden"
-                      style={{
-                        top: `${top}px`,
-                        height: `${height}px`,
-                        backgroundColor: color
-                          ? `${color}80`
-                          : "rgba(203,213,225,0.5)",
-                        borderColor: color || "rgb(203,213,225)",
-                        color: "white",
-                      }}
-                      onClick={() =>
-                        isEvent(item)
-                          ? handleEventClick(item)
-                          : handleTaskClick(item)
-                      }
-                    >
-                      <div className="relative h-full">
-                        <strong className="ml-4">{item.title}</strong>
-                        {description && (
-                          <div className="ml-4 mt-2">{description}</div>
-                        )}
-                      </div>
-
-                      {hasConflicts && (
-                        <FaPlusCircle
-                          size={20}
-                          className="absolute top-1 right-1 text-white cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const cluster = overlaps.find((o) =>
-                              o.items.some((i) => i.id === item.id)
-                            );
-                            if (!cluster) return;
-                            const rect = (
-                              e.currentTarget as unknown as HTMLElement
-                            ).getBoundingClientRect();
-                            setOverlapMenu({
-                              items: cluster.items,
-                              position: { x: rect.right + 5, y: rect.top },
-                              selectedItem: item,
-                              groupId: cluster.id,
-                            });
-                          }}
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+              <Button
+                onClick={goToNextDay}
+                className="
+                px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl
+                shadow-sm hover:shadow-md transition
+                sm:absolute sm:right-8
+              "
+              >
+                Наступний день →
+              </Button>
             </div>
-          );
-        })}
+          </div>
 
-        {/* Меню перекриття */}
-        {overlapMenu && (
-          <OverlapMenu
-            items={overlapMenu.items}
-            position={overlapMenu.position}
-            selectedItem={overlapMenu.selectedItem}
-            onSelect={(item) => {
-              // Показуємо глобально тільки обрану подію (усі її частини в будь-яких секціях)
-              setVisibleEventId(item.id);
-              setOverlapMenu(null);
-            }}
-            onClose={() => {
-              // Повернути стандартний режим (показувати всі)
-              setOverlapMenu(null);
-              setVisibleEventId(null);
-            }}
-          />
-        )}
-      </div>
+          {/* === Основна сітка === */}
+          <div className="flex flex-col sm:flex-row border-t border-l border-gray-200 rounded-3xl bg-white/70 backdrop-blur-md shadow-lg my-12 relative overflow-hidden">
+            {COLUMN_RANGES.map((range, colIndex) => {
+              const columnEvents = todaysEvents.filter((e) =>
+                eventIntersectsRange(e, currentDate, range)
+              );
+              const columnTasks = todaysTasks.filter((t) => {
+                const h = new Date(t.dueDate).getHours();
+                return h >= range.start && h <= range.end;
+              });
 
-      <Footer />
+              const allColumnItems: (Event | Task)[] = [
+                ...columnEvents,
+                ...columnTasks,
+              ];
+              const overlaps = findOverlapsForColumn(
+                allColumnItems,
+                currentDate,
+                range
+              );
 
-      {/* Створення події/таски */}
-      {createModalInfo &&
-        (console.log("🧾 calendar.id for creation =", calendar.id),
-        (
+              const visibleItems = computeVisibleItemsForColumn(
+                allColumnItems,
+                overlaps,
+                range,
+                currentDate,
+                visibleEventId
+              );
+
+              return (
+                <div
+                  key={colIndex}
+                  className="flex-1 flex border-l border-gray-200 relative"
+                >
+                  {/* Годинна шкала */}
+                  <div className="w-16 flex flex-col border-r border-gray-200 bg-gray-50/40">
+                    {Array.from({ length: range.end - range.start + 1 }).map(
+                      (_, i) => {
+                        const hour = range.start + i;
+                        return (
+                          <div
+                            key={hour}
+                            className="h-32 border-b border-gray-100 text-[14px] text-right pr-2 text-gray-600"
+                          >
+                            {hour}:00
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+
+                  {/* Зона подій/тасків */}
+                  <div className="flex-1 relative">
+                    {Array.from({ length: range.end - range.start + 1 }).map(
+                      (_, i) => {
+                        const hour = range.start + i;
+                        return (
+                          <div
+                            key={hour}
+                            className="h-32 border-b border-gray-200 cursor-pointer hover:bg-blue-50/40 transition"
+                            onClick={() =>
+                              handleEmptySlotClick(
+                                new Date(
+                                  currentDate.getFullYear(),
+                                  currentDate.getMonth(),
+                                  currentDate.getDate(),
+                                  hour
+                                )
+                              )
+                            }
+                          />
+                        );
+                      }
+                    )}
+
+                    {/* Події / Завдання */}
+                    {visibleItems.map((item) => {
+                      const { top, height } =
+                        computeDisplayTopAndHeightForColumn(
+                          item,
+                          currentDate,
+                          range
+                        );
+
+                      const hasConflicts = overlaps.some((o) =>
+                        o.items.some((i) => i.id === item.id)
+                      );
+
+                      const color = item.color ?? "";
+                      const description = item.description ?? "";
+
+                      return (
+                        <motion.div
+                          key={item.id}
+                          initial={{ opacity: 0, scale: 0.98 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute left-1 right-1 rounded-xl p-2 cursor-pointer border overflow-hidden shadow-sm hover:shadow-md transition"
+                          style={{
+                            top: `${top}px`,
+                            height: `${height}px`,
+                            backgroundColor: color
+                              ? `${color}90`
+                              : "rgba(203,213,225,0.6)",
+                            borderColor: color || "rgb(203,213,225)",
+                          }}
+                          onClick={() =>
+                            isEvent(item)
+                              ? handleEventClick(item)
+                              : handleTaskClick(item)
+                          }
+                        >
+                          <div className="relative h-full text-white">
+                            <strong className="ml-1">{item.title}</strong>
+                            {description && (
+                              <div className="ml-1 mt-1 text-sm opacity-90">
+                                {description}
+                              </div>
+                            )}
+                          </div>
+
+                          {hasConflicts && (
+                            <FaPlusCircle
+                              size={20}
+                              className="absolute top-1 right-1 text-white cursor-pointer"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const cluster = overlaps.find((o) =>
+                                  o.items.some((i) => i.id === item.id)
+                                );
+                                if (!cluster) return;
+                                const rect = (
+                                  e.currentTarget as unknown as HTMLElement
+                                ).getBoundingClientRect();
+                                setOverlapMenu({
+                                  items: cluster.items,
+                                  position: { x: rect.right + 5, y: rect.top },
+                                  selectedItem: item,
+                                  groupId: cluster.id,
+                                });
+                              }}
+                            />
+                          )}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Меню перекриття */}
+            {overlapMenu && (
+              <OverlapMenu
+                items={overlapMenu.items}
+                position={overlapMenu.position}
+                selectedItem={overlapMenu.selectedItem}
+                onSelect={(item) => {
+                  setVisibleEventId(item.id);
+                  setOverlapMenu(null);
+                }}
+                onClose={() => {
+                  setOverlapMenu(null);
+                  setVisibleEventId(null);
+                }}
+              />
+            )}
+          </div>
+        </main>
+
+        <Footer />
+
+        {/* Модалки */}
+        {createModalInfo && (
           <CreateItemModal
             calendarId={calendar.id}
             calendarType={calendar.ownerType}
@@ -546,37 +550,36 @@ const DayPage: React.FC = () => {
               setCreateModalInfo(null);
             }}
           />
-        ))}
+        )}
 
-      {/* Редагування події/таски */}
-      {selectedEvent && (
-        <EventModal
-          event={selectedEvent}
-          onClose={() => setSelectedEvent(null)}
-          isPersonalCalendar={calendar.ownerType === "user"}
-          onSave={(updated: Event) => {
-            eventDb.update(updated.id, updated);
-            setEvents((prev) =>
-              prev.map((e) => (e.id === updated.id ? updated : e))
-            );
-          }}
-        />
-      )}
-      {selectedTask && (
-        <TaskModal
-          task={selectedTask}
-          onClose={() => setSelectedTask(null)}
-          onSave={(updated: Task) => {
-            // просто оновлюємо БД і стан, без закриття
-            taskDb.update(updated.id, updated);
-            setTasks((prev) =>
-              prev.map((t) => (t.id === updated.id ? updated : t))
-            );
-            // не закриваємо TaskModal!
-          }}
-        />
-      )}
-    </div>
+        {selectedEvent && (
+          <EventModal
+            event={selectedEvent}
+            onClose={() => setSelectedEvent(null)}
+            isPersonalCalendar={calendar.ownerType === "user"}
+            onSave={(updated: Event) => {
+              eventDb.update(updated.id, updated);
+              setEvents((prev) =>
+                prev.map((e) => (e.id === updated.id ? updated : e))
+              );
+            }}
+          />
+        )}
+
+        {selectedTask && (
+          <TaskModal
+            task={selectedTask}
+            onClose={() => setSelectedTask(null)}
+            onSave={(updated: Task) => {
+              taskDb.update(updated.id, updated);
+              setTasks((prev) =>
+                prev.map((t) => (t.id === updated.id ? updated : t))
+              );
+            }}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

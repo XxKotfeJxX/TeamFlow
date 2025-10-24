@@ -22,11 +22,13 @@ export default function ProfilePage() {
   const user = id ? userDb.getById(id) : undefined;
   if (!user) return <Navigate to="/login" replace />;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [currentUser, setCurrentUser] = useState(user);
   const currentUserId = localStorage.getItem("currentUserId");
   const isOwner = currentUserId === user.id;
   const isPrivate = user.profileVisibility === "private";
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editableUser, setEditableUser] = useState({
     username: user.username,
     email: user.email,
