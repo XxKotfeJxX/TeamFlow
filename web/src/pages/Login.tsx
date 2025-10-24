@@ -149,7 +149,7 @@ export default function LoginPage() {
                 <p className="mt-6 text-center text-sm text-gray-600">
                   Не маєш акаунту?{" "}
                   <a
-                    href="/register"
+                    href="#/register"
                     className="text-blue-600 hover:underline font-medium"
                   >
                     Створи його
