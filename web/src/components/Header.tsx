@@ -121,7 +121,7 @@ const Header = () => {
   // ============================
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-14">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 h-20">
         {/* Лого */}
         <div
           className="font-bold text-xl text-gray-800 cursor-pointer flex items-center gap-2"
