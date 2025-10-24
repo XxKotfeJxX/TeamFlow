@@ -158,6 +158,8 @@ export default {
         ],
       },
     ],
+    footerNote:
+      "TeamFlow — the all-in-one workspace for modern teams to plan, collaborate, and succeed together.",
   },
 
   pricing: {

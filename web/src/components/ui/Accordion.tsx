@@ -71,16 +71,31 @@ function useAccordionContext() {
 // ----------------------------------------------------------------
 // Item
 // ----------------------------------------------------------------
-export function AccordionItem({ value, children }: AccordionItemProps) {
+interface AccordionItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: string;
+  children: React.ReactNode;
+}
+
+export function AccordionItem({
+  value,
+  children,
+  className,
+  ...props
+}: AccordionItemProps) {
   return (
     <div
       data-accordion-item={value}
-      className="border border-gray-200 rounded-xl bg-white shadow-sm"
+      className={cn(
+        "border border-gray-200 rounded-xl bg-white shadow-sm",
+        className
+      )}
+      {...props}
     >
       {children}
     </div>
   );
 }
+
 
 // ----------------------------------------------------------------
 // Trigger

@@ -158,6 +158,8 @@ export default {
         ],
       },
     ],
+    footerNote:
+      "TeamFlow — kompleksowa platforma dla nowoczesnych zespołów, łącząca kalendarz, zadania i komunikację w jednym miejscu.",
   },
 
   pricing: {
