@@ -27,9 +27,9 @@ export default function PrivacyPolicy() {
         {sections.map((s, i) => {
           const title = tp(s.titleKey as keyof typeof tp);
           const text = tp(s.textKey as keyof typeof tp);
-          const paragraphs = Array.isArray(text)
-            ? text
-            : (text as unknown as string[]);
+
+          // 🩵 якщо tp повертає рядок — обгортаємо в масив
+          const paragraphs = Array.isArray(text) ? text : [text];
 
           return (
             <section key={i} className="space-y-4 mb-10">
@@ -41,10 +41,15 @@ export default function PrivacyPolicy() {
                 <p
                   key={idx}
                   className={
-                    p.startsWith("*gray") ? "text-gray-500 italic text-sm" : ""
+                    typeof p === "string" && p.startsWith("*gray")
+                      ? "text-gray-500 italic text-sm"
+                      : ""
                   }
                   dangerouslySetInnerHTML={{
-                    __html: p.replace("*gray", ""),
+                    __html:
+                      typeof p === "string"
+                        ? p.replace("*gray", "")
+                        : String(p),
                   }}
                 />
               ))}
@@ -52,7 +57,10 @@ export default function PrivacyPolicy() {
           );
         })}
 
-        <p className="text-center text-gray-600 mt-16">🖋️ {tp("footer")}</p>
+        <p
+          className="text-center text-gray-600 mt-16"
+          dangerouslySetInnerHTML={{ __html: `🖋️ ${tp("footer")}` }}
+        />
       </main>
 
       <Footer />

@@ -25,13 +25,11 @@ export default function TermsOfService() {
         </p>
 
         {sections.map((s, i) => {
-          // кастимо динамічний ключ до відомого типу для t()
           const title = tt(s.titleKey as keyof typeof tt);
           const text = tt(s.textKey as keyof typeof tt);
 
-          const paragraphs = Array.isArray(text)
-            ? text
-            : (text as unknown as string[]);
+          // 🔹 робимо гарантію, що це завжди масив
+          const paragraphs = Array.isArray(text) ? text : [text];
 
           return (
             <section key={i} className="space-y-4 mb-10">
@@ -43,17 +41,28 @@ export default function TermsOfService() {
                 <p
                   key={idx}
                   className={
-                    p.startsWith("*gray") ? "text-gray-500 italic text-sm" : ""
+                    typeof p === "string" && p.startsWith("*gray")
+                      ? "text-gray-500 italic text-sm"
+                      : ""
                   }
-                >
-                  {p.replace("*gray", "")}
-                </p>
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      typeof p === "string"
+                        ? p.replace("*gray", "")
+                        : String(p),
+                  }}
+                />
               ))}
             </section>
           );
         })}
 
-        <p className="text-center text-gray-600 mt-16">⚖️ {tt("footer")}</p>
+        <p
+          className="text-center text-gray-600 mt-16"
+          dangerouslySetInnerHTML={{
+            __html: `⚖️ ${tt("footer")}`,
+          }}
+        />
       </main>
 
       <Footer />
