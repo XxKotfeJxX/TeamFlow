@@ -130,13 +130,13 @@ const Header = () => {
           <img
             src={logo}
             alt="TeamFlow Logo"
-            style={{ height: "70px", width: "auto" }}
+            style={{ height: "80px", width: "auto" }}
             className="hover:opacity-80 transition"
           />
         </div>
 
         {/* Навігація для Desktop */}
-        <nav className="hidden md:flex gap-6 text-sm text-gray-700">
+        <nav className="hidden md:flex gap-6 text-md text-gray-700">
           {navItems.map((item, idx) => (
             <div
               key={idx}
@@ -159,7 +159,7 @@ const Header = () => {
               </button>
 
               {openMenu === idx && (
-                <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-44 text-sm z-50">
+                <div className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-md py-2 w-44 text-md z-50">
                   {item.options.map((option, i) => (
                     <button
                       key={i}
@@ -184,13 +184,13 @@ const Header = () => {
                 <img
                   src={currentUser.avatarUrl}
                   alt={currentUser.username}
-                  className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                  className="w-10 h-10 rounded-full object-cover cursor-pointer"
                   onClick={() => navigate(`/profile/${currentUser.id}`)}
                 />
               ) : (
                 <div
                   onClick={() => navigate(`/profile/${currentUser.id}`)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white font-semibold cursor-pointer"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-semibold cursor-pointer"
                 >
                   {currentUser.username.charAt(0).toUpperCase()}
                 </div>
