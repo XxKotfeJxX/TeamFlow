@@ -251,4 +251,25 @@ export default {
     yes: "Yes",
     no: "No",
   },
+
+  about: {
+    title: "About TeamFlow",
+    subtitle:
+      "A platform for teams that want to work together, not just side by side.",
+    p1: "We are building <strong>TeamFlow</strong> — a workspace that unites calendars, tasks, chats, and video calls in one place.",
+    p2: "The idea came from the desire to make teamwork more organized and transparent. We believe that effective communication is the key to any project's success.",
+    p3: "Our focus is on <span class='font-semibold'>productivity, transparency, and simplicity</span>. We aim to create tools that inspire, not overwhelm.",
+    highlight1Title: "Collaboration without chaos",
+    highlight1Desc:
+      "We strive to make teamwork simple, convenient, and transparent.",
+    highlight2Title: "Focus on results",
+    highlight2Desc:
+      "Every feature in TeamFlow helps you achieve your goals faster.",
+    highlight3Title: "Inspired growth",
+    highlight3Desc:
+      "We build a product that motivates teams to grow and improve together.",
+    cta: "Join the team",
+  },
+
+  
 };

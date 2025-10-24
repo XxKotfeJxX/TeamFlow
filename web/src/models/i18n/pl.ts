@@ -251,4 +251,22 @@ export default {
     yes: "Tak",
     no: "Nie",
   },
+
+  about: {
+    title: "O TeamFlow",
+    subtitle:
+      "Platforma dla zespołów, które chcą pracować razem, a nie tylko obok siebie.",
+    p1: "Tworzymy <strong>TeamFlow</strong> — platformę, która łączy kalendarze, zadania, czaty i wideorozmowy w jednym miejscu.",
+    p2: "Pomysł powstał z chęci uczynienia współpracy w zespołach bardziej uporządkowaną i przejrzystą. Wierzymy, że skuteczna komunikacja to klucz do sukcesu każdego projektu.",
+    p3: "Naszym celem jest <span class='font-semibold'>produktywność, przejrzystość i prostota</span>. Tworzymy narzędzia, które inspirują, a nie przytłaczają.",
+    highlight1Title: "Współpraca bez chaosu",
+    highlight1Desc:
+      "Dążymy do tego, aby współpraca w zespole była prosta, wygodna i przejrzysta.",
+    highlight2Title: "Skupienie na wynikach",
+    highlight2Desc: "Każda funkcja TeamFlow pomaga skutecznie osiągać cele.",
+    highlight3Title: "Inspiracja do rozwoju",
+    highlight3Desc:
+      "Budujemy produkt, który motywuje zespoły do wspólnego rozwoju.",
+    cta: "Dołącz do zespołu",
+  },
 };

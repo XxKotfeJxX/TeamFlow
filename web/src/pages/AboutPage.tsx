@@ -2,23 +2,27 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../components/ui/Button";
 import { Users, Target, Rocket } from "lucide-react";
+import { useTranslation } from "../components/useTranslations";
 
 export default function AboutPage() {
+  const { t } = useTranslation();
+  const ta = t("about");
+
   const highlights = [
     {
       icon: Users,
-      title: "Спільна робота без хаосу",
-      desc: "Ми прагнемо зробити командну співпрацю простою, зручною та прозорою.",
+      title: ta("highlight1Title"),
+      desc: ta("highlight1Desc"),
     },
     {
       icon: Target,
-      title: "Фокус на результат",
-      desc: "Кожна функція TeamFlow створена, щоб допомогти досягати цілей ефективніше.",
+      title: ta("highlight2Title"),
+      desc: ta("highlight2Desc"),
     },
     {
       icon: Rocket,
-      title: "Натхнення до розвитку",
-      desc: "Ми будуємо продукт, який мотивує команди рости та вдосконалюватися разом.",
+      title: ta("highlight3Title"),
+      desc: ta("highlight3Desc"),
     },
   ];
 
@@ -28,33 +32,16 @@ export default function AboutPage() {
 
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-white to-gray-100 text-gray-800 pt-28 pb-0 px-6 text-center">
-        <h1 className="text-5xl font-bold mb-4">Про TeamFlow</h1>
-        <p className="max-w-2xl mx-auto text-lg opacity-90">
-          Платформа для команд, які хочуть працювати разом, а не просто поруч.
-        </p>
+        <h1 className="text-5xl font-bold mb-4">{ta("title")}</h1>
+        <p className="max-w-2xl mx-auto text-lg opacity-90">{ta("subtitle")}</p>
       </section>
 
       {/* Main Content */}
       <main className="flex-1 max-w-5xl mx-auto px-6 py-16">
         <section className="text-center space-y-6 text-lg leading-relaxed max-w-3xl mx-auto">
-          <p>
-            Ми створюємо <strong>TeamFlow</strong> — платформу для командної
-            роботи, яка поєднує календар, завдання, чати та відео-дзвінки в
-            одному просторі.
-          </p>
-          <p>
-            Ідея з’явилася з бажання зробити співпрацю в командах більш
-            організованою та зрозумілою. Ми віримо, що ефективна комунікація —
-            це ключ до успіху будь-якого проєкту.
-          </p>
-          <p>
-            Наш фокус —{" "}
-            <span className="font-semibold">
-              продуктивність, прозорість і простота
-            </span>
-            . Ми прагнемо створювати інструменти, які не перевантажують, а
-            надихають.
-          </p>
+          <p dangerouslySetInnerHTML={{ __html: ta("p1") }} />
+          <p>{ta("p2")}</p>
+          <p dangerouslySetInnerHTML={{ __html: ta("p3") }} />
         </section>
 
         {/* Highlights */}
@@ -79,7 +66,7 @@ export default function AboutPage() {
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg rounded-xl transition-transform hover:scale-105"
             style={{ border: "none" }}
           >
-            Приєднатися до команди
+            {ta("cta")}
           </Button>
         </div>
       </main>
