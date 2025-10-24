@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // 📦 icons
 import { userDb } from "../models/mockDB/users";
 import { useTranslation } from "./useTranslations";
+import logo from "../../public/images/TeamFlow_logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -127,7 +128,7 @@ const Header = () => {
           onClick={() => navigate("/")}
         >
           <img
-            src="images/TeamFlow_logo.png"
+            src={logo}
             alt="TeamFlow Logo"
             style={{ height: "70px", width: "auto" }}
             className="hover:opacity-80 transition"
@@ -253,7 +254,9 @@ const Header = () => {
           >
             {/* Верхня панель */}
             <div className="flex items-center justify-between">
-              <span className="font-bold text-lg text-gray-800">{ th("menu")}</span>
+              <span className="font-bold text-lg text-gray-800">
+                {th("menu")}
+              </span>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-2 text-gray-600 hover:text-red-600 transition"
@@ -343,7 +346,7 @@ const Header = () => {
                     }}
                     className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-left"
                   >
-                   {th("register")}
+                    {th("register")}
                   </button>
                 </div>
               )}

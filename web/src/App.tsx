@@ -1,6 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -30,6 +28,8 @@ import DownloadPage from "./pages/DownloadPage";
 import ContactPage from "./pages/ContactPage";
 import ErrorPage from "./pages/ErrorPage";
 
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+
 const App: React.FC = () => {
   return (
     <Router>
@@ -53,7 +53,10 @@ const App: React.FC = () => {
         <Route path="/documentation" element={<DocsPage />} />
         <Route path="/blog/teamwork" element={<TeamworkPage />} />
         <Route path="/blog/calendar-access" element={<CalendarAccessPage />} />
-        <Route path="/blog/github-integration" element={<GithubIntegrationPage />} />
+        <Route
+          path="/blog/github-integration"
+          element={<GithubIntegrationPage />}
+        />
         <Route path="/blog/focus" element={<FocusPage />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
@@ -63,7 +66,10 @@ const App: React.FC = () => {
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
-        <Route path="/calendar/:calendarId/week/:weekStart" element={<WeekPage />} />
+        <Route
+          path="/calendar/:calendarId/week/:weekStart"
+          element={<WeekPage />}
+        />
         <Route path="/calendar/:calendarId/day/:date" element={<DayPage />} />
       </Routes>
     </Router>
@@ -71,3 +77,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

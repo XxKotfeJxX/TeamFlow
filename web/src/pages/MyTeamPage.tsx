@@ -7,7 +7,7 @@ const teamMembers = [
     name: "Андрій Андрусевич",
     role: "Fullstack Developer",
     bio: "Розробник TeamFlow: займається архітектурою бекенду на C++, фронтендом на React і проєктуванням бази даних PostgreSQL.",
-    avatar: "/images/andrii.jpg", // 🔹 локальне фото у /public/images/
+    avatar: "images/andrii.jpg", 
   },
 ];
 

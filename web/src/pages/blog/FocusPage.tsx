@@ -17,7 +17,7 @@ export default function FocusPage() {
       {/* Hero */}
       <section className="relative h-[420px] bg-gradient-to-r from-violet-600 to-indigo-500 text-white flex flex-col justify-center items-center text-center px-4">
         <img
-          src="/images/focus.jpg"
+          src="images/focus.jpg"
           alt={tb("heroAlt")}
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
