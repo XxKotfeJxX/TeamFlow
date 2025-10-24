@@ -9,6 +9,8 @@ export const buttonVariants = cva(
         outline: "border border-blue-600 text-blue-600 hover:bg-blue-50",
         ghost: "text-blue-600 hover:bg-blue-100",
         destructive: "bg-red-600 text-white hover:bg-red-700",
+        secondary:
+          "bg-gray-200 text-gray-800 hover:bg-gray-300 border border-gray-300",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -24,5 +26,4 @@ export const buttonVariants = cva(
   }
 );
 
-// ⬇️ (не обов’язково, але часто зручно)
 export type ButtonVariantProps = VariantProps<typeof buttonVariants>;
