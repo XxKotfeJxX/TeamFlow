@@ -34,7 +34,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Головні сторінки */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -64,7 +63,6 @@ const App: React.FC = () => {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="*" element={<ErrorPage code={404} />} />
 
-        {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
         <Route
           path="/calendar/:calendarId/week/:weekStart"
@@ -77,4 +75,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

@@ -51,7 +51,6 @@ const Footer = () => {
   return (
     <footer className="w-full bg-gray-900 text-gray-300 text-sm px-8">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-        {/* Продукт */}
         <div>
           <h4 className="text-white font-semibold mb-4">Продукт</h4>
           <ul className="space-y-2">
@@ -73,7 +72,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Компанія */}
         <div>
           <h4 className="text-white font-semibold mb-4">{tf("company")}</h4>
           <ul className="space-y-2">
@@ -95,7 +93,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Підтримка */}
         <div>
           <h4 className="text-white font-semibold mb-4">{tf("support")}</h4>
           <ul className="space-y-2">
@@ -117,7 +114,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Соцмережі + мова */}
         <div className="flex flex-col gap-4">
           <div>
             <h4 className="text-white font-semibold mb-2">{tf("followUs")}</h4>
@@ -157,7 +153,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Вибір мови */}
           <div>
             <label htmlFor="language" className="block mb-1 text-gray-400">
               {tf("langLabel")}
@@ -176,7 +171,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Нижній ряд */}
       <div className="w-full border-t border-gray-700 text-center py-4 px-4 text-xs text-gray-500">
         © {new Date().getFullYear()} TeamFlow. {tf("rights")}
         <span className="mx-2">·</span>
