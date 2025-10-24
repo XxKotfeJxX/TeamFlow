@@ -554,5 +554,140 @@ export default {
     mapTitle: "We’re on the map",
   },
 
+  terms: {
+    title: "Terms of Service",
+    updated: "Updated: October 20, 2025 — version 2.0.1 (“we warned you”)",
+
+    sec1Title: "1. Acceptance of Terms",
+    sec1Text: [
+      "By using TeamFlow, you agree to these Terms. If you disagree — you’ll probably still have to agree anyway.",
+      "Please read carefully (we know you won’t, but we must say this).",
+    ],
+
+    sec2Title: "2. Service Description",
+    sec2Text: [
+      "TeamFlow provides tools for teamwork, scheduling, chatting, and minor procrastination.",
+      "We may change the design, features, colors, or even purpose of existence without notice.",
+    ],
+
+    sec3Title: "3. User Registration",
+    sec3Text: [
+      "To use the service, you must create an account. Please don’t use ‘123456’ or ‘qwerty’.",
+      "You’re responsible for keeping your password safe. Forgot it? Click ‘Forgot password?’ and try again.",
+    ],
+
+    sec4Title: "4. Use of Service",
+    sec4Text: [
+      "You agree not to harm other users or our reputation.",
+      "It’s forbidden to impersonate others, send spam, discuss pizza, or summon demons.",
+      "If you break the rules — we may suspend your access and politely say ‘sure’.",
+    ],
+
+    sec5Title: "5. Liability",
+    sec5Text: [
+      "We do our best to keep things running, but even servers take lunch breaks.",
+      "We’re not responsible for data loss, downtime, or cosmic events.",
+      "If something goes wrong, write to us — we’ll read it while making coffee.",
+    ],
+
+    sec6Title: "6. Intellectual Property",
+    sec6Text: [
+      "All materials, code, and designs belong to TeamFlow.",
+      "Unauthorized use will be punished by a disapproving look from our designer.",
+    ],
+
+    sec7Title: "7. Changes to Terms",
+    sec7Text: [
+      "We can update these Terms at any time. Changes take effect immediately.",
+      "If you disagree — stop using the service. If not — everything’s fine.",
+    ],
+
+    sec8Title: "8. Hidden Clause (Not for Human Eyes)",
+    sec8Text: [
+      "By agreeing, you confirm awareness of consequences (and possibly grant us temporary metaphysical control).",
+      "*gray(This clause is purely metaphysical. Or is it?)",
+    ],
+
+    sec9Title: "9. Jurisdiction",
+    sec9Text: [
+      "These Terms are governed by the laws of the Galactic Union and common sense.",
+      "In case of disputes — we’ll make a meme about it.",
+    ],
+
+    sec10Title: "10. Final Provisions",
+    sec10Text: [
+      "Using the Platform means full and unconditional agreement.",
+      "If you read this far — you should probably join our legal team.",
+    ],
+
+    footer:
+      "With love, the TeamFlow crew. “We’re responsible for everything. And nothing at the same time.”",
+  },
+
+  privacy: {
+    title: "Privacy Policy",
+    updated: "Updated: October 20, 2025 — version 1.4.7.12(b)",
+
+    sec1Title: "1. Introduction",
+    sec1Text: [
+      "We at <strong>TeamFlow</strong> value your data — and we know nobody reads privacy policies, but lawyers made us write this.",
+      "By using our platform, you agree to everything below, even if you didn’t read it or closed the tab after the first sentence.",
+    ],
+
+    sec2Title: "2. Information Collection",
+    sec2Text: [
+      "We collect everything. Well, almost — your name, email, IP, browser type, and number of times you said 'I’ll do it later'.",
+      "Data may be collected automatically, manually, via APIs, cookies, or pure intuition.",
+      "Some data we might not even realize we collected. But if we did — it’s probably somewhere here.",
+    ],
+
+    sec3Title: "3. Use of Data",
+    sec3Text: [
+      "We use your data to improve our service, analytics, marketing, and for writing funny posts.",
+      "It also helps us confirm that you click 'I agree' automatically.",
+      "Yes, we see that. And we don’t judge.",
+    ],
+
+    sec4Title: "4. Storage and Security",
+    sec4Text: [
+      "Your data is stored in top-secret data centers (sometimes we need GPS to find them).",
+      "We use encryption, tokens, SSL, firewalls, and IT magic learned from a sysadmin over beer.",
+      "It’s so secure that even we can’t always access it when we need to.",
+    ],
+
+    sec5Title: "5. Third-Party Sharing",
+    sec5Text: [
+      "We only share your data with trusted partners — analytics, advertising, or our cats if they ask nicely.",
+      "No partner is allowed to misuse your data unless they read this policy fully (so, none).",
+    ],
+
+    sec6Title: "6. User Rights",
+    sec6Text: [
+      'You may request your data via <a href="mailto:privacy@teamflow.com" class="text-violet-600 underline">privacy@teamflow.com</a>. We’ll respond between 3 days and 3 eternities.',
+      "You may also request deletion. We’ll do it — after confirming you meant it.",
+    ],
+
+    sec7Title: "7. Policy Updates",
+    sec7Text: [
+      "We may update this Policy anytime, without warning or reason.",
+      "For major changes, we’ll try to notify you via email, smoke signals, or dreams.",
+    ],
+
+    sec8Title: "8. Hidden Clause (Don’t Read)",
+    sec8Text: [
+      "By continuing to use TeamFlow, you temporarily grant us ownership of your digital soul.",
+      "*gray(This clause has no legal effect, only metaphysical.)",
+    ],
+
+    sec9Title: "9. Final Provisions",
+    sec9Text: [
+      "If you made it this far — we deeply respect you.",
+      "By using our service, you accept all terms, even those you don’t like. That’s how the Internet works.",
+    ],
+
+    footer:
+      "With love, the TeamFlow crew.<br/>“We don’t read your data — it tells us stories itself.”",
+  },
+
   
 };

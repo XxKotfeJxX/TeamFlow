@@ -551,4 +551,142 @@ export default {
 
     mapTitle: "Znajdź nas na mapie",
   },
+
+  terms: {
+    title: "Warunki korzystania",
+    updated:
+      "Zaktualizowano: 20 października 2025 — wersja 2.0.1 (“ostrzegaliśmy”)",
+
+    sec1Title: "1. Akceptacja warunków",
+    sec1Text: [
+      "Korzystając z TeamFlow, akceptujesz te warunki. Jeśli się nie zgadzasz — i tak musisz.",
+      "Przeczytaj uważnie (wiemy, że nie przeczytasz, ale musimy to napisać).",
+    ],
+
+    sec2Title: "2. Opis usługi",
+    sec2Text: [
+      "TeamFlow oferuje narzędzia do pracy zespołowej, planowania, komunikacji i lekkiego odkładania terminów.",
+      "Możemy w każdej chwili zmienić funkcje, kolory, design lub sens istnienia bez ostrzeżenia.",
+    ],
+
+    sec3Title: "3. Rejestracja użytkownika",
+    sec3Text: [
+      "Aby korzystać z serwisu, musisz utworzyć konto. Nie używaj hasła ‘123456’ ani ‘qwerty’.",
+      "Odpowiadasz za bezpieczeństwo swojego hasła. Zapomniałeś? Kliknij „Zapomniałem hasła?”.",
+    ],
+
+    sec4Title: "4. Korzystanie z serwisu",
+    sec4Text: [
+      "Zobowiązujesz się nie szkodzić innym użytkownikom ani reputacji TeamFlow.",
+      "Zakazane jest podszywanie się pod innych, rozsyłanie spamu, dyskutowanie o pizzy lub przywoływanie demonów.",
+      "W przypadku naruszenia możemy zablokować dostęp i uprzejmie powiedzieć „oczywiście”.",
+    ],
+
+    sec5Title: "5. Odpowiedzialność",
+    sec5Text: [
+      "Staramy się, aby wszystko działało stabilnie, ale nawet serwery czasem idą na obiad.",
+      "Nie ponosimy odpowiedzialności za utratę danych ani katastrofy kosmiczne.",
+      "Jeśli coś pójdzie nie tak — napisz do nas, przeczytamy przy kawie.",
+    ],
+
+    sec6Title: "6. Własność intelektualna",
+    sec6Text: [
+      "Wszystkie materiały, kod i projekt należą do zespołu TeamFlow.",
+      "Nieautoryzowane użycie będzie ukarane surowym spojrzeniem naszego projektanta.",
+    ],
+
+    sec7Title: "7. Zmiany warunków",
+    sec7Text: [
+      "Możemy zmieniać warunki w dowolnym momencie. Zmiany obowiązują natychmiast.",
+      "Nie zgadzasz się? Nie korzystaj. Jeśli korzystasz — wszystko w porządku.",
+    ],
+
+    sec8Title: "8. Ukryty punkt (nie dla ludzkich oczu)",
+    sec8Text: [
+      "Akceptując te warunki, potwierdzasz świadomość konsekwencji (i być może oddajesz część swojej duszy).",
+      "*gray(Ten punkt ma wyłącznie charakter metafizyczny. Ale kto wie?)",
+    ],
+
+    sec9Title: "9. Jurysdykcja",
+    sec9Text: [
+      "Warunki te podlegają prawom Związku Galaktycznego i zdrowemu rozsądkowi.",
+      "W przypadku sporu — zrobimy z tego mema.",
+    ],
+
+    sec10Title: "10. Postanowienia końcowe",
+    sec10Text: [
+      "Korzystanie z platformy oznacza pełną zgodę na wszystkie punkty.",
+      "Jeśli to przeczytałeś do końca — miejsce w dziale prawnym czeka.",
+    ],
+
+    footer:
+      "Z miłością, zespół TeamFlow. „Odpowiadamy za wszystko. I jednocześnie za nic.”",
+  },
+
+  privacy: {
+    title: "Polityka prywatności",
+    updated: "Zaktualizowano: 20 października 2025 — wersja 1.4.7.12(b)",
+
+    sec1Title: "1. Wstęp",
+    sec1Text: [
+      "My, zespół <strong>TeamFlow</strong>, wiemy, że twoje dane są ważne. Wiemy też, że nikt nie czyta polityk prywatności, ale prawnicy nas zmusili.",
+      "Korzystając z platformy, akceptujesz wszystko poniżej — nawet jeśli nie przeczytałeś.",
+    ],
+
+    sec2Title: "2. Zbieranie informacji",
+    sec2Text: [
+      "Zbieramy wszystko. No, prawie wszystko — imię, e-mail, IP, typ przeglądarki i liczbę razy, gdy powiedziałeś 'zrobię to później'.",
+      "Dane mogą być zbierane automatycznie, ręcznie, przez API, pliki cookie lub intuicję.",
+      "Niektóre dane zbieramy nieświadomie, ale jeśli już — to z dumą je przechowujemy.",
+    ],
+
+    sec3Title: "3. Wykorzystanie danych",
+    sec3Text: [
+      "Używamy danych do ulepszania serwisu, analiz, marketingu i żartów w mediach społecznościowych.",
+      "Dane pokazują nam, że automatycznie klikasz 'Zgadzam się'.",
+      "Tak, widzimy to. I nie oceniamy.",
+    ],
+
+    sec4Title: "4. Przechowywanie i bezpieczeństwo",
+    sec4Text: [
+      "Twoje dane są przechowywane w supertajnych centrach danych (czasem ich szukamy z GPS).",
+      "Używamy szyfrowania, tokenów, SSL, zapór i magii IT, której nauczył nas administrator przy piwie.",
+      "Dane są tak bezpieczne, że czasem sami nie możemy się do nich dostać.",
+    ],
+
+    sec5Title: "5. Udostępnianie osobom trzecim",
+    sec5Text: [
+      "Dane udostępniamy tylko zaufanym partnerom — analityce, reklamie lub naszym kotom (jeśli poproszą).",
+      "Żaden partner nie może ich nadużywać, jeśli nie przeczytał tej polityki do końca (czyli żaden).",
+    ],
+
+    sec6Title: "6. Prawa użytkownika",
+    sec6Text: [
+      'Możesz poprosić o swoje dane, pisząc na <a href="mailto:privacy@teamflow.com" class="text-violet-600 underline">privacy@teamflow.com</a>. Odpowiemy między 3 dniami a 3 wiecznościami.',
+      "Możesz też poprosić o usunięcie danych — zrobimy to, gdy upewnimy się, że mówisz serio.",
+    ],
+
+    sec7Title: "7. Aktualizacje polityki",
+    sec7Text: [
+      "Możemy aktualizować tę politykę w dowolnym momencie, bez ostrzeżenia.",
+      "W przypadku dużych zmian powiadomimy cię mailem, dymem lub we śnie.",
+    ],
+
+    sec8Title: "8. Ukryty punkt (nie czytaj)",
+    sec8Text: [
+      "Kontynuując korzystanie z TeamFlow, tymczasowo oddajesz nam swoją cyfrową duszę.",
+      "*gray(Ten punkt nie ma skutków prawnych, tylko metafizyczne.)",
+    ],
+
+    sec9Title: "9. Postanowienia końcowe",
+    sec9Text: [
+      "Jeśli dotarłeś aż tutaj — szacunek.",
+      "Korzystając z serwisu, akceptujesz wszystkie warunki, nawet te absurdalne. Tak działa Internet.",
+    ],
+
+    footer:
+      "Z miłością, zespół TeamFlow.<br/>„Nie czytamy twoich danych — one same nam się zwierzają.”",
+  },
+
+  
 };
