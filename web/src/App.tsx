@@ -28,6 +28,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import DownloadPage from "./pages/DownloadPage";
 import ContactPage from "./pages/ContactPage";
+import ErrorPage from "./pages/ErrorPage";
 
 const App: React.FC = () => {
   return (
@@ -58,6 +59,7 @@ const App: React.FC = () => {
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/download" element={<DownloadPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="*" element={<ErrorPage code={404} />} />
 
         {/* Календар */}
         <Route path="/calendar/:calendarId/:month" element={<MonthPage />} />
