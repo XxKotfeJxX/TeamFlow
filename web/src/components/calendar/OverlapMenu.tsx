@@ -1,4 +1,3 @@
-// src/components/calendar/OverlapMenu.tsx
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import type { Event, Task } from "../../models/mockDB/calendar";
@@ -7,7 +6,7 @@ interface OverlapMenuProps {
   items: (Event | Task)[];
   onSelect: (item: Event | Task) => void;
   onClose: () => void;
-  position: { x: number; y: number }; // координати viewport
+  position: { x: number; y: number };
   selectedItem?: Event | Task | null;
 }
 
@@ -33,7 +32,6 @@ const OverlapMenu: React.FC<OverlapMenuProps> = ({
 
   return ReactDOM.createPortal(
     <>
-      {/* бекдроп, який ловить всі кліки */}
       <div className="fixed inset-0 z-[9998]" onClick={onClose} />
 
       <div
@@ -43,7 +41,7 @@ const OverlapMenu: React.FC<OverlapMenuProps> = ({
           top: position.y,
           left: position.x,
         }}
-        onClick={(e) => e.stopPropagation()} // щоб кліки всередині меню не закривали його
+        onClick={(e) => e.stopPropagation()}
       >
         <ul className="max-h-60 overflow-auto">
           {items.map((item) => {

@@ -28,7 +28,6 @@ export default function ProfileSettings({
         <h2 className="text-xl font-semibold text-gray-800">{tp("title")}</h2>
 
         <div className="grid gap-4 md:grid-cols-2">
-          {/* Мова інтерфейсу */}
           <div className="space-y-2">
             <Label htmlFor="language">{tp("interfaceLang")}</Label>
             <Select
@@ -45,7 +44,6 @@ export default function ProfileSettings({
             </Select>
           </div>
 
-          {/* Видимість профілю */}
           <div className="space-y-2">
             <Label htmlFor="visibility">{tp("visibility")}</Label>
             <Select

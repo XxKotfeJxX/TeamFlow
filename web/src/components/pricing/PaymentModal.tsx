@@ -16,7 +16,6 @@ interface Props {
   onComplete: () => void;
 }
 
-// ✅ Алгоритм Луна
 const isValidCardNumber = (num: string): boolean => {
   const digits = num.replace(/\D/g, "").split("").map(Number);
   let sum = 0;
@@ -49,9 +48,6 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
   const [error, setError] = useState("");
   const [cardValid, setCardValid] = useState(true);
 
-  // ==============================
-  // 🔹 Форматування
-  // ==============================
   const formatCardNumber = (val: string) => {
     const cleaned = val.replace(/[^\d]/g, "").slice(0, 16);
     const spaced = cleaned.replace(/(.{4})/g, "$1 ").trim();
@@ -68,9 +64,6 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
 
   const formatCvv = (val: string) => val.replace(/[^\d]/g, "").slice(0, 3);
 
-  // ==============================
-  // 🔹 Перевірка терміну дії
-  // ==============================
   const validateExpiry = () => {
     if (!/^\d{2}\/\d{2}$/.test(expiry)) return false;
     const [mm, yy] = expiry.split("/").map(Number);
@@ -80,9 +73,6 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
     return true;
   };
 
-  // ==============================
-  // 🔹 Загальна валідація
-  // ==============================
   const validateCard = () => {
     const plainNumber = cardNumber.replace(/\s/g, "");
 
@@ -119,16 +109,12 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
     if (e.key === "Enter") handleSubmit();
   };
 
-  // ==============================
-  // 🔹 UI
-  // ==============================
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
       onKeyDown={handleKeyPress}
     >
       <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full relative">
-        {/* Закриття */}
         <button
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
           onClick={onClose}
@@ -137,7 +123,6 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
           ×
         </button>
 
-        {/* Логотипи */}
         <div className="flex justify-center items-center gap-4 border-b pb-3 mb-4">
           <FaCcVisa size={40} className="text-blue-700" />
           <FaCcMastercard size={40} className="text-red-500" />
@@ -148,7 +133,6 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
           {tp("title")} <span className="text-blue-600">{plan.name}</span>
         </h2>
 
-        {/* Вибір способу оплати */}
         <div className="flex justify-center gap-4 mb-6">
           <button
             onClick={() => setMethod("card")}

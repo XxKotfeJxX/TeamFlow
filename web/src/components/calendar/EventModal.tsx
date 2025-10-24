@@ -37,7 +37,6 @@ const EventModal: React.FC<EventModalProps> = ({
   const currentUserId = localStorage.getItem("currentUserId") || "u1";
   const isOwner = event.ownerId === currentUserId;
 
-  // ===== Контекстне меню =====
   const handleUserClick = (
     userId: string,
     e: React.MouseEvent<HTMLDivElement>
@@ -57,7 +56,6 @@ const EventModal: React.FC<EventModalProps> = ({
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  // ===== Зберегти нових учасників =====
   const handleSaveParticipants = (selectedIds: string[]) => {
     const fixed = [
       event.ownerId,
@@ -78,7 +76,6 @@ const EventModal: React.FC<EventModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      {/* 🔹 Контейнер модалки */}
       <div
         className="
           bg-white rounded-lg shadow-lg relative flex overflow-hidden
@@ -87,7 +84,6 @@ const EventModal: React.FC<EventModalProps> = ({
           flex-col md:flex-row
         "
       >
-        {/* 🔸 Кнопка закриття */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-black hover:border-gray-200 rounded-full p-1"
@@ -95,7 +91,6 @@ const EventModal: React.FC<EventModalProps> = ({
           <X size={24} strokeWidth={2.5} />
         </button>
 
-        {/* 🔹 Вкладки (горизонтально на мобілках, вертикально на ПК) */}
         <div
           className="
             flex border-b md:border-b-0 md:border-r border-gray-300
@@ -124,9 +119,7 @@ const EventModal: React.FC<EventModalProps> = ({
           ))}
         </div>
 
-        {/* 🔹 Контент */}
         <div className="flex-1 p-4 md:p-6 overflow-y-auto">
-          {/* ===== Основна вкладка ===== */}
           {activeTab === "main" && (
             <div>
               <h2 className="text-2xl font-bold mb-2 text-gray-800">
@@ -141,7 +134,6 @@ const EventModal: React.FC<EventModalProps> = ({
             </div>
           )}
 
-          {/* ===== Таски ===== */}
           {activeTab === "tasks" && (
             <div className="space-y-2">
               {event.taskIds && event.taskIds.length > 0 ? (
@@ -179,7 +171,6 @@ const EventModal: React.FC<EventModalProps> = ({
             </div>
           )}
 
-          {/* ===== Учасники ===== */}
           {activeTab === "participants" && (
             <div className="space-y-3 pt-4">
               {isOwner && (
@@ -236,7 +227,6 @@ const EventModal: React.FC<EventModalProps> = ({
             </div>
           )}
 
-          {/* ===== Налаштування ===== */}
           {activeTab === "settings" && (
             <div>
               {isPersonalCalendar ? (
@@ -252,7 +242,6 @@ const EventModal: React.FC<EventModalProps> = ({
           )}
         </div>
 
-        {/* 🔹 Контекстне меню */}
         {selectedUser && contextMenuPos && (
           <div
             className="fixed bg-white p-2 rounded shadow-lg z-50 flex flex-col space-y-2"
@@ -285,7 +274,6 @@ const EventModal: React.FC<EventModalProps> = ({
         )}
       </div>
 
-      {/* 🔹 Модалка редагування учасників */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100]">
           <div
