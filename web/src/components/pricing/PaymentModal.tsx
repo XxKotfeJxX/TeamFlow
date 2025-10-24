@@ -8,6 +8,7 @@ import {
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
+import { useTranslation } from "../useTranslations";
 
 interface Props {
   plan: { name: string; priceMonth?: number; priceYear?: number };
@@ -35,6 +36,9 @@ const isValidCardNumber = (num: string): boolean => {
 };
 
 export default function PaymentModal({ plan, onClose, onComplete }: Props) {
+  const { t } = useTranslation();
+  const tp = t("payment");
+
   const [method, setMethod] = useState<"card" | "paypal">("card");
   const [showCard, setShowCard] = useState(false);
   const [showCvv, setShowCvv] = useState(false);
@@ -82,12 +86,11 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
   const validateCard = () => {
     const plainNumber = cardNumber.replace(/\s/g, "");
 
-    if (name.trim().length < 2) return "Введіть ім’я власника картки";
-    if (plainNumber.length !== 16) return "Некоректний номер картки";
-    if (!isValidCardNumber(plainNumber))
-      return "Номер картки невалідний (перевірка Луна)";
-    if (!validateExpiry()) return "Картка не дійсна (перевірте дату)";
-    if (cvv.length !== 3) return "CVV має складатися з 3 цифр";
+    if (name.trim().length < 2) return tp("nameError");
+    if (plainNumber.length !== 16) return tp("numberError");
+    if (!isValidCardNumber(plainNumber)) return tp("luhnError");
+    if (!validateExpiry()) return tp("expiryError");
+    if (cvv.length !== 3) return tp("cvvError");
     return "";
   };
 
@@ -108,7 +111,7 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
   };
 
   const handleExpiryBlur = () => {
-    if (!validateExpiry()) setError("Картка не дійсна (перевірте дату)");
+    if (!validateExpiry()) setError(tp("invalidDate"));
     else setError("");
   };
 
@@ -142,7 +145,7 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
         </div>
 
         <h2 className="text-xl font-semibold text-center mb-5">
-          Оплата плану <span className="text-blue-600">{plan.name}</span>
+          {tp("title")} <span className="text-blue-600">{plan.name}</span>
         </h2>
 
         {/* Вибір способу оплати */}
@@ -155,7 +158,7 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
                 : "border-gray-300 text-gray-700 hover:bg-gray-100 hover:border-gray-400"
             }`}
           >
-            Картка
+            {tp("card")}
           </button>
           <button
             onClick={() => setMethod("paypal")}
@@ -165,7 +168,7 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
                 : "border-gray-300 text-gray-700 hover:bg-gray-100 hover:border-gray-400"
             }`}
           >
-            PayPal
+            {tp("paypal")}
           </button>
         </div>
 
@@ -173,11 +176,11 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
           <div className="space-y-3">
             <div>
               <label className="block text-sm text-gray-700 mb-1">
-                Ім’я власника картки
+                {tp("nameLabel")}
               </label>
               <Input
                 type="text"
-                placeholder="Same Doe"
+                placeholder={tp("namePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -185,7 +188,7 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
 
             <div>
               <label className="block text-sm text-gray-700 mb-1">
-                Номер картки
+                {tp("numberLabel")}
               </label>
               <div className="relative">
                 <Input
@@ -211,16 +214,14 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
                 </button>
               </div>
               {!cardValid && (
-                <p className="text-red-600 text-xs mt-1">
-                  Номер картки невалідний (перевірка Луна)
-                </p>
+                <p className="text-red-600 text-xs mt-1">{tp("invalidCard")}</p>
               )}
             </div>
 
             <div className="flex gap-2">
               <div className="w-1/2 relative">
                 <label className="block text-sm text-gray-700 mb-1">
-                  Термін дії
+                  {tp("expiryLabel")}
                 </label>
                 <Input
                   type="text"
@@ -231,7 +232,9 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
                 />
               </div>
               <div className="w-1/2 relative">
-                <label className="block text-sm text-gray-700 mb-1">CVV</label>
+                <label className="block text-sm text-gray-700 mb-1">
+                  {tp("cvvLabel")}
+                </label>
                 <Input
                   type={showCvv ? "text" : "password"}
                   placeholder="***"
@@ -257,20 +260,18 @@ export default function PaymentModal({ plan, onClose, onComplete }: Props) {
               onClick={handleSubmit}
               style={{ border: "none" }}
             >
-              Оплатити
+              {tp("payButton")}
             </Button>
           </div>
         ) : (
           <div className="text-center">
-            <p className="text-gray-700 mb-4">
-              Ви будете перенаправлені на PayPal для завершення оплати.
-            </p>
+            <p className="text-gray-700 mb-4">{tp("redirectInfo")}</p>
             <Button
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               onClick={handleSubmit}
               style={{ border: "none" }}
             >
-              Перейти до PayPal
+              {tp("redirectButton")}
             </Button>
           </div>
         )}

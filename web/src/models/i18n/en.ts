@@ -220,7 +220,27 @@ export default {
         ],
       },
     ],
-    },
-  
-  
+  },
+
+  payment: {
+    title: "Payment for plan",
+    card: "Card",
+    paypal: "PayPal",
+    nameLabel: "Cardholder name",
+    namePlaceholder: "Same Doe",
+    numberLabel: "Card number",
+    expiryLabel: "Expiry date",
+    cvvLabel: "CVV",
+    invalidCard: "Invalid card number (Luhn check)",
+    invalidDate: "Invalid card date (check expiry)",
+    nameError: "Enter cardholder name",
+    numberError: "Invalid card number",
+    luhnError: "Invalid card number (Luhn check)",
+    expiryError: "Invalid expiry date",
+    cvvError: "CVV must be 3 digits",
+    payButton: "Pay",
+    redirectInfo: "You will be redirected to PayPal to complete payment.",
+    redirectButton: "Go to PayPal",
+    close: "Close",
+  },
 };
