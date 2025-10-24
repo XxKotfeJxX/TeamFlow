@@ -1,3 +1,4 @@
+// src/pages/MonthPage.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
@@ -7,6 +8,8 @@ import CalendarGrid from "../components/calendar/CalendarGrid";
 import { calendarDb, eventDb } from "../models/mockDB/calendar";
 import { teamDb } from "../models/mockDB/teams";
 import { userDb } from "../models/mockDB/users";
+import { motion } from "framer-motion";
+import ErrorPage from "./ErrorPage";
 
 const MonthPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,13 +18,17 @@ const MonthPage: React.FC = () => {
     month: string;
   }>();
 
-  // =========================
-  // 🔹 1. Перевіряємо/створюємо календар
-  // =========================
-  const [calendarExists, setCalendarExists] = useState(false);
+  const [calendarExists, setCalendarExists] = useState<boolean | null>(null);
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
+  // =========================
+  // 🔹 1. Перевірка календаря
+  // =========================
   useEffect(() => {
-    if (!calendarId) return;
+    if (!calendarId) {
+      setCalendarExists(false);
+      return;
+    }
 
     const existing = calendarDb.getById(calendarId);
     if (existing) {
@@ -29,7 +36,7 @@ const MonthPage: React.FC = () => {
       return;
     }
 
-    // Визначаємо тип
+    // Визначаємо тип власника
     let ownerType: "user" | "team" = "user";
     let ownerId = "current-user";
 
@@ -39,6 +46,9 @@ const MonthPage: React.FC = () => {
     } else if (userDb.getById(calendarId)) {
       ownerType = "user";
       ownerId = calendarId;
+    } else {
+      setCalendarExists(false);
+      return;
     }
 
     calendarDb.create({
@@ -54,23 +64,23 @@ const MonthPage: React.FC = () => {
   // =========================
   // 🔹 2. Ініціалізація дати
   // =========================
-  const initialDate = (() => {
+  useEffect(() => {
     if (month && /^\d{4}-\d{2}$/.test(month)) {
       const [y, m] = month.split("-").map(Number);
-      return new Date(y, m - 1, 1);
+      setCurrentDate(new Date(y, m - 1, 1));
     }
-    return new Date();
-  })();
-
-  const [currentDate, setCurrentDate] = useState(initialDate);
+  }, [month]);
 
   // =========================
   // 🔹 3. Події для цього календаря
   // =========================
-  const events = eventDb.getAll().filter((e) => e.calendarId === calendarId);
+  const events =
+    calendarExists && calendarId
+      ? eventDb.getAll().filter((e) => e.calendarId === calendarId)
+      : [];
 
   // =========================
-  // 🔹 4. Навігація
+  // 🔹 4. Навігація місяцями
   // =========================
   const navigateToMonth = (date: Date) => {
     const formatted = `${date.getFullYear()}-${String(
@@ -95,7 +105,7 @@ const MonthPage: React.FC = () => {
   const goToday = () => navigateToMonth(new Date());
 
   // =========================
-  // 🔹 5. Навігація між сторінками
+  // 🔹 5. Перехід між сторінками
   // =========================
   const onDayClick = (day: Date) => {
     const formatted = day.toLocaleDateString("sv-SE");
@@ -107,41 +117,75 @@ const MonthPage: React.FC = () => {
     navigate(`/calendar/${calendarId}/week/${formatted}`);
   };
 
-  if (!calendarId) return <div>❌ Не вказано календар</div>;
-  if (!calendarExists)
+  // =========================
+  // 🔹 6. Обробка помилок
+  // =========================
+  if (calendarExists === false) {
+    return <ErrorPage code={404} />;
+  }
+
+  if (!calendarId) {
+    return <ErrorPage code={400} />;
+  }
+
+  if (calendarExists === null) {
     return (
-      <div className="text-center mt-20 text-gray-600">
+      <div className="flex items-center justify-center min-h-screen text-gray-500">
         ⏳ Завантаження календаря...
       </div>
     );
+  }
 
   // =========================
-  // 🔹 6. Рендер
+  // 🔹 7. Рендер (стиль як у Home.tsx)
   // =========================
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <Header />
+      <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
+        {/* Градієнтні бліки */}
+        <motion.div
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="pointer-events-none absolute inset-0"
+        >
+          <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
+        </motion.div>
 
-      <main className="flex-1 p-4 flex flex-col pt-[var(--header-height,4rem)]">
-        <NavigationBar
-          currentDate={currentDate}
-          onPrevMonth={goPrevMonth}
-          onNextMonth={goNextMonth}
-          onToday={goToday}
-        />
+        <main className="relative z-10 flex flex-col pt-[var(--header-height,4rem)] px-4 md:px-8 lg:px-16 max-w-7xl mx-auto w-full">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <NavigationBar
+              currentDate={currentDate}
+              onPrevMonth={goPrevMonth}
+              onNextMonth={goNextMonth}
+              onToday={goToday}
+            />
+          </motion.div>
 
-        <div className="flex-1 overflow-auto">
-          <CalendarGrid
-            currentDate={currentDate}
-            events={events}
-            onDayClick={onDayClick}
-            onWeekClick={onWeekClick}
-          />
-        </div>
-      </main>
-
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex-1 mt-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg transition p-4"
+          >
+            <CalendarGrid
+              currentDate={currentDate}
+              events={events}
+              onDayClick={onDayClick}
+              onWeekClick={onWeekClick}
+            />
+          </motion.div>
+        </main>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 };
 
