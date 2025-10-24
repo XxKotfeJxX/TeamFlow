@@ -721,5 +721,24 @@ export default {
       "More options coming soon — for example, dark theme, email notifications, and more.",
   },
 
+  userTeamsPage: {
+    userNotFound: "User not found",
+    pageTitle: "Teams of user",
+    allTeams: "All teams",
+    myTeams: "My teams",
+    createTeam: "Create team",
+    searchPlaceholder: "Search for a team...",
+    newTeam: "New team",
+    teamName: "Team name",
+    description: "Description",
+    avatar: "Team avatar",
+    create: "Create",
+    noTeams: "No teams found 😢",
+    noDescription: "No description",
+    enterName: "Please enter a team name",
+    teamCreated: "Team created",
+    calendarPrefix: "Team calendar",
+  },
+
   
 };

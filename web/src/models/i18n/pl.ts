@@ -721,5 +721,22 @@ export default {
       "Więcej opcji pojawi się wkrótce — np. tryb ciemny, powiadomienia e-mail itp.",
   },
 
-  
+  userTeamsPage: {
+    userNotFound: "Nie znaleziono użytkownika",
+    pageTitle: "Zespoły użytkownika",
+    allTeams: "Wszystkie zespoły",
+    myTeams: "Moje zespoły",
+    createTeam: "Utwórz zespół",
+    searchPlaceholder: "Szukaj zespołu...",
+    newTeam: "Nowy zespół",
+    teamName: "Nazwa zespołu",
+    description: "Opis",
+    avatar: "Avatar zespołu",
+    create: "Utwórz",
+    noTeams: "Nie znaleziono zespołów 😢",
+    noDescription: "Brak opisu",
+    enterName: "Wprowadź nazwę zespołu",
+    teamCreated: "Zespół został utworzony",
+    calendarPrefix: "Kalendarz zespołu",
+  },
 };
