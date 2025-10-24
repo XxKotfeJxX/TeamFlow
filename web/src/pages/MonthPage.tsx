@@ -142,7 +142,7 @@ const MonthPage: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50">
+      <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 pt-12">
         {/* Градієнтні бліки */}
         <motion.div
           aria-hidden

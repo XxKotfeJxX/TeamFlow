@@ -114,7 +114,7 @@ const WeekPage: React.FC = () => {
                   className="snap-center flex-shrink-0"
                   style={{ width: `${100 / DAYS_VISIBLE}%` }}
                 >
-                  <div className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
+                  
                     <DayModule
                       date={day}
                       items={items}
@@ -122,7 +122,7 @@ const WeekPage: React.FC = () => {
                         window.location.href = `/calendar/${calendarId}/day/${dateStr}`;
                       }}
                     />
-                  </div>
+                  
                 </motion.div>
               );
             })}
