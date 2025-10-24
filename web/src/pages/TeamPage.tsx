@@ -191,7 +191,7 @@ const TeamPage: React.FC = () => {
           </div>
 
           {/* 🔹 кнопки */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 w-full md:w-auto">
+          <div className="w-full flex flex-col sm:flex-row sm:flex-wrap sm:justify-end gap-2">
             {isGuest ? (
               <button
                 onClick={handleSendRequest}
@@ -201,13 +201,14 @@ const TeamPage: React.FC = () => {
               </button>
             ) : (
               <>
-                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto justify-end">
                   <button
                     onClick={() => navigate(`/tasks/team/${team.id}`)}
                     className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
                   >
                     Завдання
                   </button>
+
                   <button
                     onClick={() =>
                       navigate(`/calendar/${team.id}/${currentMonth}`)
