@@ -119,7 +119,7 @@ const Footer = () => {
             <h4 className="text-white font-semibold mb-2">{tf("followUs")}</h4>
             <div className="flex gap-4 text-lg">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/profile.php?id=61582548252738"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition"
