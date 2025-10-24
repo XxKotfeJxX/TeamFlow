@@ -1,4 +1,3 @@
-// src/pages/PricePage.tsx
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
@@ -91,7 +90,6 @@ export default function PricePage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-900">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -113,12 +111,10 @@ export default function PricePage() {
             {tp("title")}
           </motion.h1>
 
-          {/* GRID */}
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 items-stretch">
             {plans.map((plan, i) => {
               const isCurrent = currentUser?.plan === plan.name;
 
-              // 🧹 у Base-плані не показуємо 0$
               const isFree = !plan.priceMonth && !plan.priceYear;
 
               return (
@@ -132,12 +128,10 @@ export default function PricePage() {
                 >
                   <Card className="h-full flex flex-col bg-white/70 backdrop-blur-md border border-gray-100 shadow-md hover:shadow-lg transition-transform hover:-translate-y-1 rounded-2xl">
                     <CardContent className="flex flex-col flex-1 p-8">
-                      {/* Назва */}
                       <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
                         {plan.name}
                       </h2>
 
-                      {/* 🔹 Ціна */}
                       <div className="mb-6 text-center min-h-[72px] flex flex-col justify-center">
                         {isFree ? (
                           <p className="text-2xl font-semibold text-blue-600">
@@ -168,7 +162,6 @@ export default function PricePage() {
                         )}
                       </div>
 
-                      {/* 🔹 Фічі */}
                       <ul className="space-y-2 flex-1 mb-6 text-left">
                         {plan.features.map((feature, j) => {
                           const unavailable =
@@ -191,7 +184,6 @@ export default function PricePage() {
                         })}
                       </ul>
 
-                      {/* 🔹 Кнопка */}
                       <div className="mt-auto">
                         <Button
                           className={`w-full rounded-xl py-3 font-medium transition ${
@@ -216,7 +208,6 @@ export default function PricePage() {
 
       <Footer />
 
-      {/* 🔹 Модалки */}
       {showConfirm && selectedPlan && (
         <ConfirmDowngradeModal
           plan={selectedPlan.name}

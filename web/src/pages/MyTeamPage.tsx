@@ -1,4 +1,3 @@
-// src/pages/MyTeamPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
@@ -21,7 +20,6 @@ export default function MyTeamPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -34,7 +32,6 @@ export default function MyTeamPage() {
         </motion.div>
 
         <main className="relative z-10 flex-1 max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-24">
-          {/* Hero */}
           <motion.h1
             className="text-4xl md:text-5xl font-bold mb-20 text-center text-gray-900"
             initial={{ opacity: 0, y: -20 }}
@@ -44,7 +41,6 @@ export default function MyTeamPage() {
             {mt("title")}
           </motion.h1>
 
-          {/* Author Card */}
           <div className="flex justify-center">
             <motion.div
               className="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl shadow-lg hover:shadow-xl p-10 w-full max-w-lg flex flex-col items-center text-center transition-transform hover:-translate-y-1 duration-300"
@@ -69,7 +65,6 @@ export default function MyTeamPage() {
             </motion.div>
           </div>
 
-          {/* Tech Stack */}
           <section className="mt-24 text-center">
             <h2 className="text-3xl font-bold mb-10 text-gray-900">
               {mt("stackTitle")}
@@ -97,7 +92,6 @@ export default function MyTeamPage() {
             </div>
           </section>
 
-          {/* About Project */}
           <motion.section
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

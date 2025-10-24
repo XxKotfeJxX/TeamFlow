@@ -1,4 +1,3 @@
-// src/pages/FeaturesPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Card, CardContent } from "../components/ui/Card";
@@ -23,7 +22,6 @@ export default function FeaturesPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -36,7 +34,6 @@ export default function FeaturesPage() {
         </motion.div>
 
         <main className="relative z-10 flex-1 py-24 max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-          {/* HERO */}
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,7 +43,6 @@ export default function FeaturesPage() {
             {tf("title")}
           </motion.h1>
 
-          {/* GRID */}
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 items-stretch">
             {translations[lang].features.sections.map(
               (section: { title: string; points: string[] }, index: number) => {
@@ -79,7 +75,6 @@ export default function FeaturesPage() {
             )}
           </div>
 
-          {/* FOOTER NOTE */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

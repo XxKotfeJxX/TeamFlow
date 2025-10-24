@@ -1,4 +1,3 @@
-// src/pages/MonthPage.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
@@ -21,9 +20,6 @@ const MonthPage: React.FC = () => {
   const [calendarExists, setCalendarExists] = useState<boolean | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
-  // =========================
-  // 🔹 1. Перевірка календаря
-  // =========================
   useEffect(() => {
     if (!calendarId) {
       setCalendarExists(false);
@@ -36,7 +32,6 @@ const MonthPage: React.FC = () => {
       return;
     }
 
-    // Визначаємо тип власника
     let ownerType: "user" | "team" = "user";
     let ownerId = "current-user";
 
@@ -61,9 +56,6 @@ const MonthPage: React.FC = () => {
     setCalendarExists(true);
   }, [calendarId]);
 
-  // =========================
-  // 🔹 2. Ініціалізація дати
-  // =========================
   useEffect(() => {
     if (month && /^\d{4}-\d{2}$/.test(month)) {
       const [y, m] = month.split("-").map(Number);
@@ -71,17 +63,11 @@ const MonthPage: React.FC = () => {
     }
   }, [month]);
 
-  // =========================
-  // 🔹 3. Події для цього календаря
-  // =========================
   const events =
     calendarExists && calendarId
       ? eventDb.getAll().filter((e) => e.calendarId === calendarId)
       : [];
 
-  // =========================
-  // 🔹 4. Навігація місяцями
-  // =========================
   const navigateToMonth = (date: Date) => {
     const formatted = `${date.getFullYear()}-${String(
       date.getMonth() + 1
@@ -104,9 +90,6 @@ const MonthPage: React.FC = () => {
 
   const goToday = () => navigateToMonth(new Date());
 
-  // =========================
-  // 🔹 5. Перехід між сторінками
-  // =========================
   const onDayClick = (day: Date) => {
     const formatted = day.toLocaleDateString("sv-SE");
     navigate(`/calendar/${calendarId}/day/${formatted}`);
@@ -117,9 +100,6 @@ const MonthPage: React.FC = () => {
     navigate(`/calendar/${calendarId}/week/${formatted}`);
   };
 
-  // =========================
-  // 🔹 6. Обробка помилок
-  // =========================
   if (calendarExists === false) {
     return <ErrorPage code={404} />;
   }
@@ -136,14 +116,10 @@ const MonthPage: React.FC = () => {
     );
   }
 
-  // =========================
-  // 🔹 7. Рендер (стиль як у Home.tsx)
-  // =========================
   return (
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 pt-12">
-        {/* Градієнтні бліки */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}

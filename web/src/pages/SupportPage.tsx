@@ -1,4 +1,3 @@
-// src/pages/SupportPage.tsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
@@ -29,7 +28,6 @@ export default function SupportPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-800">
-        {/* 🔹 Градієнтні світлові плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -63,7 +61,6 @@ export default function SupportPage() {
             </p>
           </motion.section>
 
-          {/* 🔹 Accordion (FAQ) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +89,6 @@ export default function SupportPage() {
             </Accordion>
           </motion.div>
 
-          {/* 🔹 CTA */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

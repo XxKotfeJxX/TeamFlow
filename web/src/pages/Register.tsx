@@ -1,4 +1,3 @@
-// src/pages/RegisterPage.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -15,7 +14,6 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// 🔹 Умови для пароля
 const passwordRules = [
   { test: (p: string) => p.length >= 8, text: "Мінімум 8 символів" },
   {
@@ -101,7 +99,6 @@ export default function RegisterPage() {
     <>
       <Header />
       <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-blue-50 to-gray-50 text-gray-900">
-        {/* 🔹 Градієнтні світлові плями */}
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
@@ -131,7 +128,6 @@ export default function RegisterPage() {
                   autoComplete="off"
                   className="space-y-4"
                 >
-                  {/* Логін */}
                   <div>
                     <Label htmlFor="login">Логін</Label>
                     <Input
@@ -149,7 +145,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Пароль */}
                   <div className="pt-4">
                     <Label htmlFor="password">Пароль</Label>
                     <Input
@@ -190,7 +185,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Повтор паролю */}
                   <div>
                     <Label htmlFor="repeatPassword">Повторіть пароль</Label>
                     <Input
@@ -208,7 +202,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Email */}
                   <div className="pt-4">
                     <Label htmlFor="email">Електронна пошта</Label>
                     <Input
@@ -226,7 +219,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Політика конфіденційності */}
                   <div className="pt-6">
                     <Checkbox
                       checked={agree}
@@ -250,7 +242,6 @@ export default function RegisterPage() {
                     )}
                   </div>
 
-                  {/* Кнопка */}
                   <Button
                     type="submit"
                     className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors mt-6 rounded-xl py-3 text-lg font-medium shadow-sm hover:shadow-md"
