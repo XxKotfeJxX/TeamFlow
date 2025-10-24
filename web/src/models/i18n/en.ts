@@ -271,5 +271,19 @@ export default {
     cta: "Join the team",
   },
 
+  career: {
+    title: "Career",
+    subtitle:
+      "We’re looking for people who want to grow with us. If you’re passionate about building modern tools for teamwork — join TeamFlow!",
+    frontendTitle: "Frontend Intern",
+    frontendDesc: "Developing React components and optimizing UI/UX.",
+    backendTitle: "Backend Developer (C++)",
+    backendDesc:
+      "Building REST APIs, authentication, and PostgreSQL data processing.",
+    qaTitle: "QA Engineer",
+    qaDesc: "Automated testing of client and server modules.",
+    applyButton: "Send Resume",
+  },
+
   
 };

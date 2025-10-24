@@ -269,4 +269,19 @@ export default {
       "Budujemy produkt, który motywuje zespoły do wspólnego rozwoju.",
     cta: "Dołącz do zespołu",
   },
+
+  career: {
+    title: "Kariera",
+    subtitle:
+      "Szukamy ludzi, którzy chcą rozwijać się razem z nami. Jeśli pasjonuje Cię tworzenie nowoczesnych narzędzi do pracy zespołowej — dołącz do TeamFlow!",
+    frontendTitle: "Frontend Intern",
+    frontendDesc: "Tworzenie komponentów w React i optymalizacja UI/UX.",
+    backendTitle: "Backend Developer (C++)",
+    backendDesc: "Tworzenie REST API, autoryzacji i obsługi danych PostgreSQL.",
+    qaTitle: "QA Engineer",
+    qaDesc: "Automatyczne testowanie modułów klienckich i serwerowych.",
+    applyButton: "Wyślij CV",
+  },
+
+
 };

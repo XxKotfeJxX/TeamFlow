@@ -1,37 +1,39 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../components/ui/Button";
-
-const roles = [
-  {
-    title: "Frontend Intern",
-    description: "Розробка компонентів у React та оптимізація UI/UX.",
-    tags: ["React", "TypeScript", "Tailwind"],
-  },
-  {
-    title: "Backend Developer (C++)",
-    description: "Розробка REST API, авторизації та обробки даних PostgreSQL.",
-    tags: ["C++", "PostgreSQL", "JWT"],
-  },
-  {
-    title: "QA Engineer",
-    description: "Автоматизоване тестування клієнтських і серверних модулів.",
-    tags: ["Testing", "Automation", "CI/CD"],
-  },
-];
+import { useTranslation } from "../components/useTranslations";
 
 export default function CareerPage() {
+  const { t } = useTranslation();
+  const tc = t("career");
+
+  const roles = [
+    {
+      title: tc("frontendTitle"),
+      description: tc("frontendDesc"),
+      tags: ["React", "TypeScript", "Tailwind"],
+    },
+    {
+      title: tc("backendTitle"),
+      description: tc("backendDesc"),
+      tags: ["C++", "PostgreSQL", "JWT"],
+    },
+    {
+      title: tc("qaTitle"),
+      description: tc("qaDesc"),
+      tags: ["Testing", "Automation", "CI/CD"],
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       <Header />
 
       <main className="flex-1 max-w-5xl mx-auto px-6 pb-16 pt-28">
-        <h1 className="text-4xl font-bold mb-8 text-center">Кар’єра</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center">{tc("title")}</h1>
 
         <p className="text-center text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
-          Ми шукаємо людей, які хочуть зростати разом із нами. Якщо тебе
-          драйвить створення сучасних інструментів для командної роботи —
-          долучайся до TeamFlow!
+          {tc("subtitle")}
         </p>
 
         <div className="grid gap-8">
@@ -42,6 +44,7 @@ export default function CareerPage() {
             >
               <h2 className="text-2xl font-semibold mb-2">{role.title}</h2>
               <p className="text-gray-600 mb-4">{role.description}</p>
+
               <div className="flex flex-wrap gap-2 mb-4">
                 {role.tags.map((tag) => (
                   <span
@@ -52,6 +55,7 @@ export default function CareerPage() {
                   </span>
                 ))}
               </div>
+
               <Button
                 onClick={() =>
                   (window.location.href = "mailto:hr@teamflow.com")
@@ -59,7 +63,7 @@ export default function CareerPage() {
                 className="bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-6 py-3 text-lg rounded-xl transition-transform hover:scale-105"
                 style={{ border: "none" }}
               >
-                Надіслати резюме
+                {tc("applyButton")}
               </Button>
             </div>
           ))}
