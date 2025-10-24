@@ -1,4 +1,3 @@
-// src/components/ui/ConfirmModal.tsx
 import React from "react";
 import { X } from "lucide-react";
 
@@ -10,7 +9,7 @@ interface ConfirmModalProps {
   cancelText?: string;
   onConfirm: () => void;
   onCancel: () => void;
-  confirmColor?: string; // tailwind клас кольору
+  confirmColor?: string;
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({

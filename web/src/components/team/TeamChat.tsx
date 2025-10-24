@@ -29,7 +29,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // створення або отримання чату
   useEffect(() => {
     const chat = chatDb.createTeam(teamId);
     setChatId(chat.id);
@@ -37,7 +36,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
     setMessages(list);
   }, [teamId]);
 
-  // live sync із LocalStorage
   useEffect(() => {
     if (!chatId) return;
     const sync = () => setMessages(messageDb.listByChat(chatId));
@@ -48,15 +46,12 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
     return () => window.removeEventListener("storage", handler);
   }, [chatId]);
 
-  // функція прокрутки в кінець
   const scrollToBottom = useCallback(() => {
     if (document.activeElement && document.activeElement.tagName === "INPUT")
       return;
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, []);
 
-
-  // перевірка чи користувач внизу
   const handleScroll = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
@@ -64,7 +59,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
     setShowScrollButton(!isNearBottom);
   };
 
-  // автоскрол тільки якщо користувач і так був внизу
   useEffect(() => {
     const el = scrollContainerRef.current;
     if (!el) return;
@@ -72,7 +66,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
     if (isNearBottom) scrollToBottom();
   }, [messages, scrollToBottom]);
 
-  // відправлення повідомлення
   const sendMessage = () => {
     if (!chatId || !inputValue.trim()) return;
     messageDb.send(chatId, currentUserId, {
@@ -87,7 +80,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
     if (e.key === "Enter") sendMessage();
   };
 
-  // групування повідомлень
   const grouped = messages.reduce<Record<string, Message[]>>((acc, msg) => {
     const key = msg.createdAt.toDateString();
     if (!acc[key]) acc[key] = [];
@@ -97,7 +89,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col h-[500px] overflow-hidden relative">
-      {/* 🔹 Повідомлення */}
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
@@ -213,7 +204,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
         <div ref={bottomRef} />
       </div>
 
-      {/* 🔹 Кнопка прокрутки вниз */}
       {showScrollButton && (
         <button
           onClick={scrollToBottom}
@@ -223,7 +213,6 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
         </button>
       )}
 
-      {/* 🔹 Поле вводу */}
       <div className="flex border-t border-gray-200 pt-3">
         <label className="flex items-center cursor-pointer px-3">
           <Paperclip className="text-gray-400 hover:text-gray-600 w-5 h-5" />

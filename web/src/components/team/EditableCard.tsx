@@ -11,7 +11,7 @@ interface EditableCardProps {
   template: ProfileTemplate;
   onSave: (updatedBlock: TeamProfileBlock) => void;
   onDelete?: () => void;
-  canEdit?: boolean; // 🔹 контролює права на редагування
+  canEdit?: boolean; 
 }
 
 const EditableCard: React.FC<EditableCardProps> = ({
@@ -19,14 +19,13 @@ const EditableCard: React.FC<EditableCardProps> = ({
   template,
   onSave,
   onDelete,
-  canEdit = false, // 🔹 значення за замовчуванням — не можна редагувати
+  canEdit = false,
 }) => {
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState<Record<string, unknown>>(block.data || {});
 
-  // 🔹 Зберегти зміни в БД + локально
   const save = () => {
-    if (!canEdit) return; // ❌ захист від редагування через консоль
+    if (!canEdit) return;
     const updatedBlock: TeamProfileBlock = {
       ...block,
       data,
@@ -37,7 +36,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
     setEditing(false);
   };
 
-  // 🔹 Видалити блок
   const handleDelete = () => {
     if (!canEdit || !onDelete) return;
     if (confirm("Видалити цей блок?")) onDelete();
@@ -48,7 +46,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
       className="relative bg-white rounded-2xl shadow-sm p-6 transition pt-12"
       style={template.styles as React.CSSProperties}
     >
-      {/* 🔸 Кнопки дій — тільки якщо canEdit === true */}
       {canEdit && (
         <div className="absolute top-3 right-3 flex gap-2">
           {editing ? (
@@ -91,7 +88,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
         </div>
       )}
 
-      {/* ===== РЕЖИМ ПРОСМОТРУ ===== */}
       {!editing ? (
         <>
           {template.fields.map((field) => {
@@ -169,7 +165,6 @@ const EditableCard: React.FC<EditableCardProps> = ({
         </>
       ) : (
         <>
-          {/* ===== РЕЖИМ РЕДАГУВАННЯ ===== */}
           {template.fields.map((field) => {
             const value = data[field.key];
 

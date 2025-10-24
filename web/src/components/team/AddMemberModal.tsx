@@ -1,4 +1,3 @@
-// src/components/team/AddMemberModal.tsx
 import React, { useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { users } from "../../models/mockDB/users";
@@ -49,7 +48,6 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative animate-fadeIn">
-        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-900">
             Додати учасників
@@ -62,7 +60,6 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
           </button>
         </div>
 
-        {/* List */}
         <div className="max-h-80 overflow-y-auto space-y-3">
           {availableUsers.length === 0 ? (
             <p className="text-gray-500 text-center py-8">
@@ -96,7 +93,6 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
           )}
         </div>
 
-        {/* Footer */}
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}

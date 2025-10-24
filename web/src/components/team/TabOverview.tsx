@@ -7,12 +7,9 @@ import {
 } from "../../models/mockDB/teams";
 import { profileTemplateDb } from "../../models/mockDB/profiletemplates";
 
-/**
- * Компонент візитки команди (блоки з editable-картками)
- */
 interface TabOverviewProps {
   teamId: string;
-  canEdit?: boolean; // 🔹 контролює права на редагування
+  canEdit?: boolean;
 }
 
 const TabOverview: React.FC<TabOverviewProps> = ({
@@ -21,12 +18,10 @@ const TabOverview: React.FC<TabOverviewProps> = ({
 }) => {
   const [blocks, setBlocks] = useState<TeamProfileBlock[]>([]);
 
-  // === Початкове завантаження ===
   useEffect(() => {
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   }, [teamId]);
 
-  // === Реальне оновлення через LocalStorage (інша вкладка / інша дія) ===
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "teamProfilesDB") {
@@ -37,21 +32,18 @@ const TabOverview: React.FC<TabOverviewProps> = ({
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [teamId]);
 
-  // === Оновлення блока ===
   const handleSave = (updated: TeamProfileBlock) => {
     if (!canEdit) return;
     teamProfileDb.update(updated.id, updated);
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   };
 
-  // === Додавання нового блока ===
   const handleAdd = (templateId: string) => {
     if (!canEdit) return;
     teamProfileDb.create(teamId, templateId, {}, blocks.length);
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
   };
 
-  // === Видалення блока ===
   const handleDelete = (blockId: string) => {
     if (!canEdit) return;
     teamProfileDb.delete(blockId);
@@ -76,12 +68,11 @@ const TabOverview: React.FC<TabOverviewProps> = ({
             template={template}
             onSave={handleSave}
             onDelete={() => handleDelete(block.id)}
-            canEdit={canEdit} // 🔹 передаємо право редагування
+            canEdit={canEdit}
           />
         );
       })}
 
-      {/* 🔹 Кнопка “додати блок” — лише якщо користувач адмін */}
       {canEdit && <AddCardButton onAdd={handleAdd} />}
     </div>
   );
