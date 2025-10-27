@@ -1,5 +1,5 @@
 import type { User } from "./users";
-import Photo from "../../../public/images/fight.jpg";
+import Photo from "images/fight.jpg";
 
 const now = new Date();
 
