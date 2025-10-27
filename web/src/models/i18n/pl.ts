@@ -951,6 +951,9 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
     chatUploadFile: "Prześlij plik",
     chatUnsupported: "Nieobsługiwana wiadomość",
     chatWritePlaceholder: "Napisz wiadomość...",
+
+    today: "Dzisiaj",
+    yesterday: "Wczoraj",
   },
 
   addMemberModal: {
@@ -974,5 +977,45 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
     topTitle: "Najbardziej aktywni uczestnicy",
     tasks: "zadań",
     noActivity: "Brak aktywności w wybranym okresie.",
+  },
+
+  cards: {
+    addButton: "Dodaj kartę",
+  },
+
+  templates: {
+    selectTemplate: "Wybierz szablon karty",
+  },
+
+  tabOverview: {
+    noBlocks: "Brak bloków",
+    addFirst: "— dodaj pierwszy 👇",
+  },
+
+  profileTemplates: {
+    textBasicName: "Blok tekstowy",
+    textBasicDesc: "Nagłówek i krótki opis tekstowy",
+    listName: "Lista",
+    listDesc: "Nagłówek i lista elementów",
+    linksName: "Linki",
+    linksDesc: "Nagłówek i zestaw linków zewnętrznych",
+    galleryName: "Galeria zdjęć",
+    galleryDesc: "Nagłówek i kilka zdjęć",
+
+    titleLabel: "Tytuł",
+    bodyLabel: "Tekst",
+    itemsLabel: "Elementy listy",
+    linksLabel: "Linki",
+    imagesLabel: "Zdjęcia",
+  },
+
+  editableCard: {
+    edit: "Edytuj",
+    save: "Zapisz",
+    cancel: "Anuluj",
+    delete: "Usuń",
+    confirmDelete: "Usunąć ten blok?",
+    onePerLine: "każdy punkt w nowej linii",
+    linkFormat: "format: Nazwa|URL",
   },
 };

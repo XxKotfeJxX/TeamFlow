@@ -6,6 +6,7 @@ import {
   type TeamProfileBlock,
 } from "../../models/mockDB/teams";
 import { profileTemplateDb } from "../../models/mockDB/profiletemplates";
+import { useTranslation } from "../useTranslations";
 
 interface TabOverviewProps {
   teamId: string;
@@ -17,6 +18,8 @@ const TabOverview: React.FC<TabOverviewProps> = ({
   canEdit = false,
 }) => {
   const [blocks, setBlocks] = useState<TeamProfileBlock[]>([]);
+  const { t } = useTranslation();
+  const to = t("tabOverview");
 
   useEffect(() => {
     setBlocks([...teamProfileDb.getByTeamId(teamId)]);
@@ -54,7 +57,7 @@ const TabOverview: React.FC<TabOverviewProps> = ({
     <div className="space-y-6">
       {blocks.length === 0 && (
         <p className="text-gray-500 text-center mt-6">
-          Блоків поки немає {canEdit ? "— додай перший 👇" : ""}
+          {to("noBlocks")} {canEdit ? to("addFirst") : ""}
         </p>
       )}
 

@@ -951,6 +951,9 @@ The goal — to make teamwork not only productive but enjoyable.`,
     chatUploadFile: "Upload file",
     chatUnsupported: "Unsupported message",
     chatWritePlaceholder: "Write a message...",
+
+    today: "Today",
+    yesterday: "Yesterday",
   },
 
   addMemberModal: {
@@ -974,5 +977,45 @@ The goal — to make teamwork not only productive but enjoyable.`,
     topTitle: "Top active members",
     tasks: "tasks",
     noActivity: "No activity in the selected period.",
+  },
+
+  cards: {
+    addButton: "Add card",
+  },
+
+  templates: {
+    selectTemplate: "Select a card template",
+  },
+
+  tabOverview: {
+    noBlocks: "No blocks yet",
+    addFirst: "— add the first one 👇",
+  },
+
+  profileTemplates: {
+    textBasicName: "Text block",
+    textBasicDesc: "Title and short text description",
+    listName: "List",
+    listDesc: "Title and list of items",
+    linksName: "Links",
+    linksDesc: "Title and external links set",
+    galleryName: "Image gallery",
+    galleryDesc: "Title and several photos",
+
+    titleLabel: "Title",
+    bodyLabel: "Text",
+    itemsLabel: "List items",
+    linksLabel: "Links",
+    imagesLabel: "Photos",
+  },
+
+  editableCard: {
+    edit: "Edit",
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    confirmDelete: "Delete this block?",
+    onePerLine: "one item per line",
+    linkFormat: "format: Label|URL",
   },
 };
