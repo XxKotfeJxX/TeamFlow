@@ -6,6 +6,7 @@ import { tasks as allTasks, eventDb } from "../../models/mockDB/calendar";
 import { userDb } from "../../models/mockDB/users";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../ui/Checkbox";
+import { useTranslation } from "../useTranslations";
 
 interface EventModalProps {
   event: Event;
@@ -22,7 +23,10 @@ const EventModal: React.FC<EventModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<
     "main" | "tasks" | "participants" | "settings"
-  >("main");
+    >("main");
+  
+  const { t } = useTranslation();
+  const te = t("eventModal");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [contextMenuPos, setContextMenuPos] = useState<{
     x: number;
@@ -111,10 +115,10 @@ const EventModal: React.FC<EventModalProps> = ({
               `}
               onClick={() => setActiveTab(tab as typeof activeTab)}
             >
-              {tab === "main" && "Основне"}
-              {tab === "tasks" && "Таски"}
-              {tab === "participants" && "Учасники"}
-              {tab === "settings" && "Налаштування"}
+              {tab === "main" && te("tabMain")}
+              {tab === "tasks" && te("tabTasks")}
+              {tab === "participants" && te("tabParticipants")}
+              {tab === "settings" && te("tabSettings")}
             </button>
           ))}
         </div>
@@ -129,7 +133,8 @@ const EventModal: React.FC<EventModalProps> = ({
                 <p className="mb-2 text-gray-600">{event.description}</p>
               )}
               <p className="text-sm text-gray-500">
-                Календар: {isPersonalCalendar ? "Особистий" : "Командний"}
+                {te("calendarLabel")}:
+                {isPersonalCalendar ? "Особистий" : "Командний"}
               </p>
             </div>
           )}
@@ -166,7 +171,7 @@ const EventModal: React.FC<EventModalProps> = ({
                   );
                 })
               ) : (
-                <p className="text-gray-800 font-semibold">Тасків немає</p>
+                <p className="text-gray-800 font-semibold">{te("tasksNone")}</p>
               )}
             </div>
           )}
@@ -178,7 +183,7 @@ const EventModal: React.FC<EventModalProps> = ({
                   onClick={() => setShowAddModal(true)}
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full md:w-auto"
                 >
-                  Редагувати учасників
+                  {te("participantsEdit")}
                 </button>
               )}
 
@@ -213,7 +218,7 @@ const EventModal: React.FC<EventModalProps> = ({
                       </div>
                       {user.id === event.ownerId && (
                         <span className="ml-auto text-xs text-gray-500 pr-2">
-                          власник
+                          {te("owner")}
                         </span>
                       )}
                     </div>
@@ -221,7 +226,7 @@ const EventModal: React.FC<EventModalProps> = ({
                 })
               ) : (
                 <p className="text-gray-800 font-semibold">
-                  Учасники ще не додані
+                  {te("participantsNone")}
                 </p>
               )}
             </div>
@@ -229,15 +234,11 @@ const EventModal: React.FC<EventModalProps> = ({
 
           {activeTab === "settings" && (
             <div>
-              {isPersonalCalendar ? (
-                <p className="text-gray-800">
-                  Налаштування поки що недоступні для особистого календаря
-                </p>
-              ) : (
-                <p className="text-gray-800">
-                  Тут можна змінювати налаштування події
-                </p>
-              )}
+              <p>
+                {isPersonalCalendar
+                  ? te("settingsUnavailablePersonal")
+                  : te("settingsAvailableTeam")}
+              </p>
             </div>
           )}
         </div>
@@ -259,7 +260,7 @@ const EventModal: React.FC<EventModalProps> = ({
               }}
               className="px-4 py-2 hover:bg-gray-100 rounded text-left text-gray-800"
             >
-              Профіль
+              {te("profile")}
             </button>
             <button
               onClick={() => {
@@ -268,7 +269,7 @@ const EventModal: React.FC<EventModalProps> = ({
               }}
               className="px-4 py-2 hover:bg-gray-100 rounded text-left text-gray-800"
             >
-              Написати
+              {te("profile")}
             </button>
           </div>
         )}
@@ -289,7 +290,7 @@ const EventModal: React.FC<EventModalProps> = ({
               <X size={22} />
             </button>
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
-              Редагування учасників
+              {te("participantsEditTitle")}
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -326,7 +327,7 @@ const EventModal: React.FC<EventModalProps> = ({
                             {u.username}
                             {isOwnerUser && (
                               <span className="ml-1 text-xs text-gray-500">
-                                (власник)
+                                ({te("owner")})
                               </span>
                             )}
                           </span>
@@ -345,7 +346,7 @@ const EventModal: React.FC<EventModalProps> = ({
               className="mt-6 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
               onClick={() => handleSaveParticipants(participants)}
             >
-              Зберегти
+              {te("save")}
             </button>
           </div>
         </div>

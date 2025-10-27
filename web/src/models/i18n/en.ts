@@ -880,5 +880,30 @@ The goal — to make teamwork not only productive but enjoyable.`,
     dueDate: "Due date",
   },
 
-  
+  eventModal: {
+    tabMain: "Main",
+    tabTasks: "Tasks",
+    tabParticipants: "Participants",
+    tabSettings: "Settings",
+
+    calendarLabel: "Calendar",
+    calendarPersonal: "Personal",
+    calendarTeam: "Team",
+
+    tasksNone: "No tasks",
+    dueDate: "Due date",
+
+    participantsEdit: "Edit participants",
+    participantsNone: "No participants yet",
+    participantsEditTitle: "Edit participants",
+    owner: "owner",
+
+    settingsUnavailablePersonal:
+      "Settings are not available for personal calendars yet",
+    settingsAvailableTeam: "You can modify event settings here",
+
+    profile: "Profile",
+    message: "Message",
+    save: "Save",
+  },
 };

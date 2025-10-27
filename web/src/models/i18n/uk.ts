@@ -880,5 +880,30 @@ export default {
     dueDate: "Термін",
   },
 
-  
+  eventModal: {
+    tabMain: "Основне",
+    tabTasks: "Таски",
+    tabParticipants: "Учасники",
+    tabSettings: "Налаштування",
+
+    calendarLabel: "Календар",
+    calendarPersonal: "Особистий",
+    calendarTeam: "Командний",
+
+    tasksNone: "Тасків немає",
+    dueDate: "Термін",
+
+    participantsEdit: "Редагувати учасників",
+    participantsNone: "Учасники ще не додані",
+    participantsEditTitle: "Редагування учасників",
+    owner: "власник",
+
+    settingsUnavailablePersonal:
+      "Налаштування поки що недоступні для особистого календаря",
+    settingsAvailableTeam: "Тут можна змінювати налаштування події",
+
+    profile: "Профіль",
+    message: "Написати",
+    save: "Зберегти",
+  },
 };

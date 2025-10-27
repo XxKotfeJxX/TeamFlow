@@ -878,4 +878,31 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
     save: "Zapisz",
     dueDate: "Termin",
   },
+
+  eventModal: {
+    tabMain: "Główne",
+    tabTasks: "Zadania",
+    tabParticipants: "Uczestnicy",
+    tabSettings: "Ustawienia",
+
+    calendarLabel: "Kalendarz",
+    calendarPersonal: "Osobisty",
+    calendarTeam: "Zespołowy",
+
+    tasksNone: "Brak zadań",
+    dueDate: "Termin",
+
+    participantsEdit: "Edytuj uczestników",
+    participantsNone: "Nie dodano jeszcze uczestników",
+    participantsEditTitle: "Edycja uczestników",
+    owner: "właściciel",
+
+    settingsUnavailablePersonal:
+      "Ustawienia są jeszcze niedostępne dla kalendarza osobistego",
+    settingsAvailableTeam: "Tutaj możesz zmieniać ustawienia wydarzenia",
+
+    profile: "Profil",
+    message: "Napisz",
+    save: "Zapisz",
+  },
 };
