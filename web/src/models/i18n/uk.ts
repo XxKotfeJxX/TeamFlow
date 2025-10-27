@@ -817,6 +817,8 @@ export default {
     today: "Сьогодні",
     previousMonth: "Попередній місяць",
     nextMonth: "Наступний місяць",
+    previousDay: "Попередній день",
+    nextDay: "Наступний день",
     goToDay: "Перейти до дня",
     goToWeek: "Перейти до тижня",
     months: [

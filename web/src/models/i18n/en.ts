@@ -817,6 +817,8 @@ The goal — to make teamwork not only productive but enjoyable.`,
     today: "Today",
     previousMonth: "Previous month",
     nextMonth: "Next month",
+    previousDay: "Previous day",
+    nextDay: "Next day",
     goToDay: "Go to day",
     goToWeek: "Go to week",
     months: [

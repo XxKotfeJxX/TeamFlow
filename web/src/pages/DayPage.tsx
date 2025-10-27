@@ -16,6 +16,7 @@ import OverlapMenu from "../components/calendar/OverlapMenu";
 import CreateItemModal from "../components/calendar/CreateItemModal";
 import { motion } from "framer-motion";
 import { Button } from "../components/ui/Button";
+import { useTranslation } from "../components/useTranslations";
 
 const COLUMN_RANGES = [
   { start: 0, end: 7 },
@@ -219,6 +220,9 @@ const DayPage: React.FC = () => {
     date: string;
   }>();
 
+  const { t } = useTranslation();
+  const tm = t("monthPage");
+
   const [events, setEvents] = React.useState<Event[]>([]);
   const [tasks, setTasks] = React.useState<Task[]>([]);
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
@@ -272,9 +276,9 @@ const DayPage: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll, true);
   }, [overlapMenu]);
 
-  if (!calendarId) return <div>Календар не знайдено</div>;
+  if (!calendarId) return <div>{tm("notFound")}</div>;
   const calendar = calendars.find((c) => c.id === calendarId);
-  if (!calendar) return <div>Календар не знайдено</div>;
+  if (!calendar) return <div>{ tm("notFound")}</div>;
 
   const todaysEvents = events.filter(
     (e) =>
@@ -326,7 +330,7 @@ const DayPage: React.FC = () => {
                 sm:absolute sm:left-8
               "
               >
-                ← Попередній день
+                ← {tm("previousDay")}
               </Button>
 
               <Button
@@ -337,7 +341,7 @@ const DayPage: React.FC = () => {
                 sm:absolute sm:right-8
               "
               >
-                Наступний день →
+                {tm("nextDay")} →
               </Button>
             </div>
           </div>

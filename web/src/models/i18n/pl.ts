@@ -816,6 +816,8 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
     today: "Dziś",
     previousMonth: "Poprzedni miesiąc",
     nextMonth: "Następny miesiąc",
+    previousDay: "Poprzedni dzień",
+    nextDay: "Następny dzień",
     goToDay: "Przejdź do dnia",
     goToWeek: "Przejdź do tygodnia",
     months: [
