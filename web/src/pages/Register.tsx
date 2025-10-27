@@ -9,30 +9,24 @@ import { Card, CardContent } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import { Checkbox } from "../components/ui/Checkbox";
 import { userDb } from "../models/mockDB/users";
+import { useTranslation } from "../components/useTranslations";
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-const passwordRules = [
-  { test: (p: string) => p.length >= 8, text: "Мінімум 8 символів" },
-  {
-    test: (p: string) => /[A-Z]/.test(p),
-    text: "Принаймні одна велика літера",
-  },
-  {
-    test: (p: string) => /[a-z]/.test(p),
-    text: "Принаймні одна маленька літера",
-  },
-  { test: (p: string) => /\d/.test(p), text: "Принаймні одна цифра" },
-  {
-    test: (p: string) => /[^A-Za-z0-9]/.test(p),
-    text: "Принаймні один спеціальний символ",
-  },
-];
-
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const tr = t("registerPage");
+
+  const passwordRules = [
+    { test: (p: string) => p.length >= 8, text: tr("ruleLength") },
+    { test: (p: string) => /[A-Z]/.test(p), text: tr("ruleUppercase") },
+    { test: (p: string) => /[a-z]/.test(p), text: tr("ruleLowercase") },
+    { test: (p: string) => /\d/.test(p), text: tr("ruleDigit") },
+    { test: (p: string) => /[^A-Za-z0-9]/.test(p), text: tr("ruleSpecial") },
+  ];
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +47,7 @@ export default function RegisterPage() {
 
     const newErrors: typeof errors = {};
 
-    if (!login.trim()) newErrors.login = "Введіть логін";
+    if (!login.trim()) newErrors.login = tr("errorLoginRequired");
 
     const failedRules = passwordRules
       .filter((rule) => !rule.test(password))
@@ -61,19 +55,17 @@ export default function RegisterPage() {
     if (failedRules.length > 0) newErrors.password = failedRules;
 
     if (repeatPassword !== password)
-      newErrors.repeatPassword = "Паролі не збігаються";
+      newErrors.repeatPassword = tr("errorPasswordsMismatch");
 
-    if (!isValidEmail(email))
-      newErrors.email = "Невірний формат електронної пошти";
+    if (!isValidEmail(email)) newErrors.email = tr("errorInvalidEmail");
 
-    if (!agree)
-      newErrors.agree = "Потрібно погодитися з політикою конфіденційності";
+    if (!agree) newErrors.agree = tr("errorAgreeRequired");
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
     if (userDb.getByEmail(email)) {
-      setErrors({ email: "Користувач з таким email вже існує" });
+      setErrors({ email: tr("errorEmailExists") });
       return;
     }
 
@@ -120,7 +112,7 @@ export default function RegisterPage() {
             <Card className="border border-gray-100 bg-white/70 backdrop-blur-md shadow-lg rounded-2xl">
               <CardContent className="p-8">
                 <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-                  Створити акаунт
+                  {tr("title")}
                 </h1>
 
                 <form
@@ -128,14 +120,15 @@ export default function RegisterPage() {
                   autoComplete="off"
                   className="space-y-4"
                 >
+                  {/* Login */}
                   <div>
-                    <Label htmlFor="login">Логін</Label>
+                    <Label htmlFor="login">{tr("loginLabel")}</Label>
                     <Input
                       id="login"
                       type="text"
                       value={login}
                       onChange={(e) => setLogin(e.target.value)}
-                      placeholder="Введіть логін"
+                      placeholder={tr("loginPlaceholder")}
                       className="rounded-xl"
                     />
                     {errors.login && (
@@ -145,14 +138,15 @@ export default function RegisterPage() {
                     )}
                   </div>
 
+                  {/* Password */}
                   <div className="pt-4">
-                    <Label htmlFor="password">Пароль</Label>
+                    <Label htmlFor="password">{tr("passwordLabel")}</Label>
                     <Input
                       id="password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Введіть пароль"
+                      placeholder={tr("passwordPlaceholder")}
                       className="rounded-xl"
                     />
 
@@ -175,7 +169,7 @@ export default function RegisterPage() {
 
                     {errors.password && (
                       <div className="mt-2 text-sm text-red-600">
-                        <p>Пароль не відповідає вимогам:</p>
+                        <p>{tr("passwordNotValid")}</p>
                         <ul className="list-disc ml-5">
                           {errors.password.map((msg, i) => (
                             <li key={i}>{msg}</li>
@@ -185,14 +179,17 @@ export default function RegisterPage() {
                     )}
                   </div>
 
+                  {/* Repeat password */}
                   <div>
-                    <Label htmlFor="repeatPassword">Повторіть пароль</Label>
+                    <Label htmlFor="repeatPassword">
+                      {tr("repeatPasswordLabel")}
+                    </Label>
                     <Input
                       id="repeatPassword"
                       type="password"
                       value={repeatPassword}
                       onChange={(e) => setRepeatPassword(e.target.value)}
-                      placeholder="Повторіть пароль"
+                      placeholder={tr("repeatPasswordPlaceholder")}
                       className="rounded-xl"
                     />
                     {errors.repeatPassword && (
@@ -202,14 +199,15 @@ export default function RegisterPage() {
                     )}
                   </div>
 
+                  {/* Email */}
                   <div className="pt-4">
-                    <Label htmlFor="email">Електронна пошта</Label>
+                    <Label htmlFor="email">{tr("emailLabel")}</Label>
                     <Input
                       id="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Введіть email"
+                      placeholder={tr("emailPlaceholder")}
                       className="rounded-xl"
                     />
                     {errors.email && (
@@ -219,18 +217,19 @@ export default function RegisterPage() {
                     )}
                   </div>
 
+                  {/* Agreement */}
                   <div className="pt-6">
                     <Checkbox
                       checked={agree}
                       onChange={(e) => setAgree(e.target.checked)}
                       label={
                         <>
-                          Я погоджуюсь з{" "}
+                          {tr("agreeText")}{" "}
                           <a
                             href="/privacy"
                             className="text-blue-600 hover:underline"
                           >
-                            політикою конфіденційності
+                            {tr("privacyPolicy")}
                           </a>
                         </>
                       }
@@ -242,11 +241,12 @@ export default function RegisterPage() {
                     )}
                   </div>
 
+                  {/* Submit */}
                   <Button
                     type="submit"
                     className="w-full bg-blue-600 text-white hover:bg-blue-700 transition-colors mt-6 rounded-xl py-3 text-lg font-medium shadow-sm hover:shadow-md"
                   >
-                    Створити акаунт
+                    {tr("registerButton")}
                   </Button>
                 </form>
               </CardContent>

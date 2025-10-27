@@ -8,9 +8,13 @@ import { Label } from "../components/ui/Label";
 import { Card, CardContent } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import { userDb } from "../models/mockDB/users";
+import { useTranslation } from "../components/useTranslations";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const tl = t("loginPage");
+
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<{ login?: string; password?: string }>({});
@@ -27,12 +31,12 @@ export default function LoginPage() {
       .find((u) => u.username === login.trim() || u.email === login.trim());
 
     if (!user) {
-      setError({ login: "Користувача не знайдено" });
+      setError({ login: tl("errorUserNotFound") });
       return;
     }
 
     if (user.password !== password) {
-      setError({ password: "Неправильний пароль" });
+      setError({ password: tl("errorWrongPassword") });
       return;
     }
 
@@ -47,13 +51,11 @@ export default function LoginPage() {
 
     const user = userDb.getByEmail(resetEmail.trim());
     if (!user) {
-      setResetMessage("❌ Користувача з такою поштою не знайдено");
+      setResetMessage(`❌ ${tl("resetUserNotFound")}`);
       return;
     }
 
-    setResetMessage(
-      "✅ Інструкцію для відновлення паролю відправлено на вашу пошту."
-    );
+    setResetMessage(`✅ ${tl("resetInstructionSent")}`);
 
     setTimeout(() => {
       setShowReset(false);
@@ -87,18 +89,18 @@ export default function LoginPage() {
             <Card className="border border-gray-100 bg-white/70 backdrop-blur-md shadow-lg rounded-2xl">
               <CardContent className="p-8">
                 <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-                  Увійти
+                  {tl("title")}
                 </h1>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <Label htmlFor="login">Логін або Email</Label>
+                    <Label htmlFor="login">{tl("loginLabel")}</Label>
                     <Input
                       id="login"
                       type="text"
                       value={login}
                       onChange={(e) => setLogin(e.target.value)}
-                      placeholder="Введіть логін або email"
+                      placeholder={tl("loginPlaceholder")}
                       autoComplete="username"
                       className="rounded-xl"
                     />
@@ -108,13 +110,13 @@ export default function LoginPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="password">Пароль</Label>
+                    <Label htmlFor="password">{tl("passwordLabel")}</Label>
                     <Input
                       id="password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Введіть пароль"
+                      placeholder={tl("passwordPlaceholder")}
                       autoComplete="current-password"
                       className="rounded-xl"
                     />
@@ -128,7 +130,7 @@ export default function LoginPage() {
                         onClick={() => setShowReset(true)}
                         className="mt-1 text-sm text-blue-600 hover:underline border-0 bg-transparent focus:outline-none"
                       >
-                        Забули пароль?
+                        {tl("forgotPassword")}
                       </button>
                     )}
                   </div>
@@ -137,17 +139,17 @@ export default function LoginPage() {
                     type="submit"
                     className="w-full bg-blue-600 text-white hover:bg-blue-700 rounded-xl py-3 font-medium text-lg transition"
                   >
-                    Увійти
+                    {tl("loginButton")}
                   </Button>
                 </form>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
-                  Не маєш акаунту?{" "}
+                  {tl("noAccount")}{" "}
                   <a
                     href="#/register"
                     className="text-blue-600 hover:underline font-medium"
                   >
-                    Створи його
+                    {tl("registerLink")}
                   </a>
                 </p>
               </CardContent>
@@ -167,19 +169,17 @@ export default function LoginPage() {
                 className="bg-white/80 backdrop-blur-md p-6 rounded-2xl shadow-xl w-full max-w-sm border border-gray-100"
               >
                 <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">
-                  Відновлення паролю
+                  {tl("resetTitle")}
                 </h2>
                 <form onSubmit={handleReset} className="space-y-4">
                   <div>
-                    <Label htmlFor="resetEmail">
-                      Введіть вашу електронну пошту
-                    </Label>
+                    <Label htmlFor="resetEmail">{tl("resetLabel")}</Label>
                     <Input
                       id="resetEmail"
                       type="email"
                       value={resetEmail}
                       onChange={(e) => setResetEmail(e.target.value)}
-                      placeholder="your@email.com"
+                      placeholder={tl("resetPlaceholder")}
                       required
                       className="rounded-xl"
                     />
@@ -202,7 +202,7 @@ export default function LoginPage() {
                       type="submit"
                       className="bg-blue-600 text-white hover:bg-blue-700 rounded-xl"
                     >
-                      Відновити
+                      {tl("resetButton")}
                     </Button>
                     <Button
                       type="button"
@@ -213,7 +213,7 @@ export default function LoginPage() {
                       }}
                       className="bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-xl"
                     >
-                      Скасувати
+                      {tl("cancelButton")}
                     </Button>
                   </div>
                 </form>

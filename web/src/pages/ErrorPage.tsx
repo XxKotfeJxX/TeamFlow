@@ -9,50 +9,7 @@ import {
   Bug,
 } from "lucide-react";
 import { Button } from "../components/ui/Button";
-
-const COPY = {
-  401: {
-    title: "Потрібна авторизація",
-    hint: "Увійдіть у свій акаунт, щоб продовжити.",
-  },
-  403: {
-    title: "Доступ заборонено",
-    hint: "Схоже, у вас немає прав на цю дію.",
-  },
-  404: {
-    title: "Сторінку не знайдено",
-    hint: "Можливо, посилання застаріло або було змінене.",
-  },
-  429: {
-    title: "Занадто багато запитів",
-    hint: "Трішки паузи — і все знову запрацює.",
-  },
-  500: {
-    title: "Щось пішло не так",
-    hint: "Це на нашому боці. Ми вже дивимось.",
-  },
-  502: {
-    title: "Поганий шлюз",
-    hint: "Проміжний сервер відповів некоректно.",
-  },
-  503: {
-    title: "Сервіс недоступний",
-    hint: "Сервер перевантажений або на обслуговуванні.",
-  },
-  504: {
-    title: "Тайм-аут шлюзу",
-    hint: "Відповідь зайняла надто багато часу.",
-  },
-} as const;
-
-const codeToFace = (code: number | string) => {
-  const c = Number(code);
-  if (c === 404) return "( •︵• )";
-  if (c === 500) return "( x _ x )";
-  if (c === 401 || c === 403) return "( •‿• )ゞ";
-  if (c === 429) return "( ⚆ _ ⚆ )";
-  return "( •_• )";
-};
+import { useTranslation } from "../components/useTranslations";
 
 export default function ErrorPage({
   code,
@@ -68,10 +25,57 @@ export default function ErrorPage({
   onReport?: () => void;
 }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const te = t("errorPage");
+
+  const COPY = {
+    401: {
+      title: te("error401Title"),
+      hint: te("error401Hint"),
+    },
+    403: {
+      title: te("error403Title"),
+      hint: te("error403Hint"),
+    },
+    404: {
+      title: te("error404Title"),
+      hint: te("error404Hint"),
+    },
+    429: {
+      title: te("error429Title"),
+      hint: te("error429Hint"),
+    },
+    500: {
+      title: te("error500Title"),
+      hint: te("error500Hint"),
+    },
+    502: {
+      title: te("error502Title"),
+      hint: te("error502Hint"),
+    },
+    503: {
+      title: te("error503Title"),
+      hint: te("error503Hint"),
+    },
+    504: {
+      title: te("error504Title"),
+      hint: te("error504Hint"),
+    },
+  } as const;
+
+  const codeToFace = (code: number | string) => {
+    const c = Number(code);
+    if (c === 404) return "( •︵• )";
+    if (c === 500) return "( x _ x )";
+    if (c === 401 || c === 403) return "( •‿• )ゞ";
+    if (c === 429) return "( ⚆ _ ⚆ )";
+    return "( •_• )";
+  };
+
   const c = Number(code);
   const variant = COPY[c as keyof typeof COPY] ?? {
-    title: "Невідома помилка",
-    hint: "Ми вже розслідуємо, а ви можете повернутися на головну.",
+    title: te("errorUnknownTitle"),
+    hint: te("errorUnknownHint"),
   };
 
   return (
@@ -96,15 +100,15 @@ export default function ErrorPage({
         >
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-2xl border bg-card px-4 py-2 text-card-foreground shadow-sm">
             <AlertTriangle className="h-4 w-4 text-orange-500" />
-            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground text-gray-500">
-              Код помилки
+            <span className="font-mono text-xs uppercase tracking-widest text-gray-500">
+              {te("errorCode")}
             </span>
             <span className="font-mono text-sm text-gray-500">{c}</span>
           </div>
 
           <motion.div
             role="img"
-            aria-label="емоційне обличчя помилки"
+            aria-label="emoji"
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.1 }}
@@ -116,7 +120,7 @@ export default function ErrorPage({
           <h1 className="mb-3 text-balance text-3xl font-bold tracking-tight sm:text-4xl text-gray-700">
             {variant.title}
           </h1>
-          <p className="mx-auto mb-8 max-w-prose text-pretty text-muted-foreground text-gray-500">
+          <p className="mx-auto mb-8 max-w-prose text-pretty text-gray-500">
             {variant.hint}
           </p>
 
@@ -126,6 +130,7 @@ export default function ErrorPage({
             transition={{ duration: 0.5, delay: 0.15 }}
             className="mx-auto mb-10 w-full max-w-md"
           >
+            {/* Simple SVG decorative graphic */}
             <svg
               viewBox="0 0 400 220"
               className="h-auto w-full drop-shadow-sm"
@@ -154,80 +159,6 @@ export default function ErrorPage({
                 height="180"
                 fill="url(#g1)"
               />
-              <rect
-                x="55"
-                y="45"
-                rx="8"
-                ry="8"
-                width="290"
-                height="12"
-                opacity="0.25"
-              />
-              <rect
-                x="55"
-                y="70"
-                rx="8"
-                ry="8"
-                width="180"
-                height="12"
-                opacity="0.4"
-              />
-              <rect
-                x="55"
-                y="90"
-                rx="8"
-                ry="8"
-                width="240"
-                height="12"
-                opacity="0.2"
-              />
-              <rect
-                x="55"
-                y="110"
-                rx="8"
-                ry="8"
-                width="210"
-                height="12"
-                opacity="0.2"
-              />
-              <g>
-                <circle cx="320" cy="38" r="4" />
-                <circle cx="306" cy="38" r="4" />
-                <circle cx="292" cy="38" r="4" />
-              </g>
-              <g opacity="0.3">
-                <circle cx="80" cy="30" r="2" />
-                <circle cx="110" cy="18" r="1.5" />
-                <circle cx="360" cy="60" r="1.5" />
-                <circle cx="300" cy="190" r="1.2" />
-              </g>
-              <g transform="translate(260 130)">
-                <circle r="18" />
-                <line
-                  x1="-24"
-                  y1="0"
-                  x2="-40"
-                  y2="0"
-                  strokeWidth="3"
-                  stroke="currentColor"
-                />
-                <line
-                  x1="24"
-                  y1="0"
-                  x2="40"
-                  y2="0"
-                  strokeWidth="3"
-                  stroke="currentColor"
-                />
-                <line
-                  x1="0"
-                  y1="-24"
-                  x2="0"
-                  y2="-40"
-                  strokeWidth="3"
-                  stroke="currentColor"
-                />
-              </g>
             </svg>
           </motion.div>
 
@@ -238,13 +169,13 @@ export default function ErrorPage({
                 variant="secondary"
                 className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2 text-gray-600 hover:border-gray-300"
               >
-                <ArrowLeft className="h-4 w-4" /> Назад
+                <ArrowLeft className="h-4 w-4" /> {te("back")}
               </Button>
             )}
 
             <Link to={homeTo} className="w-full sm:w-auto">
               <Button className="inline-flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-2 text-gray-600 hover:border-gray-300">
-                <Home className="h-4 w-4" /> На головну
+                <Home className="h-4 w-4" /> {te("home")}
               </Button>
             </Link>
 
@@ -252,27 +183,25 @@ export default function ErrorPage({
               onClick={() => (onReport ? onReport() : navigate(0))}
               variant="outline"
               className="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2 text-gray-600 hover:border-gray-300"
-              title={
-                onReport ? "Надіслати звіт про помилку" : "Оновити сторінку"
-              }
+              title={onReport ? te("reportTitle") : te("refreshTitle")}
             >
               {onReport ? (
-                <Bug className="h-4 w-4 " />
+                <Bug className="h-4 w-4" />
               ) : (
                 <RefreshCw className="h-4 w-4" />
               )}
-              {onReport ? "Поскаржитись" : "Оновити"}
+              {onReport ? te("report") : te("refresh")}
             </Button>
           </div>
 
-          <p className="mt-6 text-sm text-muted-foreground text-gray-500">
-            Потрібна допомога? Напишіть нам у{" "}
+          <p className="mt-6 text-sm text-gray-500">
+            {te("needHelp")}{" "}
             <Link
               to={contactTo}
               className="inline-flex items-center gap-1 underline-offset-2 hover:underline"
             >
               <Mail className="h-3.5 w-3.5" />
-              підтримку
+              {te("support")}
             </Link>
             .
           </p>
