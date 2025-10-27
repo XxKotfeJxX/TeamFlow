@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { users } from "../../models/mockDB/users";
 import { Checkbox } from "../ui/Checkbox";
 import { teamDb } from "../../models/mockDB/teams";
+import ReactDOM from "react-dom";
 
 interface AddMemberModalProps {
   isOpen: boolean;
@@ -45,7 +46,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
 
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="relative bg-white rounded-2xl shadow-lg w-[90%] max-w-lg p-6 animate-fadeIn">
         <div className="flex justify-between items-center mb-4">
@@ -114,6 +115,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
         </div>
       </div>
     </div>
+  , document.body
   );
 };
 
