@@ -362,8 +362,6 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
           </section>
         </main>
 
-        <Footer />
-
         <ConfirmModal
           isOpen={confirmLeaveOpen}
           title={tp("confirmLeaveTitle")}
@@ -397,6 +395,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
           onConfirm={confirmPromoteUser}
         />
       </div>
+      <Footer />
     </>
   );
 };
