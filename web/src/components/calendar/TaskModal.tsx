@@ -5,6 +5,7 @@ import { userDb } from "../../models/mockDB/users";
 import { taskDb } from "../../models/mockDB/calendar";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../ui/Checkbox";
+import { useTranslation } from "../useTranslations";
 
 interface TaskModalProps {
   task: Task;
@@ -15,7 +16,10 @@ interface TaskModalProps {
 const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
   const [activeTab, setActiveTab] = useState<
     "main" | "participants" | "settings"
-  >("main");
+    >("main");
+  
+  const { t } = useTranslation();
+  const tt = t("taskModal");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [contextMenuPos, setContextMenuPos] = useState<{
     x: number;
@@ -95,9 +99,9 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
               `}
               onClick={() => setActiveTab(tab as typeof activeTab)}
             >
-              {tab === "main" && "Основне"}
-              {tab === "participants" && "Учасники"}
-              {tab === "settings" && "Налаштування"}
+              {tab === "main" && tt("tabMain")}
+              {tab === "participants" && tt("tabParticipants")}
+              {tab === "settings" && tt("tabSettings")}
             </button>
           ))}
         </div>
@@ -112,7 +116,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
                 <p className="mb-2 text-gray-600">{task.description}</p>
               )}
               <p className="text-sm text-gray-500">
-                Термін: {new Date(task.dueDate).toLocaleDateString()}
+                {tt("dueDate")}: {new Date(task.dueDate).toLocaleDateString()}
               </p>
             </div>
           )}
@@ -124,7 +128,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
                   onClick={() => setShowAddModal(true)}
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full md:w-auto"
                 >
-                  Редагувати учасників
+                  {tt("participantsEdit")}
                 </button>
               )}
 
@@ -159,7 +163,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
                       </div>
                       {user.id === ownerId && (
                         <span className="ml-auto text-xs text-gray-500 pr-2">
-                          власник
+                          {tt("owner")}
                         </span>
                       )}
                     </div>
@@ -167,7 +171,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
                 })
               ) : (
                 <p className="text-gray-800 font-semibold">
-                  Відповідальні користувачі відсутні
+                  {tt("noParticipants")}
                 </p>
               )}
             </div>
@@ -175,7 +179,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
 
           {activeTab === "settings" && (
             <div>
-              <p className="text-gray-800">Налаштування поки що недоступні</p>
+              <p className="text-gray-800">{tt("settingsUnavailable")}</p>
             </div>
           )}
         </div>
@@ -198,17 +202,17 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
               }}
               className="px-4 py-2 hover:bg-gray-100 rounded text-left text-gray-800"
             >
-              Профіль
+              {tt("profile")}
             </button>
             <button
               onClick={() => {
-                alert("Написати повідомлення…");
+                alert(tt("message"));
                 setSelectedUser(null);
                 setContextMenuPos(null);
               }}
               className="px-4 py-2 hover:bg-gray-100 rounded text-left text-gray-800"
             >
-              Написати
+              {tt("message")}
             </button>
           </div>
         )}
@@ -229,7 +233,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
               <X size={22} />
             </button>
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
-              Вибір користувачів
+              {tt("participantsSelect")}
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -266,7 +270,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
                             {u.username}
                             {isOwnerUser && (
                               <span className="ml-1 text-xs text-gray-500">
-                                (власник)
+                                ({tt("owner")})
                               </span>
                             )}
                           </span>
@@ -285,7 +289,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, onClose, onSave }) => {
               className="mt-6 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
               onClick={() => handleSaveParticipants(participants)}
             >
-              Зберегти
+              {tt("save")}
             </button>
           </div>
         </div>

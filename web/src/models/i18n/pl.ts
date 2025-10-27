@@ -862,4 +862,20 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
 
     settingsNote: "Ustawienia (powtarzalność, status itp.)",
   },
+
+  taskModal: {
+    tabMain: "Główne",
+    tabParticipants: "Uczestnicy",
+    tabSettings: "Ustawienia",
+
+    owner: "właściciel",
+    noParticipants: "Brak przypisanych użytkowników",
+    settingsUnavailable: "Ustawienia są jeszcze niedostępne",
+    participantsEdit: "Edytuj uczestników",
+    participantsSelect: "Wybór użytkowników",
+    profile: "Profil",
+    message: "Napisz",
+    save: "Zapisz",
+    dueDate: "Termin",
+  },
 };

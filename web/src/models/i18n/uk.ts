@@ -864,5 +864,21 @@ export default {
     settingsNote: "Налаштування (повторюваність, статус тощо)",
   },
 
+  taskModal: {
+    tabMain: "Основне",
+    tabParticipants: "Учасники",
+    tabSettings: "Налаштування",
+
+    owner: "власник",
+    noParticipants: "Відповідальні користувачі відсутні",
+    settingsUnavailable: "Налаштування поки що недоступні",
+    participantsEdit: "Редагувати учасників",
+    participantsSelect: "Вибір користувачів",
+    profile: "Профіль",
+    message: "Написати",
+    save: "Зберегти",
+    dueDate: "Термін",
+  },
+
   
 };

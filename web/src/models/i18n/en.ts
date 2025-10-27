@@ -863,4 +863,22 @@ The goal — to make teamwork not only productive but enjoyable.`,
 
     settingsNote: "Settings (recurrence, status, etc.)",
   },
+
+  taskModal: {
+    tabMain: "Main",
+    tabParticipants: "Participants",
+    tabSettings: "Settings",
+
+    owner: "owner",
+    noParticipants: "No participants assigned",
+    settingsUnavailable: "Settings are not available yet",
+    participantsEdit: "Edit participants",
+    participantsSelect: "Select participants",
+    profile: "Profile",
+    message: "Message",
+    save: "Save",
+    dueDate: "Due date",
+  },
+
+  
 };
