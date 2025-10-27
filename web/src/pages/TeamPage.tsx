@@ -11,15 +11,23 @@ import ConfirmModal from "../components/team/ConfirmModal";
 import TeamChat from "../components/team/TeamChat";
 import { Button } from "../components/ui/Button";
 import { motion } from "framer-motion";
-
-const tabsAll = ["Візитка", "Учасники", "Чати", "Статистика"];
-const tabsLimited = ["Візитка", "Учасники"];
+import { useTranslation } from "../components/useTranslations";
 
 const TeamPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const tp = t("teamPage");
 
-  const [activeTab, setActiveTab] = useState<string>("Візитка");
+const tabsAll = [
+  tp("tabsOverview"),
+  tp("tabsMembers"),
+  tp("tabsChat"),
+  tp("tabsStats"),
+];
+const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
+
+  const [activeTab, setActiveTab] = useState<string>(tp("tabsOverview"));
   const [team, setTeam] = useState<Team | undefined>();
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -88,7 +96,7 @@ const TeamPage: React.FC = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-1 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">Команда не знайдена</p>
+          <p className="text-gray-500 text-lg">{tp("notFound")}</p>
         </main>
         <Footer />
       </div>
@@ -192,10 +200,10 @@ const TeamPage: React.FC = () => {
                   {team.name}
                 </h1>
                 <p className="text-gray-600">
-                  {team.description || "Без опису команди"}
+                  {team.description || tp("noDescription")}
                 </p>
                 <p className="text-sm text-gray-400 mt-1">
-                  👥 Учасників: {teamMembers.length}
+                  👥 {tp("membersCount")}: {teamMembers.length}
                 </p>
               </div>
             </div>
@@ -206,7 +214,7 @@ const TeamPage: React.FC = () => {
                   onClick={handleSendRequest}
                   className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
                 >
-                  Надіслати запит
+                  {tp("buttonSendRequest")}
                 </Button>
               ) : (
                 <>
@@ -215,7 +223,7 @@ const TeamPage: React.FC = () => {
                       onClick={() => navigate(`/tasks/team/${team.id}`)}
                       className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
                     >
-                      Завдання
+                     {tp("buttonTasks")}
                     </Button>
 
                     <Button
@@ -224,7 +232,7 @@ const TeamPage: React.FC = () => {
                       }
                       className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
                     >
-                      Календар
+                      {tp("buttonCalendar")}
                     </Button>
                   </div>
 
@@ -233,7 +241,7 @@ const TeamPage: React.FC = () => {
                       onClick={() => setShowAddModal(true)}
                       className="bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-2xl"
                     >
-                      Додати учасника
+                      {tp("buttonAddMember")}
                     </Button>
                   )}
 
@@ -241,7 +249,7 @@ const TeamPage: React.FC = () => {
                     onClick={handleLeaveTeam}
                     className="bg-red-100 text-red-600 hover:bg-red-200 rounded-2xl"
                   >
-                    Покинути команду
+                   {tp("buttonLeave")}
                   </Button>
 
                   {isAdmin && (
@@ -278,7 +286,7 @@ const TeamPage: React.FC = () => {
               <TabOverview teamId={team.id} canEdit={isAdmin} />
             )}
 
-            {activeTab === "Учасники" && (
+            {activeTab === tp("tabsMembers") && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {teamMembers.map((member) => (
                   <div
@@ -309,7 +317,7 @@ const TeamPage: React.FC = () => {
                           : "text-gray-400"
                       }`}
                     >
-                      роль: {member.role === "admin" ? "адмін" : "учасник"}
+                      {tp("role")}: {member.role === "admin" ? tp("roleAdmin") : tp("roleMember")}
                     </p>
 
                     <div className="flex gap-2 mt-3">
@@ -318,7 +326,7 @@ const TeamPage: React.FC = () => {
                           onClick={() => openRemoveConfirm(member.id)}
                           className="bg-red-100 text-red-600 hover:bg-red-200 text-xs rounded-xl"
                         >
-                          Видалити
+                          {tp("buttonRemove")}
                         </Button>
                       )}
                       {isAdmin &&
@@ -328,7 +336,7 @@ const TeamPage: React.FC = () => {
                             onClick={() => openPromoteConfirm(member.id)}
                             className="bg-blue-100 text-blue-700 hover:bg-blue-200 text-xs rounded-xl"
                           >
-                            Адмін
+                            {tp("buttonPromote")}
                           </Button>
                         )}
                     </div>
@@ -337,13 +345,13 @@ const TeamPage: React.FC = () => {
               </div>
             )}
 
-            {activeTab === "Чати" && !isGuest && currentUserId && (
+            {activeTab === tp("tabsChat") && !isGuest && currentUserId && (
               <div className="overflow-y-hidden">
                 <TeamChat teamId={team.id} currentUserId={currentUserId} />
               </div>
             )}
 
-            {activeTab === "Статистика" && !isGuest && (
+            {activeTab === tp("tabsStats") && !isGuest && (
               <div className="overflow-x-auto">
                 <TeamStats teamId={team.id} teamMembers={teamMembers} />
               </div>
@@ -355,9 +363,9 @@ const TeamPage: React.FC = () => {
 
         <ConfirmModal
           isOpen={confirmLeaveOpen}
-          title="Покинути команду"
-          message="Ти справді хочеш вийти з цієї команди? Якщо ти власник, права перейдуть іншому учаснику або команда буде видалена."
-          confirmText="Покинути"
+          title={tp("confirmLeaveTitle")}
+          message={tp("confirmLeaveMessage")}
+          confirmText={tp("confirmLeaveTitle")}
           confirmColor="bg-red-600 hover:bg-red-700"
           onCancel={() => setConfirmLeaveOpen(false)}
           onConfirm={confirmLeave}
@@ -365,9 +373,9 @@ const TeamPage: React.FC = () => {
 
         <ConfirmModal
           isOpen={confirmRemove.open}
-          title="Видалення учасника"
-          message="Видалити цього учасника з команди?"
-          confirmText="Видалити"
+          title={tp("confirmRemoveTitle")}
+          message={tp("confirmRemoveMessage")}
+          confirmText={tp("confirmRemoveButton")}
           confirmColor="bg-red-600 hover:bg-red-700"
           onCancel={() => setConfirmRemove({ userId: null, open: false })}
           onConfirm={confirmRemoveUser}
@@ -375,9 +383,9 @@ const TeamPage: React.FC = () => {
 
         <ConfirmModal
           isOpen={confirmPromote.open}
-          title="Підвищення до адміна"
-          message="Зробити цього учасника адміністратором команди?"
-          confirmText="Підвищити"
+          title={tp("confirmPromoteTitle")}
+          message={tp("confirmPromoteMessage")}
+          confirmText={tp("confirmPromoteButton")}
           confirmColor="bg-blue-600 hover:bg-blue-700"
           onCancel={() => setConfirmPromote({ userId: null, open: false })}
           onConfirm={confirmPromoteUser}

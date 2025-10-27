@@ -906,4 +906,44 @@ export default {
     message: "Написати",
     save: "Зберегти",
   },
+
+  teamPage: {
+    notFound: "Команда не знайдена",
+
+    tabsOverview: "Візитка",
+    tabsMembers: "Учасники",
+    tabsChat: "Чати",
+    tabsStats: "Статистика",
+
+    noDescription: "Без опису команди",
+    membersCount: "Учасників",
+
+    buttonSendRequest: "Надіслати запит",
+    buttonTasks: "Завдання",
+    buttonCalendar: "Календар",
+    buttonAddMember: "Додати учасника",
+    buttonLeave: "Покинути команду",
+    buttonRemove: "Видалити",
+    buttonPromote: "Адмін",
+
+    role: "роль",
+    roleAdmin: "адмін",
+    roleMember: "учасник",
+
+    chatUnavailable: "Недоступно для гостей",
+    statsUnavailable: "Недоступно для гостей",
+
+    confirmLeaveTitle: "Покинути команду",
+    confirmLeaveMessage:
+      "Ти справді хочеш вийти з цієї команди? Якщо ти власник, права перейдуть іншому учаснику або команда буде видалена.",
+    confirmLeaveButton: "Покинути",
+
+    confirmRemoveTitle: "Видалення учасника",
+    confirmRemoveMessage: "Видалити цього учасника з команди?",
+    confirmRemoveButton: "Видалити",
+
+    confirmPromoteTitle: "Підвищення до адміна",
+    confirmPromoteMessage: "Зробити цього учасника адміністратором команди?",
+    confirmPromoteButton: "Підвищити",
+  },
 };

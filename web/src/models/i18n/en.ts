@@ -906,4 +906,44 @@ The goal — to make teamwork not only productive but enjoyable.`,
     message: "Message",
     save: "Save",
   },
+
+  teamPage: {
+    notFound: "Team not found",
+
+    tabsOverview: "Overview",
+    tabsMembers: "Members",
+    tabsChat: "Chat",
+    tabsStats: "Statistics",
+
+    noDescription: "No team description",
+    membersCount: "Members",
+
+    buttonSendRequest: "Send request",
+    buttonTasks: "Tasks",
+    buttonCalendar: "Calendar",
+    buttonAddMember: "Add member",
+    buttonLeave: "Leave team",
+    buttonRemove: "Remove",
+    buttonPromote: "Admin",
+
+    role: "role",
+    roleAdmin: "admin",
+    roleMember: "member",
+
+    chatUnavailable: "Unavailable for guests",
+    statsUnavailable: "Unavailable for guests",
+
+    confirmLeaveTitle: "Leave team",
+    confirmLeaveMessage:
+      "Are you sure you want to leave this team? If you are the owner, rights will transfer to another member or the team will be deleted.",
+    confirmLeaveButton: "Leave",
+
+    confirmRemoveTitle: "Remove member",
+    confirmRemoveMessage: "Remove this member from the team?",
+    confirmRemoveButton: "Remove",
+
+    confirmPromoteTitle: "Promote to admin",
+    confirmPromoteMessage: "Make this member a team administrator?",
+    confirmPromoteButton: "Promote",
+  },
 };

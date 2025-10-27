@@ -905,4 +905,45 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
     message: "Napisz",
     save: "Zapisz",
   },
+
+  teamPage: {
+    notFound: "Zespół nie został znaleziony",
+
+    tabsOverview: "Wizytówka",
+    tabsMembers: "Uczestnicy",
+    tabsChat: "Czaty",
+    tabsStats: "Statystyki",
+
+    noDescription: "Brak opisu zespołu",
+    membersCount: "Uczestników",
+
+    buttonSendRequest: "Wyślij zaproszenie",
+    buttonTasks: "Zadania",
+    buttonCalendar: "Kalendarz",
+    buttonAddMember: "Dodaj uczestnika",
+    buttonLeave: "Opuść zespół",
+    buttonRemove: "Usuń",
+    buttonPromote: "Admin",
+
+    role: "rola",
+    roleAdmin: "administrator",
+    roleMember: "uczestnik",
+
+    chatUnavailable: "Niedostępne dla gości",
+    statsUnavailable: "Niedostępne dla gości",
+
+    confirmLeaveTitle: "Opuść zespół",
+    confirmLeaveMessage:
+      "Czy na pewno chcesz opuścić ten zespół? Jeśli jesteś właścicielem, prawa zostaną przekazane innemu uczestnikowi lub zespół zostanie usunięty.",
+    confirmLeaveButton: "Opuść",
+
+    confirmRemoveTitle: "Usuń uczestnika",
+    confirmRemoveMessage: "Czy usunąć tego uczestnika z zespołu?",
+    confirmRemoveButton: "Usuń",
+
+    confirmPromoteTitle: "Awansuj na administratora",
+    confirmPromoteMessage:
+      "Czy zrobić tego uczestnika administratorem zespołu?",
+    confirmPromoteButton: "Awansuj",
+  },
 };
