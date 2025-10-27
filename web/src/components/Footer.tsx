@@ -52,7 +52,7 @@ const Footer = () => {
     <footer className="w-full bg-gray-900 text-gray-300 text-sm px-8">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div>
-          <h4 className="text-white font-semibold mb-4">Продукт</h4>
+          <h4 className="text-white font-semibold mb-4">{tf("product")}</h4>
           <ul className="space-y-2">
             <li>
               <a href="#/features" className="hover:text-white transition">
