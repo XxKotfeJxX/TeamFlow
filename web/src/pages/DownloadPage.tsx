@@ -13,14 +13,14 @@ export default function DownloadPage() {
       icon: Monitor,
       title: "Windows",
       desc: td("windowsDesc"),
-      link: "/downloads/TeamFlow_Setup.exe",
+      link: "#/downloads/TeamFlow_Setup.exe",
       btn: td("downloadExe"),
     },
     {
       icon: Laptop,
       title: "macOS",
       desc: td("macDesc"),
-      link: "/downloads/TeamFlow_Mac.dmg",
+      link: "#/downloads/TeamFlow_Mac.dmg",
       btn: td("downloadDmg"),
     },
     {
