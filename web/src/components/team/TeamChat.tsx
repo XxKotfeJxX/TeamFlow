@@ -10,16 +10,7 @@ interface TeamChatProps {
   currentUserId: string;
 }
 
-const formatDateLabel = (date: Date): string => {
-  const today = new Date();
-  const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
 
-  const d = date.toDateString();
-  if (d === today.toDateString()) return "Сьогодні";
-  if (d === yesterday.toDateString()) return "Вчора";
-  return date.toLocaleDateString("uk-UA");
-};
 
 const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -32,6 +23,17 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  const formatDateLabel = (date: Date): string => {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    const d = date.toDateString();
+    if (d === today.toDateString()) return tp("today");
+    if (d === yesterday.toDateString()) return tp("yesterday");
+    return date.toLocaleDateString("uk-UA");
+  };
 
   useEffect(() => {
     const chat = chatDb.createTeam(teamId);

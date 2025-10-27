@@ -1,6 +1,8 @@
 import React from "react";
 import { X } from "lucide-react";
 import { profileTemplateDb } from "../../models/mockDB/profiletemplates";
+import { useTranslation } from "../useTranslations";
+import type { translations } from "../../models/i18n";
 
 interface TemplateSelectModalProps {
   isOpen: boolean;
@@ -13,6 +15,10 @@ const TemplateSelectModal: React.FC<TemplateSelectModalProps> = ({
   onClose,
   onSelect,
 }) => {
+  const { t } = useTranslation();
+  const tt = t("templates");
+  const tp = t("profileTemplates");
+
   if (!isOpen) return null;
 
   const templates = profileTemplateDb.getAll();
@@ -22,7 +28,7 @@ const TemplateSelectModal: React.FC<TemplateSelectModalProps> = ({
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative animate-fadeIn">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-900">
-            Вибір шаблону картки
+            {tt("selectTemplate")}
           </h2>
           <button
             onClick={onClose}
@@ -43,10 +49,20 @@ const TemplateSelectModal: React.FC<TemplateSelectModalProps> = ({
               className="flex flex-col items-center justify-center gap-2 p-4 border border-gray-200 rounded-xl hover:bg-gray-100 transition"
             >
               <div className="text-3xl">{tpl.icon}</div>
-              <div className="text-gray-800 font-medium">{tpl.displayName}</div>
-              <p className="text-gray-500 text-sm text-center">
-                {tpl.description}
-              </p>
+
+              <div className="text-gray-800 font-medium text-center">
+                {tp(
+                  tpl.displayNameKey as keyof (typeof translations)["uk"]["profileTemplates"]
+                )}
+              </div>
+
+              {tpl.descriptionKey && (
+                <p className="text-gray-500 text-sm text-center">
+                  {tp(
+                    tpl.descriptionKey as keyof (typeof translations)["uk"]["profileTemplates"]
+                  )}
+                </p>
+              )}
             </button>
           ))}
         </div>

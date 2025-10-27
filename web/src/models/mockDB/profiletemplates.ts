@@ -1,6 +1,6 @@
 export interface ProfileTemplateField {
   key: string;
-  label: string;
+  labelKey: string; // 🔹 ключ перекладу замість тексту
   type: "text" | "textarea" | "image" | "list" | "linkList";
   required?: boolean;
 }
@@ -8,8 +8,8 @@ export interface ProfileTemplateField {
 export interface ProfileTemplate {
   id: string;
   name: string;
-  displayName: string;
-  description?: string;
+  displayNameKey: string; // 🔹 ключ перекладу назви
+  descriptionKey?: string; // 🔹 ключ перекладу опису
   icon?: string;
   fields: ProfileTemplateField[];
   styles?: Record<string, unknown>;
@@ -21,12 +21,12 @@ export const profileTemplates: ProfileTemplate[] = [
   {
     id: "tpl-text-basic",
     name: "text_basic",
-    displayName: "Текстовий блок",
-    description: "Заголовок і короткий текстовий опис",
+    displayNameKey: "textBasicName",
+    descriptionKey: "textBasicDesc",
     icon: "📝",
     fields: [
-      { key: "title", label: "Заголовок", type: "text", required: true },
-      { key: "body", label: "Текст", type: "textarea" },
+      { key: "title", labelKey: "titleLabel", type: "text", required: true },
+      { key: "body", labelKey: "bodyLabel", type: "textarea" },
     ],
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -34,12 +34,12 @@ export const profileTemplates: ProfileTemplate[] = [
   {
     id: "tpl-list",
     name: "list",
-    displayName: "Список",
-    description: "Заголовок і список пунктів",
+    displayNameKey: "listName",
+    descriptionKey: "listDesc",
     icon: "📋",
     fields: [
-      { key: "title", label: "Заголовок", type: "text", required: true },
-      { key: "items", label: "Пункти списку", type: "list" },
+      { key: "title", labelKey: "titleLabel", type: "text", required: true },
+      { key: "items", labelKey: "itemsLabel", type: "list" },
     ],
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -47,12 +47,12 @@ export const profileTemplates: ProfileTemplate[] = [
   {
     id: "tpl-links",
     name: "links",
-    displayName: "Посилання",
-    description: "Заголовок і набір зовнішніх посилань",
+    displayNameKey: "linksName",
+    descriptionKey: "linksDesc",
     icon: "🔗",
     fields: [
-      { key: "title", label: "Заголовок", type: "text", required: true },
-      { key: "links", label: "Посилання", type: "linkList" },
+      { key: "title", labelKey: "titleLabel", type: "text", required: true },
+      { key: "links", labelKey: "linksLabel", type: "linkList" },
     ],
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -60,12 +60,12 @@ export const profileTemplates: ProfileTemplate[] = [
   {
     id: "tpl-gallery",
     name: "gallery",
-    displayName: "Галерея зображень",
-    description: "Заголовок і декілька фото",
+    displayNameKey: "galleryName",
+    descriptionKey: "galleryDesc",
     icon: "🖼️",
     fields: [
-      { key: "title", label: "Заголовок", type: "text", required: true },
-      { key: "images", label: "Фото", type: "image" },
+      { key: "title", labelKey: "titleLabel", type: "text", required: true },
+      { key: "images", labelKey: "imagesLabel", type: "image" },
     ],
     createdAt: new Date(),
     updatedAt: new Date(),

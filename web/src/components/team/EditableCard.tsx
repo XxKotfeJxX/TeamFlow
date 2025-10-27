@@ -5,13 +5,15 @@ import type { TeamProfileBlock } from "../../models/mockDB/teams";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
 import { teamProfileDb } from "../../models/mockDB/teams";
+import { useTranslation } from "../useTranslations";
+import type {translations} from "../../models/i18n"
 
 interface EditableCardProps {
   block: TeamProfileBlock;
   template: ProfileTemplate;
   onSave: (updatedBlock: TeamProfileBlock) => void;
   onDelete?: () => void;
-  canEdit?: boolean; 
+  canEdit?: boolean;
 }
 
 const EditableCard: React.FC<EditableCardProps> = ({
@@ -23,6 +25,9 @@ const EditableCard: React.FC<EditableCardProps> = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState<Record<string, unknown>>(block.data || {});
+  const { t } = useTranslation();
+  const te = t("editableCard");
+  const tp = t("profileTemplates"); // переклад назв полів шаблону
 
   const save = () => {
     if (!canEdit) return;
@@ -38,7 +43,7 @@ const EditableCard: React.FC<EditableCardProps> = ({
 
   const handleDelete = () => {
     if (!canEdit || !onDelete) return;
-    if (confirm("Видалити цей блок?")) onDelete();
+    if (confirm(te("confirmDelete"))) onDelete();
   };
 
   return (
@@ -52,15 +57,15 @@ const EditableCard: React.FC<EditableCardProps> = ({
             <>
               <button
                 onClick={() => setEditing(false)}
-                className="text-gray-400 hover:text-gray-600 hover:border-gray-600 rounded-full p-1"
-                title="Скасувати"
+                className="text-gray-400 hover:text-gray-600 rounded-full p-1"
+                title={te("cancel")}
               >
                 <X size={18} />
               </button>
               <button
                 onClick={save}
-                className="text-blue-600 hover:text-blue-700 hover:border-blue-700 rounded-full p-1"
-                title="Зберегти"
+                className="text-blue-600 hover:text-blue-700 rounded-full p-1"
+                title={te("save")}
               >
                 <Check size={18} />
               </button>
@@ -69,16 +74,16 @@ const EditableCard: React.FC<EditableCardProps> = ({
             <>
               <button
                 onClick={() => canEdit && setEditing(true)}
-                className="text-gray-400 hover:text-blue-600 hover:border-blue-600 rounded-full p-1"
-                title="Редагувати"
+                className="text-gray-400 hover:text-blue-600 rounded-full p-1"
+                title={te("edit")}
               >
                 <Pencil size={18} />
               </button>
               {onDelete && (
                 <button
                   onClick={handleDelete}
-                  className="text-gray-400 hover:text-red-600 hover:border-red-600 rounded-full p-1"
-                  title="Видалити"
+                  className="text-gray-400 hover:text-red-600 rounded-full p-1"
+                  title={te("delete")}
                 >
                   <Trash2 size={18} />
                 </button>
@@ -88,10 +93,12 @@ const EditableCard: React.FC<EditableCardProps> = ({
         </div>
       )}
 
+      {/* Відображення / редагування контенту */}
       {!editing ? (
         <>
           {template.fields.map((field) => {
             const value = data[field.key];
+            if (!value) return null;
 
             switch (field.type) {
               case "text":
@@ -103,6 +110,7 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     {value as string}
                   </p>
                 );
+
               case "textarea":
                 return (
                   <p
@@ -112,43 +120,46 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     {value as string}
                   </p>
                 );
+
               case "list":
                 return (
                   <ul
                     key={field.key}
                     className="list-disc list-inside text-gray-600 space-y-1 mb-2"
                   >
-                    {(value as string[] | undefined)?.map((i, idx) => (
+                    {(value as string[])?.map((i, idx) => (
                       <li key={idx}>{i}</li>
                     ))}
                   </ul>
                 );
+
               case "linkList":
                 return (
                   <ul
                     key={field.key}
                     className="text-blue-600 space-y-1 mb-2 underline-offset-2"
                   >
-                    {(
-                      value as { label: string; url: string }[] | undefined
-                    )?.map((l, idx) => (
-                      <li key={idx}>
-                        <a
-                          href={l.url}
-                          className="hover:underline"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {l.label}
-                        </a>
-                      </li>
-                    ))}
+                    {(value as { label: string; url: string }[])?.map(
+                      (l, idx) => (
+                        <li key={idx}>
+                          <a
+                            href={l.url}
+                            className="hover:underline"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {l.label}
+                          </a>
+                        </li>
+                      )
+                    )}
                   </ul>
                 );
+
               case "image":
                 return (
                   <div key={field.key} className="flex flex-wrap gap-2 mb-2">
-                    {(value as string[] | undefined)?.map((src, idx) => (
+                    {(value as string[])?.map((src, idx) => (
                       <img
                         key={idx}
                         src={src}
@@ -158,6 +169,7 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     ))}
                   </div>
                 );
+
               default:
                 return null;
             }
@@ -167,6 +179,10 @@ const EditableCard: React.FC<EditableCardProps> = ({
         <>
           {template.fields.map((field) => {
             const value = data[field.key];
+            const label = tp(
+              field.labelKey as keyof (typeof translations)["uk"]["profileTemplates"]
+            );
+
 
             switch (field.type) {
               case "text":
@@ -177,10 +193,11 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     onChange={(e) =>
                       setData({ ...data, [field.key]: e.target.value })
                     }
-                    placeholder={field.label}
+                    placeholder={label}
                     className="mb-3"
                   />
                 );
+
               case "textarea":
                 return (
                   <Textarea
@@ -189,31 +206,33 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     onChange={(e) =>
                       setData({ ...data, [field.key]: e.target.value })
                     }
-                    placeholder={field.label}
+                    placeholder={label}
                     className="mb-3 h-24"
                   />
                 );
+
               case "list":
                 return (
                   <Textarea
                     key={field.key}
-                    value={(value as string[] | undefined)?.join("\n") || ""}
+                    value={(value as string[])?.join("\n") || ""}
                     onChange={(e) =>
                       setData({
                         ...data,
                         [field.key]: e.target.value.split("\n"),
                       })
                     }
-                    placeholder={`${field.label} (кожен пункт з нового рядка)`}
+                    placeholder={`${label} (${te("onePerLine")})`}
                     className="mb-3 h-24"
                   />
                 );
+
               case "linkList":
                 return (
                   <Textarea
                     key={field.key}
                     value={
-                      (value as { label: string; url: string }[] | undefined)
+                      (value as { label: string; url: string }[])
                         ?.map((l) => `${l.label}|${l.url}`)
                         .join("\n") || ""
                     }
@@ -222,20 +241,24 @@ const EditableCard: React.FC<EditableCardProps> = ({
                         .split("\n")
                         .filter(Boolean)
                         .map((line) => {
-                          const [label, url] = line.split("|");
-                          return { label, url };
+                          const [labelText, url] = line.split("|");
+                          return {
+                            label: labelText?.trim() || "",
+                            url: url?.trim() || "",
+                          };
                         });
                       setData({ ...data, [field.key]: parsed });
                     }}
-                    placeholder={`${field.label} (формат: Назва|URL)`}
+                    placeholder={`${label} (${te("linkFormat")})`}
                     className="mb-3 h-24"
                   />
                 );
+
               case "image":
                 return (
                   <div key={field.key} className="mb-4">
                     <label className="block text-gray-700 font-medium mb-2">
-                      {field.label}
+                      {label}
                     </label>
                     <input
                       type="file"
@@ -256,7 +279,7 @@ const EditableCard: React.FC<EditableCardProps> = ({
                                  file:text-blue-700 hover:file:bg-blue-100"
                     />
                     <div className="flex flex-wrap gap-2 mt-3">
-                      {(value as string[] | undefined)?.map((src, idx) => (
+                      {(value as string[])?.map((src, idx) => (
                         <img
                           key={idx}
                           src={src}
@@ -267,6 +290,7 @@ const EditableCard: React.FC<EditableCardProps> = ({
                     </div>
                   </div>
                 );
+
               default:
                 return null;
             }
