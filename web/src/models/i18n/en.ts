@@ -790,4 +790,23 @@ teamwork platform. It unites calendar, task management, chat,
 point system, and user profiles into a single ecosystem. 
 The goal — to make teamwork not only productive but enjoyable.`,
   },
+
+  tasksPage: {
+    title: "Tasks",
+    all: "All",
+    active: "Active",
+    done: "Completed",
+    noTasks: "No tasks in this category",
+    forOwner: "Tasks for {{owner}}",
+    notFound: "Calendar or owner not found",
+    statusCompleted: "✅ completed",
+    statusActive: "🕒 in progress",
+    markDone: "Done",
+    undo: "Undo",
+    delete: "Delete",
+    confirmDeleteTitle: "Delete task?",
+    confirmDeleteText: `"{{title}}" will be permanently deleted.`,
+    cancel: "Cancel",
+    confirm: "Delete",
+  },
 };

@@ -789,4 +789,23 @@ nowej generacji do pracy zespołowej. Łączy kalendarz, zadania, czat,
 system punktowy i profile użytkowników w jednym miejscu. 
 Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyjemną.`,
   },
+
+  tasksPage: {
+    title: "Zadania",
+    all: "Wszystkie",
+    active: "Aktywne",
+    done: "Ukończone",
+    noTasks: "Brak zadań w tej kategorii",
+    forOwner: "Zadania dla {{owner}}",
+    notFound: "Nie znaleziono kalendarza lub właściciela",
+    statusCompleted: "✅ ukończone",
+    statusActive: "🕒 w toku",
+    markDone: "Gotowe",
+    undo: "Cofnij",
+    delete: "Usuń",
+    confirmDeleteTitle: "Usunąć zadanie?",
+    confirmDeleteText: `"{{title}}" zostanie trwale usunięte.`,
+    cancel: "Anuluj",
+    confirm: "Usuń",
+  },
 };

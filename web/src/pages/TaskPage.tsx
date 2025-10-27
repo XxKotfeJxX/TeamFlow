@@ -6,12 +6,17 @@ import Footer from "../components/Footer";
 import { calendars, taskDb, type Task } from "../models/mockDB/calendar";
 import { teamDb, type Team } from "../models/mockDB/teams";
 import { users, type User } from "../models/mockDB/users";
+import { useTranslation } from "../components/useTranslations";
 
 const TasksPage: React.FC = () => {
   const { ownerType, ownerId } = useParams<{
     ownerType: "user" | "team";
     ownerId: string;
   }>();
+
+  const { t } = useTranslation();
+  const tt = t("tasksPage");
+
   const [filter, setFilter] = useState<"all" | "active" | "done">("all");
   const [tasksState, setTasksState] = useState<Task[]>([]);
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
@@ -47,7 +52,7 @@ const TasksPage: React.FC = () => {
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-gray-50">
         <Header />
         <main className="flex-1 flex items-center justify-center text-gray-500 text-lg">
-          Календар або власник не знайдені
+          {tt("notFound")}
         </main>
         <Footer />
       </div>
@@ -96,7 +101,7 @@ const TasksPage: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold mb-10 text-center text-gray-800"
           >
-            Завдання для {ownerLabel}
+            {tt("forOwner").replace("{{owner}}", ownerLabel)}
           </motion.h1>
 
           <div className="flex justify-center gap-3 mb-10">
@@ -110,7 +115,11 @@ const TasksPage: React.FC = () => {
                     : "bg-white/70 backdrop-blur-md border border-gray-200 text-gray-600 hover:bg-blue-50 hover:text-blue-700"
                 }`}
               >
-                {f === "all" ? "Усі" : f === "done" ? "Виконані" : "Активні"}
+                {f === "all"
+                  ? tt("all")
+                  : f === "done"
+                  ? tt("done")
+                  : tt("active")}
               </button>
             ))}
           </div>
@@ -144,8 +153,8 @@ const TasksPage: React.FC = () => {
                   )}
                   <p className="text-xs text-gray-400 mt-1">
                     {task.status === "completed"
-                      ? "✅ виконано"
-                      : "🕒 в роботі"}
+                      ? tt("statusCompleted")
+                      : tt("statusActive")}
                   </p>
                 </div>
 
@@ -158,22 +167,20 @@ const TasksPage: React.FC = () => {
                         : "bg-green-100 text-green-700 hover:bg-green-200"
                     }`}
                   >
-                    {task.status === "completed" ? "Відмінити" : "Готово"}
+                    {task.status === "completed" ? tt("undo") : tt("markDone")}
                   </button>
                   <button
                     onClick={() => confirmDelete(task)}
                     className="px-3 py-1.5 bg-red-100 text-red-700 rounded-xl text-sm font-medium hover:bg-red-200 transition-colors"
                   >
-                    Видалити
+                    {tt("delete")}
                   </button>
                 </div>
               </motion.div>
             ))}
 
             {filtered.length === 0 && (
-              <p className="text-gray-400 text-center mt-10">
-                Немає завдань у цій категорії
-              </p>
+              <p className="text-gray-400 text-center mt-10">{tt("noTasks")}</p>
             )}
           </div>
         </main>
@@ -194,23 +201,23 @@ const TasksPage: React.FC = () => {
             className="bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl shadow-xl p-8 w-[90%] max-w-sm text-center"
           >
             <h2 className="text-lg font-semibold mb-2 text-gray-800">
-              Видалити завдання?
+              {tt("confirmDeleteTitle")}
             </h2>
             <p className="text-sm text-gray-500 mb-6">
-              "{deleteTarget.title}" буде видалено без можливості відновлення.
+              {tt("confirmDeleteText").replace("{{title}}", deleteTarget.title)}
             </p>
             <div className="flex justify-center gap-3">
               <button
                 onClick={handleCancelDelete}
                 className="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium transition"
               >
-                Скасувати
+                {tt("cancel")}
               </button>
               <button
                 onClick={handleConfirmDelete}
                 className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium transition"
               >
-                Видалити
+                {tt("confirm")}
               </button>
             </div>
           </motion.div>
