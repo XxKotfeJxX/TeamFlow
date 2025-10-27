@@ -836,4 +836,31 @@ The goal — to make teamwork not only productive but enjoyable.`,
       "December",
     ],
   },
+
+  createItemModal: {
+    tabMain: "Main",
+    tabParticipants: "Participants",
+    tabSettings: "Settings",
+
+    fieldTitle: "Title",
+    fieldDescription: "Description",
+    fieldColor: "Color",
+    fieldType: "Type",
+    fieldStart: "Start",
+    fieldEnd: "End",
+    fieldDuration: "Duration",
+
+    typeTask: "Task",
+    typeEvent: "Event",
+
+    errorTitleRequired: "Please enter a title",
+    errorInvalidDate: "Start date cannot be after end date",
+
+    actionFixDate: "Fix",
+    actionSave: "Save",
+    actionSelectParticipants: "Select participants",
+    actionYou: "(you)",
+
+    settingsNote: "Settings (recurrence, status, etc.)",
+  },
 };

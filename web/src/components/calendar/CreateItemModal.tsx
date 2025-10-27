@@ -10,6 +10,7 @@ import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
 import { CustomTimePicker, CustomDatePicker } from "../ui/DateTimePicker";
 import { Checkbox } from "../ui/Checkbox";
+import { useTranslation } from "../useTranslations";
 
 interface CreateItemModalProps {
   calendarId: string;
@@ -46,6 +47,10 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   const currentUserId = localStorage.getItem("currentUserId") || "u1";
   const allUsers = userDb.getAll();
 
+  const { t } = useTranslation();
+  const tc = t("createItemModal");
+
+
   const titleRef = React.useRef<HTMLInputElement>(null);
   const startDateRef = React.useRef<HTMLDivElement>(null);
 
@@ -53,7 +58,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
     let hasError = false;
 
     if (!title.trim()) {
-      setTitleError("Вкажіть назву");
+      setTitleError(tc("errorTitleRequired"));
       hasError = true;
       titleRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     } else {
@@ -69,7 +74,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
     const end = new Date(ey, em - 1, ed, eh, emin);
 
     if (type === "event" && start > end) {
-      setDateError("Дата початку не може бути після дати кінця");
+      setDateError(tc("errorInvalidDate"));
       hasError = true;
       startDateRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -170,9 +175,9 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
       `}
               onClick={() => setActiveTab(tab as typeof activeTab)}
             >
-              {tab === "main" && "Основне"}
-              {tab === "participants" && "Учасники"}
-              {tab === "settings" && "Налаштування"}
+              {tab === "main" && tc("tabMain")}
+              {tab === "participants" && tc("tabParticipants")}
+              {tab === "settings" && tc("tabSettings")}
             </button>
           ))}
         </div>
@@ -180,21 +185,21 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
         <div className="flex-1 p-4 md:p-6 overflow-y-auto">
           {activeTab === "main" && (
             <div className="space-y-4">
-              {calendarType === "team" && (
+              {calendarType === "team" && <Label>{tc("fieldType")}:</Label> && (
                 <Select
                   className="mb-4"
                   value={type}
                   onChange={(e) => setType(e.target.value as "task" | "event")}
                 >
-                  <SelectItem value="task">Таск</SelectItem>
-                  <SelectItem value="event">Подія</SelectItem>
+                  <SelectItem value="task">{tc("typeTask")}</SelectItem>
+                  <SelectItem value="event">{tc("typeEvent")}</SelectItem>
                 </Select>
               )}
 
-              <Label>Назва:</Label>
+              <Label>{tc("fieldTitle")}:</Label>
               <Input
                 ref={titleRef}
-                placeholder="Введіть назву"
+                placeholder={tc("fieldTitle")}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -202,9 +207,9 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                 <p className="text-red-600 text-sm pb-4">{titleError}</p>
               )}
 
-              <Label>Опис:</Label>
+              <Label>{tc("fieldDescription")}:</Label>
               <Textarea
-                placeholder="Введіть опис"
+                placeholder={tc("fieldDescription")}
                 height={150}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -212,14 +217,14 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
               {type === "task" && (
                 <>
-                  <Label>Час виконання:</Label>
+                  <Label>{tc("fieldDuration")}:</Label>
                   <CustomTimePicker value={endTime} onChange={setEndTime} />
                 </>
               )}
 
               {type === "event" && (
                 <div ref={startDateRef}>
-                  <Label>Початок:</Label>
+                  <Label>{tc("fieldStart")}:</Label>
                   <CustomDatePicker
                     value={startDate.split("-").reverse().join(".")}
                     onChange={(date) => {
@@ -230,7 +235,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                   />
                   <CustomTimePicker value={startTime} onChange={setStartTime} />
 
-                  <Label>Кінець:</Label>
+                  <Label>{tc("fieldEnd")}:</Label>
                   <CustomDatePicker
                     value={endDate.split("-").reverse().join(".")}
                     onChange={(date) => {
@@ -248,14 +253,14 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                         className="px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200"
                         onClick={handleFixDate}
                       >
-                        Виправити
+                        {tc("actionFixDate")}
                       </button>
                     </div>
                   )}
                 </div>
               )}
 
-              <Label>Колір:</Label>
+              <Label>{tc("fieldColor")}:</Label>
               <Input
                 className="px-0 py-0 h-10 cursor-pointer"
                 type="color"
@@ -269,7 +274,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                 onClick={handleCreate}
                 className="mt-4 w-full bg-blue-500 text-white hover:bg-blue-600"
               >
-                Зберегти
+                {tc("actionSave")}
               </Button>
             </div>
           )}
@@ -277,7 +282,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           {activeTab === "participants" && (
             <div className="space-y-2">
               <h3 className="font-semibold text-gray-700 mb-2">
-                Виберіть учасників
+                {tc("actionSelectParticipants")}
               </h3>
               {allUsers.map((user) => (
                 <div
@@ -311,7 +316,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
                         <span className="text-gray-800">{user.username}</span>
                         {user.id === currentUserId && (
                           <span className="ml-auto text-xs text-gray-500">
-                            (ви)
+                            {tc("actionYou")}
                           </span>
                         )}
                       </div>
@@ -324,7 +329,9 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
           {activeTab === "settings" && (
             <div>
-              <p className="text-gray-700">Налаштування (повторюваність, статус тощо)</p>
+              <p className="text-gray-700">
+                {tc("settingsNote")}
+              </p>
             </div>
           )}
         </div>

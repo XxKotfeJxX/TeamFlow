@@ -835,4 +835,31 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
       "Grudzień",
     ],
   },
+
+  createItemModal: {
+    tabMain: "Główne",
+    tabParticipants: "Uczestnicy",
+    tabSettings: "Ustawienia",
+
+    fieldTitle: "Tytuł",
+    fieldDescription: "Opis",
+    fieldColor: "Kolor",
+    fieldType: "Typ",
+    fieldStart: "Początek",
+    fieldEnd: "Koniec",
+    fieldDuration: "Czas wykonania",
+
+    typeTask: "Zadanie",
+    typeEvent: "Wydarzenie",
+
+    errorTitleRequired: "Podaj tytuł",
+    errorInvalidDate: "Data rozpoczęcia nie może być po dacie zakończenia",
+
+    actionFixDate: "Napraw",
+    actionSave: "Zapisz",
+    actionSelectParticipants: "Wybierz uczestników",
+    actionYou: "(ty)",
+
+    settingsNote: "Ustawienia (powtarzalność, status itp.)",
+  },
 };

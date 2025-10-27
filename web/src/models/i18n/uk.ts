@@ -836,4 +836,33 @@ export default {
       "Грудень",
     ],
   },
+
+  createItemModal: {
+    tabMain: "Основне",
+    tabParticipants: "Учасники",
+    tabSettings: "Налаштування",
+
+    fieldTitle: "Назва",
+    fieldDescription: "Опис",
+    fieldColor: "Колір",
+    fieldType: "Тип",
+    fieldStart: "Початок",
+    fieldEnd: "Кінець",
+    fieldDuration: "Час виконання",
+
+    typeTask: "Таск",
+    typeEvent: "Подія",
+
+    errorTitleRequired: "Вкажіть назву",
+    errorInvalidDate: "Дата початку не може бути після дати кінця",
+
+    actionFixDate: "Виправити",
+    actionSave: "Зберегти",
+    actionSelectParticipants: "Виберіть учасників",
+    actionYou: "(ви)",
+
+    settingsNote: "Налаштування (повторюваність, статус тощо)",
+  },
+
+  
 };
