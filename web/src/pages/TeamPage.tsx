@@ -282,7 +282,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
           </nav>
 
           <section className="mt-8">
-            {activeTab === "Візитка" && (
+            {activeTab === tp("tabsOverview") && (
               <TabOverview teamId={team.id} canEdit={isAdmin} />
             )}
 
