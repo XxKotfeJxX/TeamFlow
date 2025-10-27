@@ -9,6 +9,7 @@ import { teamDb } from "../models/mockDB/teams";
 import { userDb } from "../models/mockDB/users";
 import { motion } from "framer-motion";
 import ErrorPage from "./ErrorPage";
+import { useTranslation } from "../components/useTranslations";
 
 const MonthPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ const MonthPage: React.FC = () => {
     calendarId: string;
     month: string;
   }>();
+  
+const { t } = useTranslation();
+const tm = t("monthPage");
 
   const [calendarExists, setCalendarExists] = useState<boolean | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -111,7 +115,7 @@ const MonthPage: React.FC = () => {
   if (calendarExists === null) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-500">
-        ⏳ Завантаження календаря...
+        {tm("loading")}
       </div>
     );
   }
