@@ -945,5 +945,34 @@ The goal — to make teamwork not only productive but enjoyable.`,
     confirmPromoteTitle: "Promote to admin",
     confirmPromoteMessage: "Make this member a team administrator?",
     confirmPromoteButton: "Promote",
+
+    confirmCancelButton: "Cancel",
+    chatNoMessages: "No messages yet",
+    chatUploadFile: "Upload file",
+    chatUnsupported: "Unsupported message",
+    chatWritePlaceholder: "Write a message...",
+  },
+
+  addMemberModal: {
+    title: "Add members",
+    allInTeam: "All users are already in the team 🎉",
+    cancel: "Cancel",
+    add: "Add",
+  },
+
+  teamStats: {
+    tabWeek: "Week",
+    tabMonth: "Month",
+    tabAll: "All time",
+    periodWeek: "last 7 days",
+    periodMonth: "last month",
+    periodAll: "all time",
+    overallTitle: "Overall activity",
+    period: "Period",
+    summary:
+      "The team created {tasks} tasks, completed {completed}, added {events} new events, with {users} active users.",
+    topTitle: "Top active members",
+    tasks: "tasks",
+    noActivity: "No activity in the selected period.",
   },
 };

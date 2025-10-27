@@ -945,5 +945,34 @@ Celem jest uczynienie współpracy zespołowej nie tylko skuteczną, ale i przyj
     confirmPromoteMessage:
       "Czy zrobić tego uczestnika administratorem zespołu?",
     confirmPromoteButton: "Awansuj",
+
+    confirmCancelButton: "Anuluj",
+    chatNoMessages: "Brak wiadomości",
+    chatUploadFile: "Prześlij plik",
+    chatUnsupported: "Nieobsługiwana wiadomość",
+    chatWritePlaceholder: "Napisz wiadomość...",
+  },
+
+  addMemberModal: {
+    title: "Dodaj uczestników",
+    allInTeam: "Wszyscy użytkownicy są już w zespole 🎉",
+    cancel: "Anuluj",
+    add: "Dodaj",
+  },
+
+  teamStats: {
+    tabWeek: "Tydzień",
+    tabMonth: "Miesiąc",
+    tabAll: "Cały czas",
+    periodWeek: "w ciągu ostatnich 7 dni",
+    periodMonth: "w ciągu ostatniego miesiąca",
+    periodAll: "cały czas",
+    overallTitle: "Aktywność ogólna",
+    period: "Okres",
+    summary:
+      "Zespół utworzył {tasks} zadań, ukończył {completed}, dodał {events} nowych wydarzeń, {users} aktywnych użytkowników.",
+    topTitle: "Najbardziej aktywni uczestnicy",
+    tasks: "zadań",
+    noActivity: "Brak aktywności w wybranym okresie.",
   },
 };

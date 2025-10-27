@@ -223,7 +223,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
                       onClick={() => navigate(`/tasks/team/${team.id}`)}
                       className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-sm hover:shadow-md transition"
                     >
-                     {tp("buttonTasks")}
+                      {tp("buttonTasks")}
                     </Button>
 
                     <Button
@@ -249,7 +249,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
                     onClick={handleLeaveTeam}
                     className="bg-red-100 text-red-600 hover:bg-red-200 rounded-2xl"
                   >
-                   {tp("buttonLeave")}
+                    {tp("buttonLeave")}
                   </Button>
 
                   {isAdmin && (
@@ -317,7 +317,10 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
                           : "text-gray-400"
                       }`}
                     >
-                      {tp("role")}: {member.role === "admin" ? tp("roleAdmin") : tp("roleMember")}
+                      {tp("role")}:{" "}
+                      {member.role === "admin"
+                        ? tp("roleAdmin")
+                        : tp("roleMember")}
                     </p>
 
                     <div className="flex gap-2 mt-3">
@@ -365,6 +368,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
           isOpen={confirmLeaveOpen}
           title={tp("confirmLeaveTitle")}
           message={tp("confirmLeaveMessage")}
+          cancelText={tp("confirmCancelButton")}
           confirmText={tp("confirmLeaveTitle")}
           confirmColor="bg-red-600 hover:bg-red-700"
           onCancel={() => setConfirmLeaveOpen(false)}
@@ -375,6 +379,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
           isOpen={confirmRemove.open}
           title={tp("confirmRemoveTitle")}
           message={tp("confirmRemoveMessage")}
+          cancelText={tp("confirmCancelButton")}
           confirmText={tp("confirmRemoveButton")}
           confirmColor="bg-red-600 hover:bg-red-700"
           onCancel={() => setConfirmRemove({ userId: null, open: false })}
@@ -385,6 +390,7 @@ const tabsLimited = [tp("tabsOverview"), tp("tabsMembers")];
           isOpen={confirmPromote.open}
           title={tp("confirmPromoteTitle")}
           message={tp("confirmPromoteMessage")}
+          cancelText={tp("confirmCancelButton")}
           confirmText={tp("confirmPromoteButton")}
           confirmColor="bg-blue-600 hover:bg-blue-700"
           onCancel={() => setConfirmPromote({ userId: null, open: false })}

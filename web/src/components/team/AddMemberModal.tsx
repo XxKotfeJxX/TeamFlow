@@ -4,6 +4,7 @@ import { users } from "../../models/mockDB/users";
 import { Checkbox } from "../ui/Checkbox";
 import { teamDb } from "../../models/mockDB/teams";
 import ReactDOM from "react-dom";
+import { useTranslation } from "../useTranslations";
 
 interface AddMemberModalProps {
   isOpen: boolean;
@@ -19,6 +20,8 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   onAdded,
 }) => {
   const [selected, setSelected] = useState<string[]>([]);
+  const { t } = useTranslation();
+  const ta = t("addMemberModal");
 
   const team = teamDb.getById(teamId);
 
@@ -49,10 +52,9 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="relative bg-white rounded-2xl shadow-lg w-[90%] max-w-lg p-6 animate-fadeIn">
+        {/* ===== HEADER ===== */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">
-            Додати учасників
-          </h2>
+          <h2 className="text-xl font-semibold text-gray-900">{ta("title")}</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-700 transition hover:border-gray-300 rounded-full p-1"
@@ -61,11 +63,10 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
           </button>
         </div>
 
+        {/* ===== USER LIST ===== */}
         <div className="max-h-80 overflow-y-auto space-y-3">
           {availableUsers.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">
-              Усі користувачі вже в команді 🎉
-            </p>
+            <p className="text-gray-500 text-center py-8">{ta("allInTeam")}</p>
           ) : (
             availableUsers.map((u) => (
               <div
@@ -94,28 +95,29 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
           )}
         </div>
 
+        {/* ===== BUTTONS ===== */}
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
             className="px-4 py-2 text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 hover:border-gray-300"
           >
-            Скасувати
+            {ta("cancel")}
           </button>
           <button
             disabled={selected.length === 0}
             onClick={handleAdd}
-            className={`px-4 py-2 rounded-xl text-white ${
+            className={`px-4 py-2 rounded-xl text-white transition ${
               selected.length === 0
-                ? "bg-blue-300 cursor-not-allowed hover:border-blue-300"
-                : "bg-blue-600 hover:bg-blue-700 hover:border-blue-800"
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
-            Додати {selected.length > 0 && `(${selected.length})`}
+            {ta("add")} {selected.length > 0 && `(${selected.length})`}
           </button>
         </div>
       </div>
-    </div>
-  , document.body
+    </div>,
+    document.body
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { eventDb, taskDb } from "../../models/mockDB/calendar";
 import type { User } from "../../models/mockDB/users";
+import { useTranslation } from "../useTranslations";
 
 interface TeamStatsProps {
   teamId: string;
@@ -11,6 +12,8 @@ type Period = "week" | "month" | "all";
 
 const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
   const [period, setPeriod] = useState<Period>("week");
+  const { t } = useTranslation();
+  const ts = t("teamStats");
 
   const now = new Date();
   const startDate = useMemo(() => {
@@ -74,13 +77,14 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
 
   const periodLabel =
     period === "week"
-      ? "за останні 7 днів"
+      ? ts("periodWeek")
       : period === "month"
-      ? "за останній місяць"
-      : "за весь час";
+      ? ts("periodMonth")
+      : ts("periodAll");
 
   return (
     <div className="space-y-6">
+      {/* Перемикач періоду */}
       <div className="flex gap-2 mb-4">
         {(["week", "month", "all"] as Period[]).map((p) => (
           <button
@@ -92,26 +96,29 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >
-            {p === "week" && "Тиждень"}
-            {p === "month" && "Місяць"}
-            {p === "all" && "Увесь час"}
+            {p === "week" && ts("tabWeek")}
+            {p === "month" && ts("tabMonth")}
+            {p === "all" && ts("tabAll")}
           </button>
         ))}
       </div>
 
+      {/* Загальна активність */}
       <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h3 className="text-xl font-semibold mb-3">Загальна активність</h3>
+        <h3 className="text-xl font-semibold mb-3">{ts("overallTitle")}</h3>
         <p className="text-gray-600">
-          {`Період: ${periodLabel}. `}
-          Команда створила <b>{filteredTasks.length}</b> задач, виконала{" "}
-          <b>{completedTasks.length}</b>, додано <b>{filteredEvents.length}</b>{" "}
-          нових подій, активно брали участь <b>{activeUserIds.size}</b>{" "}
-          користувачів.
+          {`${ts("period")}: ${periodLabel}. `}
+          {ts("summary")
+            .replace("{tasks}", String(filteredTasks.length))
+            .replace("{completed}", String(completedTasks.length))
+            .replace("{events}", String(filteredEvents.length))
+            .replace("{users}", String(activeUserIds.size))}
         </p>
       </div>
 
+      {/* Топ активних учасників */}
       <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h3 className="text-xl font-semibold mb-3">Топ активних учасників</h3>
+        <h3 className="text-xl font-semibold mb-3">{ts("topTitle")}</h3>
         {memberActivity.length > 0 ? (
           <ul className="text-gray-700 space-y-1">
             {memberActivity.slice(0, 5).map((entry, idx) => (
@@ -120,12 +127,12 @@ const TeamStats: React.FC<TeamStatsProps> = ({ teamId, teamMembers }) => {
                 {idx === 1 && "🥈 "}
                 {idx === 2 && "🥉 "}
                 <b>{entry.user!.fullname || entry.user!.username}</b> —{" "}
-                {entry.count} задач
+                {entry.count} {ts("tasks")}
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-gray-400">Немає активності у вибраному періоді.</p>
+          <p className="text-gray-400">{ts("noActivity")}</p>
         )}
       </div>
     </div>

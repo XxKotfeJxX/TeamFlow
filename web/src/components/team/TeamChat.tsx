@@ -3,6 +3,7 @@ import { chatDb, messageDb, type Message } from "../../models/mockDB/chat";
 import { Paperclip, Send, ArrowDown } from "lucide-react";
 import { Input } from "../ui/Input";
 import { userDb } from "../../models/mockDB/users";
+import { useTranslation } from "../useTranslations";
 
 interface TeamChatProps {
   teamId: string;
@@ -25,6 +26,9 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
   const [inputValue, setInputValue] = useState("");
   const [chatId, setChatId] = useState<string | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
+
+    const { t } = useTranslation();
+    const tp = t("teamPage");
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -96,7 +100,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
       >
         {Object.entries(grouped).length === 0 && (
           <p className="text-gray-400 text-center mt-16">
-            💬 Повідомлень поки немає
+            💬 {tp("chatNoMessages")}
           </p>
         )}
 
@@ -146,11 +150,11 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
                         download
                         className="text-blue-200 underline break-all"
                       >
-                        📎 Завантажити файл
+                        📎 {tp("chatUploadFile")}
                       </a>
                     ) : (
                       <span className="italic text-gray-400">
-                        Непідтримуване повідомлення
+                        {tp("chatUnsupported")}
                       </span>
                     );
                   }
@@ -250,7 +254,7 @@ const TeamChat: React.FC<TeamChatProps> = ({ teamId, currentUserId }) => {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyPress}
           autoFocus={false}
-          placeholder="Напишіть повідомлення..."
+          placeholder={tp("chatWritePlaceholder")}
           className="flex-1 text-sm"
         />
         <button
