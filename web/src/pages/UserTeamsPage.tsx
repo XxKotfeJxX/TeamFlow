@@ -28,6 +28,23 @@ export default function UserTeamsPage() {
 
   const navigate = useNavigate();
 
+  const filtered = useMemo(() => {
+    let list = teamsState;
+    if (view === "mine") {
+      list = list.filter(
+        (team) =>
+          Array.isArray(team.members) &&
+          team.members.some((member) => member.userId === user?.id)
+      );
+    }
+    if (search.trim()) {
+      list = list.filter((team) =>
+        team.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    return list;
+  }, [view, search, teamsState, user?.id]);
+
   if (!user) {
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-gray-50 text-gray-600">
@@ -39,23 +56,6 @@ export default function UserTeamsPage() {
       </div>
     );
   }
-
-  const filtered = useMemo(() => {
-    let list = teamsState;
-    if (view === "mine") {
-      list = list.filter(
-        (t) =>
-          Array.isArray(t.members) &&
-          t.members.some((m) => m.userId === user.id)
-      );
-    }
-    if (search.trim()) {
-      list = list.filter((t) =>
-        t.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-    return list;
-  }, [view, search, teamsState, user.id]);
 
   const handleCreate = () => {
     if (!newTeam.name.trim()) {

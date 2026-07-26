@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/ui/button";
 import { useTranslation } from "../../components/useTranslations";
 import { motion } from "framer-motion";
 import { userDb } from "../../models/mockDB/users";

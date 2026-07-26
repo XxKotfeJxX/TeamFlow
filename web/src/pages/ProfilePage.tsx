@@ -5,7 +5,7 @@ import ProfileSettings from "../components/profile/ProfileSettings";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { userDb } from "../models/mockDB/users";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Pencil, Upload } from "lucide-react";
 import { Textarea } from "../components/ui/Textarea";
 import { Input } from "../components/ui/Input";

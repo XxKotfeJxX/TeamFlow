@@ -8,7 +8,7 @@ import {
   RefreshCw,
   Bug,
 } from "lucide-react";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { useTranslation } from "../components/useTranslations";
 
 const codeToFace = (code: number | string) => {

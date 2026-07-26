@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Card, CardContent } from "../components/ui/Card";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { userDb } from "../models/mockDB/users";
 import { useNavigate } from "react-router-dom";
