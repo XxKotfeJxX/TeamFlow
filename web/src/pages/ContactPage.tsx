@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Mail, MapPin, Clock } from "lucide-react";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Input } from "../components/ui/Input";

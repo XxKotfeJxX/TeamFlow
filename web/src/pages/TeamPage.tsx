@@ -9,7 +9,7 @@ import TeamStats from "../components/team/TeamStats";
 import AddMemberModal from "../components/team/AddMemberModal";
 import ConfirmModal from "../components/team/ConfirmModal";
 import TeamChat from "../components/team/TeamChat";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { motion } from "framer-motion";
 import { useTranslation } from "../components/useTranslations";
 

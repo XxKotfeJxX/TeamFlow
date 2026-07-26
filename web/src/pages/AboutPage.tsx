@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Users, Target, Rocket } from "lucide-react";
 import { useTranslation } from "../components/useTranslations";
 

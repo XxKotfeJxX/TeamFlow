@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Calendar, CheckCircle, MessageSquare, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";

@@ -1,86 +1,51 @@
-# 🧭 TeamFlow
+# TeamFlow
 
-**TeamFlow** — це платформа для командної роботи, яка об’єднує календар, таск-менеджер, чати, профілі користувачів і командну статистику в одному сучасному веб-інтерфейсі.  
-Проєкт створений з метою зробити спільну роботу продуктивнішою, організованішою і — найголовніше — приємною 🎯
+A collaborative work platform prototype that combines team calendars, tasks,
+chat, profiles, and team analytics in one responsive interface.
 
----
+## Current prototype
 
-## ✨ Особливості
+- personal and team calendars;
+- task lists with status and progress;
+- team pages, member management, and statistics;
+- text chat interface;
+- user profiles and reusable profile templates;
+- pricing, support, documentation, and blog pages;
+- Ukrainian, English, and Polish translations;
+- mock data for running the frontend without a backend.
 
-#### 🗓️ Календар
-- Особистий і командний календарі з перевіркою конфліктів між подіями  
-- Пріоритети, кольори, теги, підтвердження участі  
-- Підтримка особистого робочого часу
+The current repository contains a frontend prototype. Authentication, chat,
+payments, and persistence are represented in the interface but are not a
+production backend.
 
-#### ✅ Таск-лісти
-- Задачі з дедлайнами, статусом і прогресом  
-- Командні бали за виконані задачі  
-- Гнучка фільтрація (активні, виконані тощо)
+## Development
 
-#### 💬 Чати
-- Текстові чати з підтримкою кількох каналів  
-- Плавна анімація повідомлень  
-- Підготовка до розширення (аудіо / відео дзвінки)
-
-#### 👥 Команди
-- Користувач може бути в кількох командах  
-- Запрошення через email  
-- Перемикання між командами в один клік
-
-#### 🧑‍💻 Профілі
-- Розширені профілі користувачів і команд  
-- Можливість додати портфоліо та резюме  
-- Шаблони профілів і кастомні блоки
-
-#### 🔍 Інше
-- Пошук команд, інтерактивна карта  
-- Повністю локалізований інтерфейс (UA / EN / PL)  
-- Зберігання даних у LocalStorage (через mockDB)  
-- Адаптивний дизайн (Tailwind + shadcn/ui)
-
----
-
-## 🚀 Початок роботи
-
-### 🔧 Необхідні залежності
-
-Перед запуском переконайтеся, що встановлені:
-
-- **Programming Language:** C++  
-- **Frontend Tools:** Node.js (v18+) / npm  
-- **Build System:** CMake  
-- **Database:** PostgreSQL 17  
-
----
-
-## 🧩 Встановлення
-
-### 1. Клонування репозиторію
+Requirements: Node.js 22+ and npm.
 
 ```bash
-git clone https://github.com/<your-username>/TeamFlow.git
-```
-
-### 2. Клонування репозиторію
-
-```
-cd TeamFlow
-```
-
-### 3. Клонування репозиторію
-   
-**Для фронтенду:**
-
-```
-npm install
-```
-
-
-### **Запуск проєкту**
-
-**Запуск фронтенду (React + Vite)**
-
-```
+cd web
+npm ci
 npm run dev
 ```
 
+## Quality checks
+
+```bash
+cd web
+npm run lint
+npm run build
+```
+
+The Vite application is configured for deployment below `/TeamFlow/`.
+
+## Technology
+
+- React 19 and TypeScript
+- Vite and Tailwind CSS
+- React Router
+- i18next
+- Framer Motion
+
+## License
+
+MIT. See [LICENSE](LICENSE).

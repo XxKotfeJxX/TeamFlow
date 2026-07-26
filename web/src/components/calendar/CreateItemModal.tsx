@@ -6,7 +6,7 @@ import type { Event, Task } from "../../models/mockDB/calendar";
 import { Select, SelectItem } from "../ui/Select";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
-import { Button } from "../ui/Button";
+import { Button } from "../ui/button";
 import { Label } from "../ui/Label";
 import { CustomTimePicker, CustomDatePicker } from "../ui/DateTimePicker";
 import { Checkbox } from "../ui/Checkbox";

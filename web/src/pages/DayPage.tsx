@@ -15,7 +15,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import OverlapMenu from "../components/calendar/OverlapMenu";
 import CreateItemModal from "../components/calendar/CreateItemModal";
 import { motion } from "framer-motion";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { useTranslation } from "../components/useTranslations";
 
 const COLUMN_RANGES = [

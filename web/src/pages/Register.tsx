@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/Label";
 import { Card, CardContent } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
